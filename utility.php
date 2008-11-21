@@ -299,11 +299,6 @@ function cfct_choose_general_template_single($dir, $files) {
 		$files = cfct_single_templates($dir, $files);
 		if (count($files)) {
 // TODO - check for content matches
-
-			$template = cfct_choose_content_template();
-
-die('selected template: '.$template);
-
 		}
 	}
 	return false;
