@@ -220,6 +220,7 @@ function cfct_choose_general_template($dir) {
 		, 'role'
 		, 'category'
 		, 'tag'
+		, 'single'
 		, 'default'
 	);
 	$new_exec_order = apply_filters('cfct_general_match_order', $exec_order);
@@ -290,6 +291,21 @@ function cfct_choose_general_template_role($dir, $files) {
 			}
 		}
  	}
+	return false;
+}
+
+function cfct_choose_general_template_single($dir, $files) {
+	if (cfct_context() == 'single') {
+		$files = cfct_single_templates($dir, $files);
+		if (count($files)) {
+// TODO - check for content matches
+
+			$template = cfct_choose_content_template();
+
+die('selected template: '.$template);
+
+		}
+	}
 	return false;
 }
 
@@ -590,6 +606,14 @@ function cfct_parent_templates($dir, $files = null) {
 	}
 	$matches = cfct_filter_files($files, 'parent-');
 	return apply_filters('cfct_parent_templates', $matches);
+}
+
+function cfct_single_templates($dir, $files = null) {
+	if (is_null($files)) {
+		$files = cfct_files(CFCT_PATH.$dir);
+	}
+	$matches = cfct_filter_files($files, 'single');
+	return apply_filters('cfct_single_templates', $matches);
 }
 
 function cfct_comment_templates($type, $files = false) {

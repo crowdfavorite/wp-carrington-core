@@ -60,10 +60,10 @@ add_action('wp_footer', 'cfct_wp_footer');
 function cfct_about_text() {
 	$about_text = get_option('cfct_about_text');
 	if (!empty($about_text)) {
-		$about_text = apply_filter('wptexturize', $about_text);
-		$about_text = apply_filter('convert_smilies', $about_text);
-		$about_text = apply_filter('convert_chars', $about_text);
-		$about_text = apply_filter('wpautop', $about_text);
+		$about_text = wptexturize($about_text);
+		$about_text = convert_smilies($about_text);
+		$about_text = convert_chars($about_text);
+		$about_text = wpautop($about_text);
 	}
 	else {
 		global $post;
