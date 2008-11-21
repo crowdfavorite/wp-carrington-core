@@ -57,6 +57,29 @@ function cfct_wp_footer() {
 }
 add_action('wp_footer', 'cfct_wp_footer');
 
+function cfct_about_text() {
+	$about_text = get_option('cfct_about_text');
+	if (!empty($about_text)) {
+		$about_text = apply_filter('wptexturize', $about_text);
+		$about_text = apply_filter('convert_smilies', $about_text);
+		$about_text = apply_filter('convert_chars', $about_text);
+		$about_text = apply_filter('wpautop', $about_text);
+	}
+	else {
+		remove_filter('the_excerpt', 'st_add_widget');
+		$about_query = new WP_Query('pagename=about');
+		$orig_post = $post;
+		while ($about_query->have_posts()) {
+			$about_query->the_post();
+			$about_text = get_the_excerpt().sprintf(__('<a class="more" href="%s">more &rarr;</a>', 'carrington'), get_permalink());
+		}
+	}
+	if (function_exists('st_add_widget')) {
+		add_filter('the_excerpt', 'st_add_widget');
+	}
+	return $about_text;
+}
+
 if (!defined('CFCT_DEBUG')) {
 	define('CFCT_DEBUG', false);
 }
