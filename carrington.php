@@ -27,6 +27,7 @@ include_once(CFCT_PATH.'functions/utility.php');
 include_once(CFCT_PATH.'functions/ajax-load.php');
 include_once(CFCT_PATH.'functions/sidebars.php');
 include_once(CFCT_PATH.'functions/sandbox.php');
+include_once(CFCT_PATH.'functions/attachment.php');
 
 cfct_load_plugins();
 
