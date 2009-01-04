@@ -144,6 +144,7 @@ function cfct_options_home_column($key) {
 }
 
 function cfct_options_misc() {
+	global $cfct_options;
 	$options = array(
 		'yes' => 'Yes'
 		, 'no' => 'No'
@@ -180,14 +181,24 @@ function cfct_options_misc() {
 								<br />
 								<textarea name="cfct_about_text" id="cfct_about_text" cols="40" rows="8">'.htmlspecialchars(get_option('cfct_about_text')).'</textarea>
 							</p>
+	';
+	if (in_array('cfct_ajax_load', $cfct_options)) {
+		$html .= '
 							<p>
 								<label for="cfct_ajax_load">'.__('Load archives and comments with AJAX:', 'carrington').'</label>
 								<select name="cfct_ajax_load" id="cfct_ajax_load">'.$ajax_load_options.'</select>
 							</p>
+		';
+	}
+	if (in_array('cfct_posts_per_archive_page', $cfct_options)) {
+		$html .= '
 							<p>
 								<label for="cfct_posts_per_archive_page">'.__('Posts shown on archives pages:', 'carrington').'</label>
 								<input type="text" name="cfct_posts_per_archive_page" id="cfct_posts_per_archive_page" value="'.$cfct_posts_per_archive_page.'" size="3" />
 							</p>
+		';
+	}
+	$html .= '
 							<p>
 								<label for="cfct_credit">'.__('Give <a href="http://crowdfavorite.com">Crowd Favorite</a> credit in footer:', 'carrington').'</label>
 								<select name="cfct_credit" id="cfct_credit">'.$credit_options.'</select>
