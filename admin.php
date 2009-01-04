@@ -144,21 +144,12 @@ function cfct_options_home_column($key) {
 }
 
 function cfct_options_misc() {
-	global $cfct_options;
 	$options = array(
-		'yes' => 'Yes'
-		, 'no' => 'No'
+		'yes' => __('Yes', 'carrington'),
+		'no' => __('No', 'carrington')
 	);
-	$ajax_load_options = '';
 	$credit_options = '';
 	foreach ($options as $k => $v) {
-		if ($k == get_option('cfct_ajax_load')) {
-			$ajax_load_selected = 'selected="selected"';
-		}
-		else {
-			$ajax_load_selected = '';
-		}
-		$ajax_load_options .= "\n\t<option value='$k' $ajax_load_selected>$v</option>";
 		if ($k == get_option('cfct_credit')) {
 			$credit_selected = 'selected="selected"';
 		}
@@ -167,13 +158,9 @@ function cfct_options_misc() {
 		}
 		$credit_options .= "\n\t<option value='$k' $credit_selected>$v</option>";
 	}
-	$cfct_posts_per_archive_page = get_option('cfct_posts_per_archive_page');
-	if (intval($cfct_posts_per_archive_page) == 0) {
-		$cfct_posts_per_archive_page = 25;
-	}
 	$html = '
 				<tr valign="top">
-					<th scope="row">'.sprintf(__('Misc.', 'carrington'), $key).'</td>
+					<th scope="row">'.sprintf(__('Carrington', 'carrington'), $key).'</td>
 					<td>
 						<fieldset>
 							<p>
@@ -181,24 +168,6 @@ function cfct_options_misc() {
 								<br />
 								<textarea name="cfct_about_text" id="cfct_about_text" cols="40" rows="8">'.htmlspecialchars(get_option('cfct_about_text')).'</textarea>
 							</p>
-	';
-	if (in_array('cfct_ajax_load', $cfct_options)) {
-		$html .= '
-							<p>
-								<label for="cfct_ajax_load">'.__('Load archives and comments with AJAX:', 'carrington').'</label>
-								<select name="cfct_ajax_load" id="cfct_ajax_load">'.$ajax_load_options.'</select>
-							</p>
-		';
-	}
-	if (in_array('cfct_posts_per_archive_page', $cfct_options)) {
-		$html .= '
-							<p>
-								<label for="cfct_posts_per_archive_page">'.__('Posts shown on archives pages:', 'carrington').'</label>
-								<input type="text" name="cfct_posts_per_archive_page" id="cfct_posts_per_archive_page" value="'.$cfct_posts_per_archive_page.'" size="3" />
-							</p>
-		';
-	}
-	$html .= '
 							<p>
 								<label for="cfct_credit">'.__('Give <a href="http://crowdfavorite.com">Crowd Favorite</a> credit in footer:', 'carrington').'</label>
 								<select name="cfct_credit" id="cfct_credit">'.$credit_options.'</select>
