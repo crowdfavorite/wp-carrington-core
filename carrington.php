@@ -20,6 +20,8 @@ if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 //	ini_set('display_errors', '1');
 //	ini_set('error_reporting', E_ALL);
 
+load_theme_textdomain('carrington');
+
 include_once(CFCT_PATH.'functions/compatibility.php');
 include_once(CFCT_PATH.'functions/admin.php');
 include_once(CFCT_PATH.'functions/templates.php');
@@ -38,20 +40,6 @@ function cfct_init() {
 	}
 }
 add_action('init', 'cfct_init');
-
-wp_enqueue_script('jquery');
-wp_enqueue_script('carrington', get_bloginfo('template_directory').'/js/carrington.js', 'jquery', '1.0');
-
-function cfct_head() {
-	cfct_get_option('cfct_ajax_load') == 'no' ? $ajax_load = 'false' : $ajax_load = 'true';
-	echo '
-<script type="text/javascript">
-var CFCT_URL = "'.get_bloginfo('url').'";
-var CFCT_AJAX_LOAD = '.$ajax_load.';
-</script>
-	';
-}
-add_action('wp_head', 'cfct_head');
 
 function cfct_wp_footer() {
 	echo get_option('cfct_wp_footer');
