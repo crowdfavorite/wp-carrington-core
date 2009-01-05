@@ -69,6 +69,9 @@ function cfct_settings_form() {
 <div class="wrap">
 	<h2>'.__('Carrington Settings', 'carrington').'</h2>
 	<form action="options.php" method="post">
+	');
+	do_action('cfct_settings_form_top');
+	print('
 		<table class="form-table">
 			<tbody>'
 //			.cfct_options_home_column('1')
@@ -78,7 +81,7 @@ function cfct_settings_form() {
 			.'</tbody>
 		</table>
 	');
-	do_action('cfct_settings_form');
+	do_action('cfct_settings_form_bottom');
 	print('
 		<p class="submit">
 			<input type="hidden" name="cf_action" value="cfct_update_settings" />
@@ -160,7 +163,7 @@ function cfct_options_misc() {
 	}
 	$html = '
 				<tr valign="top">
-					<th scope="row">'.sprintf(__('Carrington', 'carrington'), $key).'</td>
+					<th scope="row">'.sprintf(__('Misc.', 'carrington'), $key).'</td>
 					<td>
 						<fieldset>
 							<p>
@@ -217,9 +220,6 @@ function cfct_home_columns(elem, slide) {
 </script>
 <?php
 }
-add_action('admin_head', 'cfct_admin_js');
-
-// TODO
-// - color pickers for background/theme integration
+//add_action('admin_head', 'cfct_admin_js');
 
 ?>

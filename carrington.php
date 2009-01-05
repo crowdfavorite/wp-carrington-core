@@ -22,6 +22,10 @@ if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 
 load_theme_textdomain('carrington');
 
+$cfct_options[] = 'cfct_about_text';
+$cfct_options[] = 'cfct_credit';
+$cfct_options[] = 'cfct_wp_footer';
+
 include_once(CFCT_PATH.'functions/compatibility.php');
 include_once(CFCT_PATH.'functions/admin.php');
 include_once(CFCT_PATH.'functions/templates.php');

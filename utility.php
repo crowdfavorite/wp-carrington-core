@@ -32,15 +32,9 @@ function cfct_banner($str = '') {
 
 function cfct_get_option($name) {
 	$defaults = array(
-		'cfct_list_limit_1' => CFCT_HOME_LIST_LENGTH
-		, 'cfct_latest_limit_1' => CFCT_HOME_LATEST_LENGTH
-		, 'cfct_list_limit_2' => CFCT_HOME_LIST_LENGTH
-		, 'cfct_latest_limit_2' => CFCT_HOME_LATEST_LENGTH
-		, 'cfct_list_limit_3' => CFCT_HOME_LIST_LENGTH
-		, 'cfct_latest_limit_3' => CFCT_HOME_LATEST_LENGTH
-		, 'cfct_ajax_load' => 'yes'
-		, 'cfct_credit' => 'yes'
+		'cfct_credit' => 'yes'
 	);
+	$defaults = apply_filters('cfct_option_defaults', $defaults);
 	$value = get_option($name);
 	if ($value == '' && isset($defaults[$name])) {
 		$value = $defaults[$name];
