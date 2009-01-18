@@ -1,4 +1,4 @@
-## functions/
+## carrington-core/
 
 ### Overview
 
