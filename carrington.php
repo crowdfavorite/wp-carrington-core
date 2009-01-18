@@ -26,14 +26,12 @@ $cfct_options[] = 'cfct_about_text';
 $cfct_options[] = 'cfct_credit';
 $cfct_options[] = 'cfct_wp_footer';
 
-include_once(CFCT_PATH.'functions/compatibility.php');
-include_once(CFCT_PATH.'functions/admin.php');
-include_once(CFCT_PATH.'functions/templates.php');
-include_once(CFCT_PATH.'functions/utility.php');
-include_once(CFCT_PATH.'functions/ajax-load.php');
-include_once(CFCT_PATH.'functions/sidebars.php');
-include_once(CFCT_PATH.'functions/sandbox.php');
-include_once(CFCT_PATH.'functions/attachment.php');
+include_once(CFCT_PATH.'carrington-core/admin.php');
+include_once(CFCT_PATH.'carrington-core/templates.php');
+include_once(CFCT_PATH.'carrington-core/utility.php');
+include_once(CFCT_PATH.'carrington-core/ajax-load.php');
+include_once(CFCT_PATH.'carrington-core/sandbox.php');
+include_once(CFCT_PATH.'carrington-core/attachment.php');
 
 cfct_load_plugins();
 

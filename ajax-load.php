@@ -29,6 +29,7 @@ function cfct_ajax_post_content($post_id) {
 	remove_filter('the_content', 'st_add_widget');
 	$wp->send_headers();
 	cfct_content();
+	echo '<div class="close" id="post_close_'.$post_id.'"><a href="#">'.__('Close', 'carrington').'</a></div>';
 }
 
 function cfct_ajax_post_comments($post_id) {
