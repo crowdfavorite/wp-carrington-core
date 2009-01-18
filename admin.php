@@ -82,6 +82,7 @@ function cfct_settings_form() {
 		</table>
 	');
 	do_action('cfct_settings_form_bottom');
+	do_action('cfct_settings_form');
 	print('
 		<p class="submit">
 			<input type="hidden" name="cf_action" value="cfct_update_settings" />
