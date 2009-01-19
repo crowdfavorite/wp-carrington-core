@@ -300,7 +300,9 @@ function cfct_choose_general_template_single($dir, $files) {
 				the_post();
 				$filename = cfct_choose_single_template($files, 'single-*');
 				if (!$filename) {
-					$filename = cfct_default_file($dir);
+					if (file_exists(CFCT_PATH.$dir.'/single.php')) {
+						$filename = 'single.php';
+					}
 				}
 			}
 			rewind_posts();
