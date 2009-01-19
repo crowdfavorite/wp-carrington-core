@@ -49,10 +49,10 @@ function cfct_single() {
 	cfct_template_file('single', $file);
 }
 
-// function cfct_images() {
-// 	$file = cfct_choose_general_template('images');
-// 	cfct_template_file('images', $file);
-// }
+function cfct_image() {
+	$file = cfct_choose_general_template('image');
+	cfct_template_file('image', $file);
+}
 
 function cfct_loop() {
 	$file = cfct_choose_general_template('loop');
