@@ -190,8 +190,18 @@ function cfct_options_misc() {
 
 if (is_admin()) {
 	wp_enqueue_script('jquery-colorpicker', get_bloginfo('template_directory').'/carrington-core/js/colorpicker.js', 'jquery', '1.0');
-	wp_enqueue_style('jquery-colorpicker', get_bloginfo('template_directory').'/carrington-core/css/colorpicker.css');
+// removing until we drop 2.5 compatibility
+//	wp_enqueue_style('jquery-colorpicker', get_bloginfo('template_directory').'/carrington-core/css/colorpicker.css');
 }
+
+function cfct_admin_head() {
+// see enqueued style above, we'll activate that in the future
+	echo '
+<link rel="stylesheet" type="text/css" media="screen" href="'.get_bloginfo('template_directory').'/carrington-core/css/colorpicker.css" />
+	';
+//	cfct_admin_js();
+}
+add_action('admin_head', 'cfct_admin_head');
 
 function cfct_admin_js() {
 ?>
@@ -226,6 +236,5 @@ function cfct_home_columns(elem, slide) {
 </script>
 <?php
 }
-//add_action('admin_head', 'cfct_admin_js');
 
 ?>
