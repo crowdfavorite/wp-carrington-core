@@ -32,7 +32,8 @@ function cfct_banner($str = '') {
 
 function cfct_get_option($name) {
 	$defaults = array(
-		'cfct_credit' => 'yes'
+		'cfct_credit' => 'yes',
+		'cfct_lightbox' => 'yes',
 	);
 	$defaults = apply_filters('cfct_option_defaults', $defaults);
 	$value = get_option($name);
