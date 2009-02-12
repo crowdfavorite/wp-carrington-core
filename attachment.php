@@ -66,7 +66,7 @@ function cfct_post_gallery($attr) {
 
 	$itemtag = tag_escape($itemtag);
 	$captiontag = tag_escape($captiontag);
-	$columns = intval($columns);
+	$columns = apply_filters('cfct_post_gallery_columns', intval($columns));
 	$itemwidth = $columns > 0 ? floor(100/$columns) : 100;
 
 	$output = apply_filters('gallery_style', "
