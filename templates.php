@@ -79,6 +79,16 @@ function cfct_comment() {
 	cfct_template_file('comment', $file);
 }
 
+function cfct_threaded_comment($comment, $args, $depth) {
+	$GLOBALS['comment'] = $comment;
+	global $cfct_comment_thread_data;
+	$cfct_comment_thread_data = array(
+		'args' => $args,
+		'depth' => $depth,
+	);
+	cfct_template_file('comments', 'threaded');
+}
+
 function cfct_form($name = '') {
 	cfct_template_file('forms', $name);
 }

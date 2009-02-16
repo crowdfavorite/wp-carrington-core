@@ -185,18 +185,4 @@ if (!function_exists('get_comment_class')) {
 		return apply_filters('comment_class', $classes, $class, $comment_id, $post_id);
 	}
 }
-
-function cfct_comment_callback($comment, $args, $depth) {
-	$GLOBALS['comment'] = $comment;
-?>
-<li <?php comment_class(); ?> id="li-comment-<?php comment_ID() ?>">
-	<div id="comment-<?php comment_ID(); ?>">
-<?php
-		cfct_comment();
-		comment_reply_link(array_merge( $args, array('depth' => $depth, 'max_depth' => $args['max_depth'])));
-?>
-	</div>
-<?php
-// Dropped </li> is intentional: WordPress figures out where to place the </li> so it can nest comment lists.
-}
 ?>
