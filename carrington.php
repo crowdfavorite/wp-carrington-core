@@ -30,8 +30,8 @@ include_once(CFCT_PATH.'carrington-core/admin.php');
 include_once(CFCT_PATH.'carrington-core/templates.php');
 include_once(CFCT_PATH.'carrington-core/utility.php');
 include_once(CFCT_PATH.'carrington-core/ajax-load.php');
-include_once(CFCT_PATH.'carrington-core/sandbox.php');
 include_once(CFCT_PATH.'carrington-core/attachment.php');
+include_once(CFCT_PATH.'carrington-core/compatibility.php');
 
 cfct_load_plugins();
 
