@@ -189,7 +189,7 @@ function cfct_options_misc() {
 }
 
 if (is_admin()) {
-	wp_enqueue_script('jquery-colorpicker', get_bloginfo('template_directory').'/carrington-core/js/colorpicker.js', 'jquery', '1.0');
+	wp_enqueue_script('jquery-colorpicker', get_bloginfo('template_directory').'/carrington-core/js/colorpicker.js', array('jquery'), '1.0');
 // removing until we drop 2.5 compatibility
 //	wp_enqueue_style('jquery-colorpicker', get_bloginfo('template_directory').'/carrington-core/css/colorpicker.css');
 }
