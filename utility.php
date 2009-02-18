@@ -669,13 +669,6 @@ function cfct_role_filename_to_name($file) {
 	return str_replace(array('single-role-', 'role-', '.php'), '', $file);
 }
 
-function cfct_hcard_comment_author_link($str) {
-	return str_replace('<a href', "<a class='fn url' href", $str);
-}
-function cfct_hcard_ping_author_link($str) {
-	return str_replace('<a href', "<a rel='bookmark' class='fn url' href", $str);
-}
-
 function cfct_post_id_to_slug($id) {
 	$post = get_post($id);
 	return $post->post_name;
