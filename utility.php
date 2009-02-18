@@ -195,7 +195,7 @@ function cfct_template($dir, $keys = array()) {
 	}
 }
 
-function cfct_template_file($dir, $file) {
+function cfct_template_file($dir, $file, $data = null) {
 	$path = '';
 	if (!empty($file)) {
 		$file = basename($file, '.php');
