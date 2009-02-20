@@ -53,11 +53,6 @@
 #nextLink:hover, #nextLink:visited:hover { background: url(../images/nextlabel.gif) right 50% no-repeat; }
 
 /*** START : next / previous text links ***/
-#nextLinkText, #prevLinkText{
-color: #FF9834;
-font-weight:bold;
-text-decoration: none;
-}
 #nextLinkText{
 padding-left: 20px;
 }
@@ -74,7 +69,6 @@ padding-right: 20px;
 /*** END : added padding when navbar is on top ***/
 
 #imageDataContainer{
-	font: 10px Verdana, Helvetica, sans-serif;
 	background-color: #fff;
 	margin: 0 auto;
 	line-height: 1.4em;

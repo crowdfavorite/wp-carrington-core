@@ -308,13 +308,13 @@
 			nav_html = opts.strings.image + (opts.activeImage + 1) + opts.strings.of + opts.imageArray.length;
 
 			// display previous / next text links
-			if ((opts.activeImage) > 0) {
-				nav_html = '<a title="' + opts.strings.prevLinkTitle + '" href="#" id="prevLinkText">' + opts.strings.prevLinkText + "</a>" + nav_html;
-			}
-
-			if ((opts.activeImage + 1) < opts.imageArray.length) {
-				nav_html += '<a title="' + opts.strings.nextLinkTitle + '" href="#" id="nextLinkText">' + opts.strings.nextLinkText + "</a>";
-			}
+			// if ((opts.activeImage) > 0) {
+			// 	nav_html = '<a title="' + opts.strings.prevLinkTitle + '" href="#" id="prevLinkText">' + opts.strings.prevLinkText + "</a>" + nav_html;
+			// }
+			// 
+			// if ((opts.activeImage + 1) < opts.imageArray.length) {
+			// 	nav_html += '<a title="' + opts.strings.nextLinkTitle + '" href="#" id="nextLinkText">' + opts.strings.nextLinkText + "</a>";
+			// }
 
 			$('#numberDisplay').html(nav_html).show();
 		}
