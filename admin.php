@@ -188,6 +188,55 @@ function cfct_options_misc() {
 	return $html;
 }
 
+function cfct_header_image_form() {
+	global $wpdb;
+
+	$images = $wpdb->get_results("
+		SELECT * FROM $wpdb->posts 
+		WHERE post_type = 'attachment' 
+		AND post_mime_type LIKE 'image%' 
+		AND post_parent = 0
+		ORDER BY post_date_gmt DESC
+		LIMIT 50
+	");
+	$upload_url = trailingslashit(get_bloginfo('wpurl')).'wp-admin/media-new.php';
+	$checked_attr = ' checked="checked"';
+	if (!count($images)) {
+		$output = '<p>'.sprintf(__('<a href="%s">Upload images</a> and they will appear here.</p>', 'carrington-core'), $upload_url);
+	}
+	else {
+		$header_image = get_option('cfct_header_image');
+		if (empty($header_image)) {
+			$header_image = 0;
+			$default_checked = $checked_attr;
+		}
+		else {
+			$default_checked = '';
+		}
+		$output = '
+<ul style="width: '.((count($images) + 1) * 152).'px">
+	<li style="background: #666;">
+		<label for="cfct_header_image_0">
+			<input type="radio" name="cfct_header_image" value="0" id="cfct_header_image_0" '.$default_checked.'/>'.__('No Custom Image', 'carrington-core').'
+		</label>
+	</li>
+		';
+		foreach ($images as $image) {
+			$id = 'cfct_header_image_'.$image->ID;
+			$thumbnail = wp_get_attachment_image_src($image->ID);
+			$header_image == $image->ID ? $checked = $checked_attr : $checked = '';
+			$output .= '
+	<li style="background-image: url('.$thumbnail[0].')">
+		<label for="'.$id.'">
+			<input type="radio" name="cfct_header_image" value="'.$image->ID.'" id="'.$id.'"'.$checked.' />'.wp_specialchars($image->post_title).'
+		</label>
+	</li>';
+		}
+		$output .= '</ul>';
+	}
+	return '<p>'.sprintf(__('Header Image &mdash; <a href="%s">Upload Images</a>', 'carrington-core'), $upload_url).'</p><div class="cfct_header_image_carousel">'.$output.'</div>';
+}
+
 if (is_admin()) {
 	wp_enqueue_script('jquery-colorpicker', get_bloginfo('template_directory').'/carrington-core/js/colorpicker.js', array('jquery'), '1.0');
 // removing until we drop 2.5 compatibility
@@ -199,9 +248,51 @@ function cfct_admin_head() {
 	echo '
 <link rel="stylesheet" type="text/css" media="screen" href="'.get_bloginfo('template_directory').'/carrington-core/css/colorpicker.css" />
 	';
+	cfct_admin_css();
 //	cfct_admin_js();
 }
 add_action('admin_head', 'cfct_admin_head');
+
+function cfct_admin_css() {
+?>
+<style type="text/css">
+div.cfct_header_image_carousel {
+	height: 170px;
+	overflow: auto;
+	width: 600px;
+}
+div.cfct_header_image_carousel ul {
+	height: 150px;
+}
+div.cfct_header_image_carousel li {
+	background: #fff url() center center no-repeat;
+	float: left;
+	height: 150px;
+	margin-right: 2px;
+	overflow: hidden;
+	position: relative;
+	width: 150px;
+}
+div.cfct_header_image_carousel li label {
+	background: #000;
+	color: #fff;
+	display: block;
+	height: 50px;
+	line-height: 25px;
+	overflow: hidden;
+	position: absolute;
+	top: 110px;
+	width: 150px;
+	filter:alpha(opacity=75);
+	-moz-opacity:.75;
+	opacity:.75;
+}
+div.cfct_header_image_carousel li label input {
+	margin: 0 5px;
+}
+</style>
+<?php
+}
 
 function cfct_admin_js() {
 ?>

@@ -34,6 +34,7 @@ function cfct_get_option($name) {
 	$defaults = array(
 		'cfct_credit' => 'yes',
 		'cfct_lightbox' => 'yes',
+		'cfct_header_image' => 0,
 	);
 	$defaults = apply_filters('cfct_option_defaults', $defaults);
 	$value = get_option($name);
