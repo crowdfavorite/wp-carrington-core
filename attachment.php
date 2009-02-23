@@ -97,7 +97,7 @@ function cfct_post_gallery($attr) {
 		$link = isset($attr['link']) && 'file' == $attr['link'] ? wp_get_attachment_link($id, $size, false, false) : wp_get_attachment_link($id, $size, true, false);
 		
 // add full item src as rel
-		$link = str_replace('><img', ' class="lightbox" rel="'.$item_src[0].'"><img', $link);
+		$link = str_replace('><img', ' class="thickbox" rel="'.$item_src[0].'"><img', $link);
 
 		$output .= "<{$itemtag} class='gallery-item'>";
 		$output .= "
