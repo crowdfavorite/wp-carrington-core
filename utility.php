@@ -404,7 +404,7 @@ function cfct_choose_single_template($files = array(), $filter = '*') {
 				$tag_files = cfct_tag_templates($type, $files);
 				if (count($tag_files)) {
 					$tags = get_the_tags($post->ID);
-					if (count($tags)) {
+					if (is_array($tags) && count($tags)) {
 						foreach ($tag_files as $file) {
 							foreach ($tags as $tag) {
 								if ($tag->slug == cfct_tag_filename_to_name($file)) {
