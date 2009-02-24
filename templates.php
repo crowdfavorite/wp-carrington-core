@@ -49,9 +49,9 @@ function cfct_single() {
 	cfct_template_file('single', $file);
 }
 
-function cfct_image() {
-	$file = cfct_choose_general_template('image');
-	cfct_template_file('image', $file);
+function cfct_attachment() {
+	$file = cfct_choose_general_template('attachment');
+	cfct_template_file('attachment', $file);
 }
 
 function cfct_loop() {
