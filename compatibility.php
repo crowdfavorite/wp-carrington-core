@@ -211,6 +211,5 @@ function cfct_get_cancel_comment_reply_link($reply_link, $link, $text) {
 	$reply_link = '<a rel="nofollow" id="cancel-comment-reply-link-p' . $post->ID . '" href="' . $link . '-p' . $post->ID . '"' . $style . '>' . $text . '</a>';
 	return $reply_link;
 }
-add_filter('cancel_comment_reply_link', 'cfct_get_cancel_comment_reply_link', 10, 3);
 
 ?>
