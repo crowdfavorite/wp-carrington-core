@@ -217,7 +217,7 @@ function cfct_header_image_form() {
 <ul style="width: '.((count($images) + 1) * 152).'px">
 	<li style="background: #666;">
 		<label for="cfct_header_image_0">
-			<input type="radio" name="cfct_header_image" value="0" id="cfct_header_image_0" '.$default_checked.'/>'.__('No Custom Image', 'carrington-core').'
+			<input type="radio" name="cfct_header_image" value="0" id="cfct_header_image_0" '.$default_checked.'/>'.__('No Image', 'carrington-core').'
 		</label>
 	</li>
 		';
