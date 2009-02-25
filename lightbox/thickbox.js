@@ -103,7 +103,7 @@ function tb_show(caption, url, imageGroup) {//function called when the user clic
 			// Resizing large images - orginal by Christian Montoya edited by me.
 			var pagesize = tb_getPageSize();
 			var x = pagesize[0] - 150;
-			var y = pagesize[1] - 150;
+			var y = pagesize[1] - 170;
 			var imageWidth = imgPreloader.width;
 			var imageHeight = imgPreloader.height;
 			if (imageWidth > x) {
@@ -126,7 +126,7 @@ function tb_show(caption, url, imageGroup) {//function called when the user clic
 			
 			/* TODO: auto-calculate heights based on jQuery.height() of elements */
 			TB_WIDTH = imageWidth + 30;
-			TB_HEIGHT = imageHeight + 100;
+			TB_HEIGHT = imageHeight + 130;
 			jQuery("#TB_window").append("<div id='TB_title'><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton' title='Close'>close</a> or Esc Key</div></div><div id='TB_ImageWrapper' style='height:"+imageHeight+"px;width:"+imageWidth+"px;'><div id='TB_ImageHoverNav'>"+TB_PrevHTML+TB_NextHTML+"</div><img id='TB_Image' src='"+url+"' width='"+imageWidth+"' height='"+imageHeight+"' alt='"+caption+"'/></div><div id='TB_caption'>"+caption+"<div id='TB_secondLine'>" + TB_imageCount + "</div></div>");
 			jQuery("#TB_closeWindowButton").click(tb_remove);
 			
