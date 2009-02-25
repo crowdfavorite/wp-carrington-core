@@ -506,7 +506,7 @@ function cfct_choose_comment_template_user($files) {
 
 function cfct_choose_comment_template_role($files) {
 	global $comment;
-	$files = cfct_comment_templates('user', $files);
+	$files = cfct_comment_templates('role', $files);
 	if (count($files) && !empty($comment->user_id)) {
 		$user = new WP_User($comment->user_id);
 		if (!empty($user->user_login)) {

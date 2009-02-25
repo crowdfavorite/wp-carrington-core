@@ -74,9 +74,9 @@ function cfct_comments() {
 	cfct_template_file('comments', $file);
 }
 
-function cfct_comment() {
+function cfct_comment($data = null) {
 	$file = cfct_choose_comment_template();
-	cfct_template_file('comment', $file);
+	cfct_template_file('comment', $file, $data);
 }
 
 function cfct_threaded_comment($comment, $args = array(), $depth) {
