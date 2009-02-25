@@ -238,8 +238,7 @@ function cfct_choose_general_template_author($dir, $files) {
 	if (count($files)) {
 		$username = get_query_var('author_name');
 		if (empty($username)) {
-			$user_id = get_query_var('author');
-			$user = new WP_User($user_id);
+			$user = new WP_User(get_query_var('author'));
 			$username = $user->user_login;
 		}
 		$filename = 'author-'.$username.'.php';
