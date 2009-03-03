@@ -201,10 +201,15 @@ function cfct_header_image_form() {
 	");
 	$upload_url = trailingslashit(get_bloginfo('wpurl')).'wp-admin/media-new.php';
 	$checked_attr = ' checked="checked"';
-	if (!count($images)) {
-		$output = '<p>'.sprintf(__('<a href="%s">Upload images</a> and they will appear here.</p>', 'carrington-core'), $upload_url);
-	}
-	else {
+	$output = '
+<ul style="width: '.((count($images) + 1) * 152).'px">
+	<li style="background: #666;">
+		<label for="cfct_header_image_0">
+			<input type="radio" name="cfct_header_image" value="0" id="cfct_header_image_0" '.$default_checked.'/>'.__('No Image', 'carrington-core').'
+		</label>
+	</li>
+	';
+	if (count($images)) {
 		$header_image = get_option('cfct_header_image');
 		if (empty($header_image)) {
 			$header_image = 0;
@@ -213,14 +218,6 @@ function cfct_header_image_form() {
 		else {
 			$default_checked = '';
 		}
-		$output = '
-<ul style="width: '.((count($images) + 1) * 152).'px">
-	<li style="background: #666;">
-		<label for="cfct_header_image_0">
-			<input type="radio" name="cfct_header_image" value="0" id="cfct_header_image_0" '.$default_checked.'/>'.__('No Image', 'carrington-core').'
-		</label>
-	</li>
-		';
 		foreach ($images as $image) {
 			$id = 'cfct_header_image_'.$image->ID;
 			$thumbnail = wp_get_attachment_image_src($image->ID);
@@ -232,8 +229,8 @@ function cfct_header_image_form() {
 		</label>
 	</li>';
 		}
-		$output .= '</ul>';
 	}
+	$output .= '</ul>';
 	return '<p>'.sprintf(__('Header Image &mdash; <a href="%s">Upload Images</a>', 'carrington-core'), $upload_url).'</p><div class="cfct_header_image_carousel">'.$output.'</div>';
 }
 
