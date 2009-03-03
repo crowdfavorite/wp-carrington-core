@@ -25,6 +25,19 @@ function cfct_ajax_post_content($post_id) {
 		$posts = get_pages('include='.$post_id);
 		$post = $posts[0];
 	}
+	if (is_null($post)) {
+		$posts = get_posts('post_status=private&include='.$post_id);
+		$post = $posts[0];
+		if ($post) {
+			$user = wp_get_current_user();
+			if (!$user->ID || $user->ID != $post->post_author) {
+				$post = null;
+			}
+		}
+	}
+	if (!$post) {
+		die('');
+	}
 	setup_postdata($post);
 	remove_filter('the_content', 'st_add_widget');
 	$wp->send_headers();
