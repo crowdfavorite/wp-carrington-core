@@ -84,9 +84,9 @@ function cfct_settings_form() {
 	do_action('cfct_settings_form_bottom');
 	do_action('cfct_settings_form');
 	print('
-		<p class="submit">
+		<p class="submit" style="padding-left: 230px;">
 			<input type="hidden" name="cf_action" value="cfct_update_settings" />
-			<input type="submit" name="submit_button" value="'.__('Save Changes', 'carrington').'" />
+			<input type="submit" name="submit_button" class="button-primary" value="'.__('Save Changes', 'carrington').'" />
 		</p>
 	</form>
 </div>
