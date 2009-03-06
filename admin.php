@@ -173,13 +173,13 @@ function cfct_options_misc() {
 								<textarea name="cfct_about_text" id="cfct_about_text" cols="40" rows="8">'.htmlspecialchars(get_option('cfct_about_text')).'</textarea>
 							</p>
 							<p>
-								<label for="cfct_credit">'.__('Give <a href="http://crowdfavorite.com">Crowd Favorite</a> credit in footer:', 'carrington').'</label>
-								<select name="cfct_credit" id="cfct_credit">'.$credit_options.'</select>
-							</p>
-							<p>
 								<label for="cfct_wp_footer">'.__('Footer code (for analytics, etc.):', 'carrington').'</label>
 								<br />
 								<textarea name="cfct_wp_footer" id="cfct_wp_footer" cols="40" rows="5">'.htmlspecialchars(get_option('cfct_wp_footer')).'</textarea>
+							</p>
+							<p>
+								<label for="cfct_credit">'.__('Give <a href="http://crowdfavorite.com">Crowd Favorite</a> credit in footer:', 'carrington').'</label>
+								<select name="cfct_credit" id="cfct_credit">'.$credit_options.'</select>
 							</p>
 						</fieldset>
 					</td>
