@@ -679,4 +679,12 @@ function cfct_post_id_to_slug($id) {
 	return $post->post_name;
 }
 
+function cfct_basic_content_formatting($str) {
+	$str = wptexturize($str);
+	$str = convert_smilies($str);
+	$str = convert_chars($str);
+	$str = wpautop($str);
+	return $str;
+}
+
 ?>
