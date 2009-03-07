@@ -99,7 +99,19 @@ function tb_show(caption, url, imageGroup) {//function called when the user clic
 			imgPreloader = new Image();
 			imgPreloader.onload = function(){		
 			imgPreloader.onload = null;
-				
+
+// preload patch from: http://drupal.org/files/issues/thickbox_preloadimage.patch
+prevImg = new Image();
+nextImg = new Image();
+var tb_links = jQuery('a[@class="thickbox"]');
+var i = -1;
+tb_links.each(function(n) { if (this.href == imgPreloader.src) { i = n; } });
+if (i != -1) {
+	if (i > 0) { prevImg.src = tb_links[i-1].href; }
+	if (i+1 < tb_links.length) { nextImg.src = tb_links[i+1].href; }
+}
+
+
 			// Resizing large images - orginal by Christian Montoya edited by me.
 			var pagesize = tb_getPageSize();
 			var x = pagesize[0] - 150;
@@ -160,12 +172,12 @@ function tb_show(caption, url, imageGroup) {//function called when the user clic
 				}
 				if(keycode == 27){ // close
 					tb_remove();
-				} else if(keycode == 190){ // display previous image
+				} else if(keycode == 190 || keycode == 39){ // display next image
 					if(!(TB_NextHTML == "")){
 						document.onkeydown = "";
 						goNext();
 					}
-				} else if(keycode == 188){ // display next image
+				} else if(keycode == 188 || keycode == 37){ // display previous image
 					if(!(TB_PrevHTML == "")){
 						document.onkeydown = "";
 						goPrev();
