@@ -203,6 +203,8 @@ function cfct_comment_id_fields() {
 function cfct_get_cancel_comment_reply_link($reply_link, $link, $text) {
 	global $post;
 	
+	if ( !empty($text) ) { $text = __('Cancel', 'carrington'); }
+	
 	$style = '';
 	if (!isset($_GET['replytocom'])) {
 		$style = ' style="display:none;"';
