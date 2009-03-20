@@ -68,6 +68,23 @@ function cfct_about_text() {
 	return $about_text;
 }
 
+function cfct_get_custom_colors($type = 'option') {
+	global $cfct_color_options;
+	$colors = array();
+	foreach ($cfct_color_options as $option => $value) {
+		switch ($type) {
+			case 'preview':
+				!empty($_GET[$option]) ? $colors[$option] = strip_tags(stripslashes($_GET[$option])) : $colors[$option] = '';
+				break;
+			case 'option':
+			default:
+				$colors[$option] = cfct_get_option($option);
+				break;
+		}
+	}
+	return $colors;
+}
+
 if (!defined('CFCT_DEBUG')) {
 	define('CFCT_DEBUG', false);
 }

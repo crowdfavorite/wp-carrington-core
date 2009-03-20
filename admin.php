@@ -302,23 +302,6 @@ jQuery(function() {
 	});
 });
 
-function cfct_get_custom_colors($type = 'option') {
-	global $cfct_color_options;
-	$colors = array();
-	foreach ($cfct_color_options as $option => $value) {
-		switch ($type) {
-			case 'preview':
-				!empty($_GET[$option]) ? $colors[$option] = strip_tags(stripslashes($_GET[$option])) : $colors[$option] = '';
-				break;
-			case 'option':
-			default:
-				$colors[$option] = cfct_get_option($option);
-				break;
-		}
-	}
-	return $colors;
-}
-
 function cfct_home_columns(elem, slide) {
 	var id = elem.attr('id').replace('cfct_home_column_', '').replace('_content', '');
 	var val = elem.val();
