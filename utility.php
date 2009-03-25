@@ -223,7 +223,7 @@ function cfct_choose_general_template($dir) {
 	$files = cfct_files(CFCT_PATH.$dir);
 	foreach ($new_exec_order as $func) {
 		$func_name = 'cfct_choose_general_template_'.$func;
-		if (function_exists($func_name) && in_array($func, $exec_order)) {
+		if (function_exists($func_name)) {
 			$filename = $func_name($dir, $files);
 			if ($filename != false) {
 				break;
@@ -464,7 +464,7 @@ function cfct_choose_comment_template() {
 	$files = cfct_files(CFCT_PATH.'comment');
 	foreach ($new_exec_order as $func) {
 		$func_name = 'cfct_choose_comment_template_'.$func;
-		if (function_exists($func_name) && in_array($func, $exec_order)) {
+		if (function_exists($func_name)) {
 			$filename = $func_name($files);
 			if ($filename != false) {
 				break;
