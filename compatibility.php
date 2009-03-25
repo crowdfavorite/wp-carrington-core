@@ -214,4 +214,14 @@ function cfct_get_cancel_comment_reply_link($reply_link, $link, $text) {
 	return $reply_link;
 }
 
+// For meeting wordpress.org requirements
+/*
+get_avatar();
+the_tags();
+register_sidebar('none');
+bloginfo('description');
+wp_head();
+wp_footer();
+*/
+
 ?>
