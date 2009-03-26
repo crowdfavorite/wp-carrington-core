@@ -479,7 +479,9 @@ function cfct_choose_comment_template_ping($files) {
 	switch ($comment->comment_type) {
 		case 'pingback':
 		case 'trackback':
-			return 'ping';
+			if (in_array('ping.php', $files)) {
+				return 'ping';
+			}
 			break;
 	}
 	return false;
