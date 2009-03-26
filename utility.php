@@ -476,13 +476,13 @@ function cfct_choose_comment_template() {
 
 function cfct_choose_comment_template_ping($files) {
 	global $comment;
-	switch ($comment->comment_type) {
-		case 'pingback':
-		case 'trackback':
-			if (in_array('ping.php', $files)) {
+	if (in_array('ping.php', $files)) {
+		switch ($comment->comment_type) {
+			case 'pingback':
+			case 'trackback':
 				return 'ping';
-			}
-			break;
+				break;
+		}
 	}
 	return false;
 }
