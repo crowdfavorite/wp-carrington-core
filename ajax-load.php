@@ -18,7 +18,7 @@
 if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 
 function cfct_ajax_post_content($post_id) {
-	global $posts, $post, $wp;
+	global $post, $posts, $wp_query, $wp;
 	$posts = get_posts('include='.$post_id);
 	$post = $posts[0];
 	if (is_null($post)) {
@@ -38,6 +38,7 @@ function cfct_ajax_post_content($post_id) {
 	if (!$post) {
 		die('');
 	}
+	$wp_query->in_the_loop = true;
 	setup_postdata($post);
 	remove_filter('the_content', 'st_add_widget');
 	$wp->send_headers();
@@ -46,7 +47,7 @@ function cfct_ajax_post_content($post_id) {
 }
 
 function cfct_ajax_post_comments($post_id) {
-	global $post, $wp_query, $wp;
+	global $post, $posts, $wp_query, $wp;
 	$wp_query->is_single = true;
 	$posts = get_posts('include='.$post_id);
 	$post = $posts[0];
