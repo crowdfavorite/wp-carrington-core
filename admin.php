@@ -242,10 +242,12 @@ if (is_admin()) {
 
 function cfct_admin_head() {
 // see enqueued style above, we'll activate that in the future
-	echo '
+	if ($_GET['page'] == 'carrington-settings') {
+		echo '
 <link rel="stylesheet" type="text/css" media="screen" href="'.get_bloginfo('template_directory').'/carrington-core/css/colorpicker.css" />
-	';
-	cfct_admin_css();
+		';
+		cfct_admin_css();
+	}
 //	cfct_admin_js();
 }
 add_action('admin_head', 'cfct_admin_head');
