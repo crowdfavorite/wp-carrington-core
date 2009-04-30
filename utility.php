@@ -443,7 +443,7 @@ function cfct_choose_single_template($files = array(), $filter = '*') {
 function cfct_choose_content_template($type = 'content') {
 	$files = cfct_files(CFCT_PATH.$type);
 	$filename = cfct_choose_single_template($files);
-	if (cfct_context() == 'page' && file_exists(CFCT_PATH.$type.'/page.php')) {
+	if (!$filename && cfct_context() == 'page' && file_exists(CFCT_PATH.$type.'/page.php')) {
 		$filename = 'page.php';
 	}
 	if (!$filename) {
