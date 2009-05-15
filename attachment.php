@@ -30,7 +30,7 @@ function cfct_get_adjacent_image_link($prev = true) {
 		return wp_get_attachment_link($attachments[$k]->ID, 'thumbnail', true);
 }
 
-function cfct_post_gallery($attr) {
+function cfct_post_gallery($unused, $attr) {
 	global $post;
 
 	// We're trusting author input, so let's at least make sure it looks like a valid orderby statement
@@ -86,7 +86,7 @@ function cfct_post_gallery($attr) {
 				margin-left: 0;
 			}
 		</style>
-		<!-- see gallery_shortcode() in wp-includes/media.php -->
+		<!-- see cfct_post_gallery() in carrington-core/attachment.php -->
 		<div class='gallery'>");
 
 	$i = 0;
@@ -121,6 +121,6 @@ function cfct_post_gallery($attr) {
 
 	return $output;
 }
-add_filter('post_gallery', 'cfct_post_gallery');
+add_filter('post_gallery', 'cfct_post_gallery', 10, 2);
 
 ?>

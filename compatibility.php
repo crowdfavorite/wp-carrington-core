@@ -16,6 +16,12 @@
 //
 // Functions here without the cfct_ prefix are taken from WordPress 2.7 under the GPL
 
+if (!function_exists('is_sticky')) {
+	function is_sticky() {
+		return false;
+	}
+}
+
 /**
  * Displays classes for post div
  *
