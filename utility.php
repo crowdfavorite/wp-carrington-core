@@ -449,7 +449,7 @@ function cfct_choose_content_template($type = 'content') {
 	if (!$filename) {
 		$filename = cfct_default_file($type);
 	}
-	return apply_filters('cfct_choose_content_template', $filename);
+	return apply_filters('cfct_choose_content_template', $filename, $type);
 }
 
 function cfct_choose_comment_template() {
