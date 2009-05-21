@@ -230,7 +230,7 @@ function cfct_choose_general_template($dir) {
 			}
 		}
 	}
-	return apply_filters('cfct_choose_general_template', $filename);
+	return apply_filters('cfct_choose_general_template', $filename, $dir);
 }
 
 function cfct_choose_general_template_author($dir, $files) {
