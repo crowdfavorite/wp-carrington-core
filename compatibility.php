@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of the Carrington Theme Framework for WordPress
 // http://carringtontheme.com
 //
