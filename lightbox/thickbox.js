@@ -76,7 +76,7 @@ function tb_show(caption, url, imageGroup) {//function called when the user clic
 			TB_imageCount = "";
 			TB_FoundURL = false;
 			if(imageGroup){
-				TB_TempArray = jQuery("a[@rel="+imageGroup+"]").get();
+				TB_TempArray = jQuery("a[rel="+imageGroup+"]").get();
 				for (TB_Counter = 0; ((TB_Counter < TB_TempArray.length) && (TB_NextHTML === "")); TB_Counter++) {
 					var urlTypeTemp = TB_TempArray[TB_Counter].href.toLowerCase().match(urlString);
 						if (!(TB_TempArray[TB_Counter].href == url)) {						
@@ -103,7 +103,7 @@ function tb_show(caption, url, imageGroup) {//function called when the user clic
 // preload patch from: http://drupal.org/files/issues/thickbox_preloadimage.patch
 prevImg = new Image();
 nextImg = new Image();
-var tb_links = jQuery('a[@class="thickbox"]');
+var tb_links = jQuery('a[class="thickbox"]');
 var i = -1;
 tb_links.each(function(n) { if (this.href == imgPreloader.src) { i = n; } });
 if (i != -1) {
