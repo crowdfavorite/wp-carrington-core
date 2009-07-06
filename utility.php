@@ -221,8 +221,10 @@ function cfct_choose_general_template($dir) {
 	);
 	$new_exec_order = apply_filters('cfct_general_match_order', $exec_order);
 	$files = cfct_files(CFCT_PATH.$dir);
-	foreach ($new_exec_order as $func) {
-		$func_name = 'cfct_choose_general_template_'.$func;
+	foreach ($new_exec_order as $func_name) {
+		if (function_exists($func_name)) {
+			$func_name = 'cfct_choose_general_template_'.$func_name;
+		}
 		if (function_exists($func_name)) {
 			$filename = $func_name($dir, $files);
 			if ($filename != false) {
