@@ -59,7 +59,10 @@ function cfct_default_file($dir) {
 
 function cfct_context() {
 	$context = 'home';
-	if (is_page()) {
+	if (is_home() || is_front_page()) {
+		$context = 'home';
+	}
+	else if (is_page()) {
 		$context = 'page';
 	}
 	else if (is_single()) {
@@ -83,10 +86,6 @@ function cfct_context() {
 	}
 	else if (is_search()) {
 		$context = 'search';
-	}
-	else if (is_home()) {
-		$context = 'home';
-		// TODO - check page #
 	}
 	else if (is_404()) {
 		$context = '404';
