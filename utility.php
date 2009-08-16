@@ -535,6 +535,10 @@ function cfct_choose_comment_template_default($files) {
 }
 
 function cfct_files($path) {
+	$files = apply_filters('cfct_files_'.$path, false);
+	if ($files) {
+		return $files;
+	}
 	$files = wp_cache_get('cfct_files_'.$path, 'cfct');
 	if ($files) {
 		return $files;
