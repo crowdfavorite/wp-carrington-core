@@ -57,6 +57,7 @@ function cfct_about_text() {
 	}
 	else {
 		global $post, $wp_query;
+		$orig_post = $post;
 		$page = $wp_query->query_vars['page'];
 // temporary - resetting below
 		$wp_query->query_vars['page'] = null;
@@ -67,6 +68,8 @@ function cfct_about_text() {
 			$about_text = get_the_excerpt().sprintf(__('<a class="more" href="%s">more &rarr;</a>', 'carrington'), get_permalink());
 		}
 		$wp_query->query_vars['page'] = $page;
+		$post = $orig_post;
+		setup_postdata($post);
 	}
 	if (function_exists('st_add_widget')) {
 		add_filter('the_excerpt', 'st_add_widget');
