@@ -89,16 +89,17 @@ function cfct_threaded_comment($comment, $args = array(), $depth) {
 }
 
 function cfct_form($name = '') {
-	cfct_template_file('forms', $name);
+	$parts = cfct_leading_dir($name);
+	cfct_template_file('forms/'.$parts['dir'], $parts['file']);
 }
 
 function cfct_misc($name = '') {
-	cfct_template_file('misc', $name);
+	$parts = cfct_leading_dir($name);
+	cfct_template_file('misc/'.$parts['dir'], $parts['file']);
 }
 
 function cfct_error($name = '') {
 	cfct_template_file('error', $name);
 }
-
 
 ?>

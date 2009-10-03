@@ -694,4 +694,20 @@ function cfct_basic_content_formatting($str) {
 	return $str;
 }
 
+function cfct_leading_dir($path) {
+	$val = array(
+		'dir' => '',
+		'file' => ''
+	);
+	if (strpos($path, '/') !== false) {
+		$parts = explode('/', $path);
+		$val['file'] = $parts[count($parts) - 1];
+		$val['dir'] = implode('/', array_slice($parts, 0, count($parts) - 1));
+	}
+	else {
+		$val['file'] = $path;
+	}
+	return $val;
+}
+
 ?>
