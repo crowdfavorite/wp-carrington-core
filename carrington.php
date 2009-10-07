@@ -58,7 +58,7 @@ function cfct_about_text() {
 	else {
 		global $post, $wp_query;
 		$orig_post = $post;
-		$page = $wp_query->query_vars['page'];
+		isset($wp_query->query_vars['page']) ? $page = $wp_query->query_vars['page'] : $page = null;
 // temporary - resetting below
 		$wp_query->query_vars['page'] = null;
 		remove_filter('the_excerpt', 'st_add_widget');
