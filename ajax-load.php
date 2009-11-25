@@ -85,24 +85,29 @@ function cfct_ajax_comment_link() {
 }
 add_filter('comments_popup_link_attributes', 'cfct_ajax_comment_link');
 
-function cfct_posts_per_archive_page($query) {
+function cfct_posts_per_archive_page_setting() {
 	$count = get_option('cfct_posts_per_archive_page');
 	intval($count) > 0 ? $count = $count : $count = 25;
-	$query->set('posts_per_archive_page', $count);
-	return $query;
+	return $count;
 }
-add_filter('pre_get_posts', 'cfct_posts_per_archive_page');
 
 // add a self-removing filter to handle category pages
-function cfct_add_posts_per_category_page() {
+function cfct_add_posts_per_archive_page() {
+	add_filter('pre_get_posts', 'cfct_posts_per_archive_page');
 	add_filter('pre_get_posts', 'cfct_posts_per_category_page');
 }
-add_filter('parse_request', 'cfct_posts_per_category_page');
+add_filter('parse_request', 'cfct_add_posts_per_archive_page');
+
+function cfct_posts_per_archive_page($query) {
+	remove_filter('pre_get_posts', 'cfct_posts_per_archive_page');
+	$query->set('posts_per_archive_page', cfct_posts_per_archive_page_setting());
+	return $query;
+}
 
 function cfct_posts_per_category_page($query) {
 	remove_filter('pre_get_posts', 'cfct_posts_per_category_page');
 	if (is_category()) {
-		$query->set('posts_per_page', $count);
+		$query->set('posts_per_page', cfct_posts_per_archive_page_setting());
 	}
 	return $query;
 }
