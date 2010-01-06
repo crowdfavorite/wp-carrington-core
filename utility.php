@@ -208,10 +208,8 @@ function cfct_template_file($dir, $file, $data = null) {
 	if (!empty($file)) {
 		$file = basename($file, '.php');
 		// child theme support
-		if (file_exists(STYLESHEETPATH.'/'.$dir.'/'.$file.'.php')) {
-			$path = STYLESHEETPATH.'/'.$dir.'/'.$file.'.php';
-		}
-		else {
+		$path = STYLESHEETPATH.'/'.$dir.'/'.$file.'.php';
+		if (!file_exists($path) {
 			$path = CFCT_PATH.$dir.'/'.$file.'.php';
 		}
 	}
