@@ -3,21 +3,63 @@
 ## 3.0
 
 - Support for child themes (including adding templates in child themes that do not exist in the parent theme)
-- Allow custom functions to be filtered into the Single template selection process (like General selection already supported)
+- Allow custom functions to be filtered into the Single template selection process (already supported in General context selection)
 - Added changelog
+
 
 ## 2.5
 
+- added CFCT_CORE_VERSION constant
+- added support for is_front_page() as 'home' in General context
+- added a filter in cfct_files() so that a plugin can declaritively set the files available for performance reasons (eliminates file system lookups)
+
+
 ## 2.4
+
+- update included Thickbox script to support jQuery 1.2.6 (remove @ syntax for attributes)
+- allow filtered in functions to participate in template selection for General context
+
 
 ## 2.3
 
+- updated copied Gallery functions
+- workaround for pages needing some vars set in global $wp_query
+- add is_sticky() function for compatibility
+- pass directory name along with filename to cfct_choose_general_template filter
+- pass type along with filename to cfct_choose_content_template filter
+- don't choose "page" content type unless there are no matches from cfct_choose_single_template()
+
+
 ## 2.2.1
+
+- only output CSS for the admin on the Carrington settings page
+- fake "in_the_loop" for AJAX load of post content
+
 
 ## 2.2
 
+- add a check for comment/ping.php before returning
+
+
 ## 2.1
+
+- add a cfct_get_custom_colors() function to core
+
 
 ## 2.0
 
+- add color picker
+- add gallery support
+- add hooks to admin forms
+- additional internationalization
+- add header image form
+- properly exclude private posts from AJX load
+- restructure code/files
+- add compatibility file
+- add threaded comment support
+- add single-* support to General context
+
+
 ## 1.3
+
+- first tagged core version

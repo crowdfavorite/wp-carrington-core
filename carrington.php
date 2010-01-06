@@ -20,7 +20,7 @@ if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 //	ini_set('display_errors', '1');
 //	ini_set('error_reporting', E_ALL);
 
-define('CFCT_CORE_VERSION', '2.5');
+define('CFCT_CORE_VERSION', '3.0');
 
 load_theme_textdomain('carrington');
 
