@@ -209,7 +209,7 @@ function cfct_template_file($dir, $file, $data = null) {
 		$file = basename($file, '.php');
 		// child theme support
 		$path = STYLESHEETPATH.'/'.$dir.'/'.$file.'.php';
-		if (!file_exists($path) {
+		if (!file_exists($path)) {
 			$path = CFCT_PATH.$dir.'/'.$file.'.php';
 		}
 	}
