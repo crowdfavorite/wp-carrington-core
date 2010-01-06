@@ -1,0 +1,23 @@
+# Carrington Core Framework Changelog
+
+## 3.0
+
+- Support for child themes (including adding templates in child themes that do not exist in the parent theme)
+- Allow custom functions to be filtered into the Single template selection process (like General selection already supported)
+- Added changelog
+
+## 2.5
+
+## 2.4
+
+## 2.3
+
+## 2.2.1
+
+## 2.2
+
+## 2.1
+
+## 2.0
+
+## 1.3
