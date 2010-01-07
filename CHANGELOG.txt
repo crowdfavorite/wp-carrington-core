@@ -3,7 +3,7 @@
 ## 3.0
 
 - Support for child themes (including adding templates in child themes that do not exist in the parent theme)
-- Allow custom functions to be filtered into the Single template selection process (already supported in General context selection)
+- Allow custom functions to be filtered into the Single and Comment template selection process (already supported in General context selection)
 - make the posts_per_page setting work as intended (only on initial query)
 - Added changelog
 

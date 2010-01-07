@@ -477,16 +477,18 @@ function cfct_choose_content_template($type = 'content') {
 
 function cfct_choose_comment_template() {
 	$exec_order = array(
-		'ping'
-		, 'author'
-		, 'user'
-		, 'role'
-		, 'default'
+		'ping',
+		'author',
+		'user',
+		'role',
+		'default',
 	);
-	$new_exec_order = apply_filters('cfct_comment_match_order', $exec_order);
+	$exec_order = apply_filters('cfct_comment_match_order', $exec_order);
 	$files = cfct_files(CFCT_PATH.'comment');
-	foreach ($new_exec_order as $func) {
-		$func_name = 'cfct_choose_comment_template_'.$func;
+	foreach ($exec_order as $func_name) {
+		if (!function_exists($func_name)) {
+			$func_name = 'cfct_choose_comment_template_'.$func_name;
+		}
 		if (function_exists($func_name)) {
 			$filename = $func_name($files);
 			if ($filename != false) {
