@@ -5,6 +5,7 @@
 - Support for child themes (including adding templates in child themes that do not exist in the parent theme)
 - Allow custom functions to be filtered into the Single and Comment template selection process (already supported in General context selection)
 - make the posts_per_page setting work as intended (only on initial query)
+- Support for nesting directories in misc/ and forms/
 - Added changelog
 
 
