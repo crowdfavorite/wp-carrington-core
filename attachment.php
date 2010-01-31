@@ -3,7 +3,7 @@
 // This file is part of the Carrington Theme Framework for WordPress
 // http://carringtontheme.com
 //
-// Copyright (c) 2008-2009 Crowd Favorite, Ltd. All rights reserved.
+// Copyright (c) 2008-2010 Crowd Favorite, Ltd. All rights reserved.
 // http://crowdfavorite.com
 //
 // Released under the GPL license
@@ -69,25 +69,25 @@ function cfct_post_gallery($unused, $attr) {
 	$columns = apply_filters('cfct_post_gallery_columns', intval($columns));
 	$itemwidth = $columns > 0 ? floor(100/$columns) : 100;
 
-	$output = apply_filters('gallery_style', "
-		<style type='text/css'>
-			.gallery {
+	$output = apply_filters('gallery_style', '
+		<style type="text/css">
+			.post-'.$id.' .gallery {
 				margin: auto;
 			}
-			.gallery-item {
+			.post-'.$id.' .gallery-item {
 				float: left;
 				margin-top: 10px;
 				text-align: center;
-				width: {$itemwidth}%;			}
-			.gallery img {
+				width: '.$itemwidth.'%;			}
+			.post-'.$id.' .gallery img {
 				border: 2px solid #cfcfcf;
 			}
-			.gallery-caption {
+			.post-'.$id.' .gallery-caption {
 				margin-left: 0;
 			}
 		</style>
 		<!-- see cfct_post_gallery() in carrington-core/attachment.php -->
-		<div class='gallery'>");
+		<div class="gallery">');
 
 	$i = 0;
 	foreach ( $attachments as $id => $attachment ) {
