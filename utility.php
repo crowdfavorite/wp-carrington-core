@@ -418,7 +418,7 @@ function cfct_choose_single_template_category($dir, $files) {
 function cfct_choose_single_template_role($dir, $files) {
 	$role_files = cfct_role_templates($type, $files);
 	if (count($role_files)) {
-		$user = new WP_User(get_the_author_ID());
+		$user = new WP_User(get_the_author_meta('ID'));
 		if (count($user->roles)) {
 			foreach ($role_files as $file) {
 				foreach ($user->roles as $role) {
