@@ -6,6 +6,7 @@
 - Allow custom functions to be filtered into the Single and Comment template selection process (already supported in General context selection)
 - make the posts_per_page setting work as intended (only on initial query)
 - Support for nesting directories in misc/ and forms/
+- Removed use of deprecated function `get_the_author_ID`. Replaced with 2.8 `get_the_author_meta` (since 2.8.0). Users of versions of WordPress prior to 2.8.0 should be aware this change will cause problems for them.
 - Added changelog
 
 
