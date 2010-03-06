@@ -478,6 +478,7 @@ function cfct_choose_content_template($type = 'content') {
 function cfct_choose_comment_template() {
 	$exec_order = array(
 		'ping',
+		'meta',
 		'author',
 		'user',
 		'role',
@@ -507,6 +508,34 @@ function cfct_choose_comment_template_ping($files) {
 			case 'trackback':
 				return 'ping';
 				break;
+		}
+	}
+	return false;
+}
+
+function cfct_choose_comment_template_meta($files) {
+	global $comment;
+	$meta_files = cfct_meta_templates('', $files);
+	if (count($meta_files)) {
+		$meta = get_metadata('comment', $comment->comment_ID);
+		if (count($meta)) {
+// check key, value matches first
+			foreach ($meta as $k => $v) {
+				$val = $v[0];
+				$file = 'meta-'.$k.'-'.$val.'.php';
+				if (in_array($file, $meta_files)) {
+					return $file;
+				}
+			}
+// check key matches only
+			if (!$filename) {
+				foreach ($meta as $k => $v) {
+					$file = 'meta-'.$k.'.php';
+					if (in_array($file, $meta_files)) {
+						return $file;
+					}
+				}
+			}
 		}
 	}
 	return false;
