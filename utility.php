@@ -478,9 +478,9 @@ function cfct_choose_content_template($type = 'content') {
 function cfct_choose_comment_template() {
 	$exec_order = array(
 		'ping',
-		'meta',
 		'author',
 		'user',
+		'meta',
 		'role',
 		'default',
 	);
