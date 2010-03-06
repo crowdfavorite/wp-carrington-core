@@ -366,7 +366,7 @@ function cfct_choose_single_template_author($dir, $files) {
 	$author_files = cfct_author_templates('', $files);
 	if (count($author_files)) {
 		$author = get_the_author_login();
-		$file = cfct_filename_filter('author-'.$author.'.php', $filter);
+		$file = 'author-'.$author.'.php';
 		if (in_array($file, $author_files)) {
 			return $file;
 		}
@@ -383,7 +383,7 @@ function cfct_choose_single_template_meta($dir, $files) {
 // check key, value matches first
 			foreach ($meta as $k => $v) {
 				$val = $v[0];
-				$file = cfct_filename_filter('meta-'.$k.'-'.$val.'.php', $filter);
+				$file = 'meta-'.$k.'-'.$val.'.php';
 				if (in_array($file, $meta_files)) {
 					return $file;
 				}
@@ -391,7 +391,7 @@ function cfct_choose_single_template_meta($dir, $files) {
 // check key matches only
 			if (!$filename) {
 				foreach ($meta as $k => $v) {
-					$file = cfct_filename_filter('meta-'.$k.'.php', $filter);
+					$file = 'meta-'.$k.'.php';
 					if (in_array($file, $meta_files)) {
 						return $file;
 					}
@@ -455,7 +455,7 @@ function cfct_choose_single_template_parent($dir, $files) {
 	$parent_files = cfct_parent_templates($type, $files);
 	if (count($parent_files) && $post->post_parent > 0) {
 		$parent = cfct_post_id_to_slug($post->post_parent);
-		$file = cfct_filename_filter('parent-'.$parent.'.php', $filter);
+		$file = 'parent-'.$parent.'.php';
 		if (in_array($file, $parent_files)) {
 			return $file;
 		}
@@ -587,10 +587,6 @@ function cfct_files($path) {
 	$files = array_unique($files);
 	wp_cache_set('cfct_files_'.$path, $files, 'cfct', 3600);
 	return $files;
-}
-
-function cfct_filename_filter($filename, $filter) {
-	return str_replace('*', $filename, $filter);
 }
 
 function cfct_filter_files($files = array(), $prefix = '') {
