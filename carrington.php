@@ -22,6 +22,11 @@ if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 
 define('CFCT_CORE_VERSION', '3.0');
 
+// Path to Carrington Core parent directory (usually the theme).
+if (!defined('CFCT_PATH')) {
+	define('CFCT_PATH', trailingslashit(TEMPLATEPATH));
+}
+
 load_theme_textdomain('carrington');
 
 $cfct_options[] = 'cfct_about_text';
