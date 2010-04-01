@@ -19,14 +19,24 @@ if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 
 function cfct_die($str = '') {
 	if (!empty($str)) {
-		include(CFCT_PATH.'error/exit.php');
-		die();
+		if (file_exists(CFCT_PATH.'error/exit.php')) {
+			include(CFCT_PATH.'error/exit.php');
+			die();
+		}
+		else {
+			wp_die($str);
+		}
 	}
 }
 
 function cfct_banner($str = '') {
 	if (!empty($str)) {
-		include(CFCT_PATH.'misc/banner.php');
+		if (file_exists(CFCT_PATH.'misc/banner.php')) {
+			include(CFCT_PATH.'misc/banner.php');
+		}
+		else {
+			echo '<p>'.$str.'</p>';
+		}
 	}
 }
 
