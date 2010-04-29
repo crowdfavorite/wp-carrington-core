@@ -352,6 +352,7 @@ function cfct_choose_single_template($files = array(), $filter = '*') {
 		'author',
 		'meta',
 		'category',
+		'type',
 		'role',
 		'tag',
 		'parent', // for pages
@@ -370,6 +371,18 @@ function cfct_choose_single_template($files = array(), $filter = '*') {
 		}
 	}
 	return apply_filters('cfct_choose_single_template', $filename);
+}
+
+function cfct_choose_single_template_type($dir, $files) {
+	$type_files = cfct_type_templates('', $files);
+	if (count($type_files)) {
+		global $post;
+		$file = 'type-'.$post->post_type.'.php';
+		if (in_array($file, $type_files)) {
+			return $file;
+		}
+	}
+	return false;
 }
 
 function cfct_choose_single_template_author($dir, $files) {
@@ -670,6 +683,14 @@ function cfct_author_templates($dir, $files = null) {
 	}
 	$matches = cfct_filter_files($files, 'author-');
 	return apply_filters('cfct_author_templates', $matches);
+}
+
+function cfct_type_templates($dir, $files = null) {
+	if (is_null($files)) {
+		$files = cfct_files(CFCT_PATH.$dir);
+	}
+	$matches = cfct_filter_files($files, 'type-');
+	return apply_filters('cfct_type_templates', $matches);
 }
 
 function cfct_role_templates($dir, $files = null) {
