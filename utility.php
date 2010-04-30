@@ -614,7 +614,11 @@ function cfct_choose_comment_template_default($files) {
 }
 
 function cfct_filename_filter($filename, $filter) {
-	return str_replace('*', $filter, $filename);
+	// check for filter already appended
+	if (substr($filename, 0, strlen($filter) - 1) == str_replace('*', '', $filter)) {
+		return $filename;
+	}
+	return str_replace('*', $filename, $filter);
 }
 
 function cfct_files($path) {
@@ -741,13 +745,13 @@ function cfct_comment_templates($type, $files = false) {
 }
 
 function cfct_cat_filename_to_id($file) {
-	$cat = str_replace(array('single-cat-', 'cat-', '.php'), '', $file);
+	$cat = cfct_cat_filename_to_slug($file);
 	$cat = get_category_by_slug($cat);
 	return $cat->cat_ID;
 }
 
 function cfct_cat_filename_to_name($file) {
-	$cat = str_replace(array('single-cat-', 'cat-', '.php'), '', $file);
+	$cat = cfct_cat_filename_to_slug($file);
 	$cat = get_category_by_slug($cat);
 	return $cat->name;
 }
