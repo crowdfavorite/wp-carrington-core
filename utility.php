@@ -614,7 +614,7 @@ function cfct_choose_comment_template_default($files) {
 }
 
 function cfct_filename_filter($filename, $filter) {
-	return str_replace('*', $filename, $filter);
+	return str_replace('*', $filter, $filename);
 }
 
 function cfct_files($path) {
