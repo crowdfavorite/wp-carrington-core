@@ -364,7 +364,7 @@ function cfct_choose_single_template($files = array(), $filter = '*') {
 			$func_name = 'cfct_choose_single_template_'.$func_name;
 		}
 		if (function_exists($func_name)) {
-			$filename = $func_name($dir, $files);
+			$filename = $func_name($dir, $files, $filter);
 			if ($filename != false) {
 				break;
 			}
@@ -373,11 +373,11 @@ function cfct_choose_single_template($files = array(), $filter = '*') {
 	return apply_filters('cfct_choose_single_template', $filename);
 }
 
-function cfct_choose_single_template_type($dir, $files) {
+function cfct_choose_single_template_type($dir, $files, $filter) {
 	$type_files = cfct_type_templates('', $files);
 	if (count($type_files)) {
 		global $post;
-		$file = 'type-'.$post->post_type.'.php';
+		$file = cfct_filename_filter('type-'.$post->post_type.'.php', $filter);
 		if (in_array($file, $type_files)) {
 			return $file;
 		}
@@ -385,11 +385,11 @@ function cfct_choose_single_template_type($dir, $files) {
 	return false;
 }
 
-function cfct_choose_single_template_author($dir, $files) {
+function cfct_choose_single_template_author($dir, $files, $filter) {
 	$author_files = cfct_author_templates('', $files);
 	if (count($author_files)) {
 		$author = get_the_author_login();
-		$file = 'author-'.$author.'.php';
+		$file = cfct_filename_filter('author-'.$author.'.php', $filter);
 		if (in_array($file, $author_files)) {
 			return $file;
 		}
@@ -397,7 +397,7 @@ function cfct_choose_single_template_author($dir, $files) {
 	return false;
 }
 
-function cfct_choose_single_template_meta($dir, $files) {
+function cfct_choose_single_template_meta($dir, $files, $filter) {
 	global $post;
 	$meta_files = cfct_meta_templates('', $files);
 	if (count($meta_files)) {
@@ -406,7 +406,7 @@ function cfct_choose_single_template_meta($dir, $files) {
 // check key, value matches first
 			foreach ($meta as $k => $v) {
 				$val = $v[0];
-				$file = 'meta-'.$k.'-'.$val.'.php';
+				$file = cfct_filename_filter('meta-'.$k.'-'.$val.'.php', $filter);
 				if (in_array($file, $meta_files)) {
 					return $file;
 				}
@@ -414,7 +414,7 @@ function cfct_choose_single_template_meta($dir, $files) {
 // check key matches only
 			if (!$filename) {
 				foreach ($meta as $k => $v) {
-					$file = 'meta-'.$k.'.php';
+					$file = cfct_filename_filter('meta-'.$k.'.php', $filter);
 					if (in_array($file, $meta_files)) {
 						return $file;
 					}
@@ -425,10 +425,11 @@ function cfct_choose_single_template_meta($dir, $files) {
 	return false;
 }
 
-function cfct_choose_single_template_category($dir, $files) {
+function cfct_choose_single_template_category($dir, $files, $filter) {
 	$cat_files = cfct_cat_templates($type, $files);
 	if (count($cat_files)) {
 		foreach ($cat_files as $file) {
+			$file = cfct_filename_filter($file, $filter);
 			$cat_id = cfct_cat_filename_to_id($file);
 			if (in_category($cat_id)) {
 				return $file;
@@ -438,12 +439,13 @@ function cfct_choose_single_template_category($dir, $files) {
 	return false;
 }
 
-function cfct_choose_single_template_role($dir, $files) {
+function cfct_choose_single_template_role($dir, $files, $filter) {
 	$role_files = cfct_role_templates($type, $files);
 	if (count($role_files)) {
 		$user = new WP_User(get_the_author_meta('ID'));
 		if (count($user->roles)) {
 			foreach ($role_files as $file) {
+				$file = cfct_filename_filter($file, $filter);
 				foreach ($user->roles as $role) {
 					if (cfct_role_filename_to_name($file) == $role) {
 						return $file;
@@ -455,13 +457,14 @@ function cfct_choose_single_template_role($dir, $files) {
 	return false;
 }
 
-function cfct_choose_single_template_tag($dir, $files) {
+function cfct_choose_single_template_tag($dir, $files, $filter) {
 	global $post;
 	$tag_files = cfct_tag_templates($type, $files);
 	if (count($tag_files)) {
 		$tags = get_the_tags($post->ID);
 		if (is_array($tags) && count($tags)) {
 			foreach ($tag_files as $file) {
+				$file = cfct_filename_filter($file, $filter);
 				foreach ($tags as $tag) {
 					if ($tag->slug == cfct_tag_filename_to_name($file)) {
 						return $file;
@@ -473,12 +476,12 @@ function cfct_choose_single_template_tag($dir, $files) {
 	return false;
 }
 
-function cfct_choose_single_template_parent($dir, $files) {
+function cfct_choose_single_template_parent($dir, $files, $filter) {
 	global $post;
 	$parent_files = cfct_parent_templates($type, $files);
 	if (count($parent_files) && $post->post_parent > 0) {
 		$parent = cfct_post_id_to_slug($post->post_parent);
-		$file = 'parent-'.$parent.'.php';
+		$file = cfct_filename_filter('parent-'.$parent.'.php', $filter);
 		if (in_array($file, $parent_files)) {
 			return $file;
 		}
@@ -608,6 +611,10 @@ function cfct_choose_comment_template_role($files) {
 
 function cfct_choose_comment_template_default($files) {
 	return cfct_default_file('comment');
+}
+
+function cfct_filename_filter($filename, $filter) {
+	return str_replace('*', $filename, $filter);
 }
 
 function cfct_files($path) {
