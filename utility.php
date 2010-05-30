@@ -56,8 +56,16 @@ function cfct_get_option($name) {
 
 function cfct_load_plugins() {
 	$files = cfct_files(CFCT_PATH.'plugins');
-	foreach ($files as $file) {
-		include(CFCT_PATH.'plugins/'.$file);
+	if (count($files)) {
+		foreach ($files as $file) {
+			if (file_exists(CFCT_PATH.'plugins/'.$file)) {
+				include(CFCT_PATH.'plugins/'.$file);
+			}
+// child theme support
+			if (file_exists(STYLESHEETPATH.'/plugins/'.$file)) {
+				include(STYLESHEETPATH.'/plugins/'.$file);
+			}
+		}
 	}
 }
 
