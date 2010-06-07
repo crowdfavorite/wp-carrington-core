@@ -59,11 +59,11 @@ function cfct_load_plugins() {
 	if (count($files)) {
 		foreach ($files as $file) {
 			if (file_exists(CFCT_PATH.'plugins/'.$file)) {
-				include(CFCT_PATH.'plugins/'.$file);
+				include_once(CFCT_PATH.'plugins/'.$file);
 			}
 // child theme support
 			if (file_exists(STYLESHEETPATH.'/plugins/'.$file)) {
-				include(STYLESHEETPATH.'/plugins/'.$file);
+				include_once(STYLESHEETPATH.'/plugins/'.$file);
 			}
 		}
 	}
