@@ -11,7 +11,6 @@
 - Define required Carrington settings in a more forgiving way, making it easier to use just part of Carrington on a site when desired
 - Make gallery settings (implemented in CSS) specific to each gallery
 - home.php is now only used in is_home() situations, not is_front_page() (reverses feature requested and added in v. 2.5)
-- Compatibility code to make it easier to drop Carrington Core into an existing theme
 - Added changelog
 
 
