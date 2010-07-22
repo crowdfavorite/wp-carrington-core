@@ -14,8 +14,42 @@
 // WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 // **********************************************************************
-//
-// Functions here without the cfct_ prefix are taken from WordPress 2.7 under the GPL
+
+/**
+ * Outputs hidden fields for comment form with unique IDs, based on post ID, making it safe for AJAX pull.
+ */
+function cfct_comment_id_fields() {
+	global $id;
+
+	$replytoid = isset($_GET['replytocom']) ? (int) $_GET['replytocom'] : 0;
+	echo "<input type='hidden' name='comment_post_ID' value='$id' id='comment_post_ID_p$id' />\n";
+	echo "<input type='hidden' name='comment_parent' id='comment_parent_p$id' value='$replytoid' />\n";
+}
+
+/**
+ * Filter the comment reply link to add a unique unique ID, based on post ID, making it safe for AJAX pull.
+ */
+function cfct_get_cancel_comment_reply_link($reply_link, $link, $text) {
+	global $post;
+	
+	if ( !empty($text) ) { $text = __('Cancel', 'carrington'); }
+	
+	$style = '';
+	if (!isset($_GET['replytocom'])) {
+		$style = ' style="display:none;"';
+	}
+	
+	$reply_link = '<a rel="nofollow" id="cancel-comment-reply-link-p' . $post->ID . '" href="' . $link . '-p' . $post->ID . '"' . $style . '>' . $text . '</a>';
+	return $reply_link;
+}
+
+
+
+
+// ITEMS BELOW THIS LINE ARE DEPRECATED AND WILL BE REMOVED IN A FUTURE RELEASE
+
+
+// Functions here without the cfct_ prefix are taken from WordPress 2.7 (GPL)
 
 if (!function_exists('is_sticky')) {
 	function is_sticky() {
@@ -193,35 +227,9 @@ if (!function_exists('get_comment_class')) {
 	}
 }
 
-/**
- * Outputs hidden fields for comment form with unique IDs, based on post ID, making it safe for AJAX pull.
- */
-function cfct_comment_id_fields() {
-	global $id;
-
-	$replytoid = isset($_GET['replytocom']) ? (int) $_GET['replytocom'] : 0;
-	echo "<input type='hidden' name='comment_post_ID' value='$id' id='comment_post_ID_p$id' />\n";
-	echo "<input type='hidden' name='comment_parent' id='comment_parent_p$id' value='$replytoid' />\n";
-}
-
-/**
- * Filter the comment reply link to add a unique unique ID, based on post ID, making it safe for AJAX pull.
- */
-function cfct_get_cancel_comment_reply_link($reply_link, $link, $text) {
-	global $post;
-	
-	if ( !empty($text) ) { $text = __('Cancel', 'carrington'); }
-	
-	$style = '';
-	if (!isset($_GET['replytocom'])) {
-		$style = ' style="display:none;"';
-	}
-	
-	$reply_link = '<a rel="nofollow" id="cancel-comment-reply-link-p' . $post->ID . '" href="' . $link . '-p' . $post->ID . '"' . $style . '>' . $text . '</a>';
-	return $reply_link;
-}
 
 // For meeting wordpress.org requirements
+
 /*
 get_avatar();
 the_tags();
