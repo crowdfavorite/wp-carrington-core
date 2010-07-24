@@ -19,31 +19,28 @@ if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 
 function cfct_ajax_post_content($post_id) {
 	global $post, $posts, $wp_query, $wp;
-	$posts = get_posts('include='.$post_id);
-	$post = $posts[0];
-	if (is_null($post)) {
-		$posts = get_pages('include='.$post_id);
-		$post = $posts[0];
+	$post = get_post($post_id);
+	
+	// If the post wasn't found, or is not published or private, we're not interested.
+	if (!is_object($post) || !in_array($post->post_status, array('publish', 'private')) ) {
+		die();
 	}
-	if (is_null($post)) {
-		$posts = get_posts('post_status=private&include='.$post_id);
-		$post = $posts[0];
-		if ($post) {
-			$user = wp_get_current_user();
-			if (!$user->ID || $user->ID != $post->post_author) {
-				$post = null;
-			}
+	
+	// If the post is private, make sure the user is allowed to see it before we show it.
+	if ($post->post_status == 'private') {
+		$user = wp_get_current_user();
+		if (!$user->ID || $user->ID != $post->post_author) {
+			die();
 		}
 	}
-	if (!$post) {
-		die('');
-	}
+	
 	$wp_query->in_the_loop = true;
 	setup_postdata($post);
 	remove_filter('the_content', 'st_add_widget');
 	$wp->send_headers();
 	cfct_content();
-	echo '<div class="close" id="post_close_'.$post_id.'"><a href="#">'.__('Close', 'carrington').'</a></div>';
+	
+	echo apply_filters('cfct_ajax_post_content_close', '<div class="close" id="post_close_'.$post_id.'"><a href="#">'.__('Close', 'carrington').'</a></div>', $post_id);
 }
 
 function cfct_ajax_post_comments($post_id) {
