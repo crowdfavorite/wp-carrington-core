@@ -24,12 +24,12 @@ function cfct_admin_menu() {
 		return;
 	}
 	add_submenu_page(
-		'themes.php'
-		, __('Carrington Settings', 'carrington')
-		, __('Carrington', 'carrington')
-		, 0
-		, 'carrington-settings'
-		, 'cfct_settings_form'
+		'themes.php',
+		apply_filters('cfct_admin_settings_title', __('Carrington Theme Settings', 'carrington')),
+		apply_filters('cfct_admin_settings_menu', __('Theme Settings', 'carrington')),
+		0,
+		'carrington-settings',
+		'cfct_settings_form'
 	);
 }
 add_action('admin_menu', 'cfct_admin_menu');
@@ -67,7 +67,7 @@ function cfct_settings_form() {
 	}
 	print('
 <div class="wrap">
-	<h2>'.__('Carrington Settings', 'carrington').'</h2>
+	<h2>'.apply_filters('cfct_admin_settings_title', __('Carrington Theme Settings', 'carrington')).'</h2>
 	<form action="options.php" method="post">
 	');
 	do_action('cfct_settings_form_top');
@@ -118,7 +118,7 @@ function cfct_options_home_column($key) {
 	}
 	$html = '
 				<tr valign="top">
-					<th scope="row">'.sprintf(__('Home Column %s', 'carrington'), $key).'</td>
+					<th scope="row"><b>'.sprintf(__('Home Column %s', 'carrington'), $key).'</b></td>
 					<td>
 						<fieldset>
 							<p>
