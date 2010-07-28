@@ -1,5 +1,13 @@
 # Carrington Core Framework Changelog
 
+## 3.0.1
+
+- Added nonces to settings page
+- Made title of settings page filterable
+- Made menu item title filterable
+- Support custom post types in AJAX archives
+
+
 ## 3.0
 
 - Added support for custom post types (WordPress 3.0)
