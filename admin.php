@@ -48,6 +48,8 @@ function cfct_update_settings() {
 	if (!current_user_can('manage_options')) {
 		return;
 	}
+	check_admin_referer('cfct_admin_settings');
+	
 	global $cfct_options;
 	foreach ($cfct_options as $option) {
 		if (isset($_POST[$option])) {
@@ -85,6 +87,7 @@ function cfct_settings_form() {
 	do_action('cfct_settings_form');
 	print('
 		<p class="submit" style="padding-left: 230px;">
+			'.wp_nonce_field('cfct_admin_settings').'
 			<input type="hidden" name="cf_action" value="cfct_update_settings" />
 			<input type="submit" name="submit_button" class="button-primary" value="'.__('Save Changes', 'carrington').'" />
 		</p>
