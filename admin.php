@@ -87,7 +87,7 @@ function cfct_settings_form() {
 	do_action('cfct_settings_form');
 	print('
 		<p class="submit" style="padding-left: 230px;">
-			'.wp_nonce_field('cfct_admin_settings').'
+			'.wp_nonce_field('cfct_admin_settings', '_wpnonce', true, false).'
 			<input type="hidden" name="cf_action" value="cfct_update_settings" />
 			<input type="submit" name="submit_button" class="button-primary" value="'.__('Save Changes', 'carrington').'" />
 		</p>
