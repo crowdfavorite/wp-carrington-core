@@ -6,6 +6,7 @@
 - Made title of settings page filterable
 - Made menu item title filterable
 - Support custom post types in AJAX archives
+- Version # now tied to WP release # (this version, 3.0.1, released during WP 3.0)
 
 
 ## 3.0
