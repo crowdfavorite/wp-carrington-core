@@ -20,14 +20,11 @@ if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 // - add admin page for config settings
 
 function cfct_admin_menu() {
-	if (!current_user_can('manage_options')) {
-		return;
-	}
 	add_submenu_page(
 		'themes.php',
 		apply_filters('cfct_admin_settings_title', __('Carrington Theme Settings', 'carrington')),
 		apply_filters('cfct_admin_settings_menu', __('Theme Settings', 'carrington')),
-		0,
+		'edit_theme_options',
 		'carrington-settings',
 		'cfct_settings_form'
 	);
