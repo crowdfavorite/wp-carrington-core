@@ -67,7 +67,7 @@ function cfct_settings_form() {
 	print('
 <div class="wrap">
 	<h2>'.apply_filters('cfct_admin_settings_form_title', __('Carrington Theme Settings', 'carrington')).'</h2>
-	<form action="options.php" method="post">
+	<form action="'.admin_url('/').'" method="post">
 	');
 	do_action('cfct_settings_form_top');
 	print('
