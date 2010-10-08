@@ -76,9 +76,18 @@ function cfct_ajax_load() {
 	}
 }
 
-function cfct_ajax_comment_link() {
+function cfct_ajax_comment_link($attrs) {
 	global $post;
-	echo ' rev="post-'.$post->ID.'" ';
+	if (strpos($attrs, 'rev="') !== false) {
+		$attrs = str_replace('rev="', 'rev="post-'.$post->ID.' ', $attrs);
+	}
+	else if (strpos($attrs, "rev='") !== false) {
+		$attrs = str_replace("rev='", "rev='post-".$post->ID.' ', $attrs);
+	}
+	else {
+		$attrs .= ' rev="post-'.$post->ID.'" ';
+	}
+	return $attrs;
 }
 add_filter('comments_popup_link_attributes', 'cfct_ajax_comment_link');
 
