@@ -15,6 +15,13 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 // **********************************************************************
 
+/**
+ * Get the link of an adjacent image
+ * 
+ * @param bool $prev Whether or not there is a previous image
+ * @return string URL of an adjacent image
+ * 
+**/
 function cfct_get_adjacent_image_link($prev = true) {
 	global $post;
 	$post = get_post($post);
@@ -30,6 +37,14 @@ function cfct_get_adjacent_image_link($prev = true) {
 		return wp_get_attachment_link($attachments[$k]->ID, 'thumbnail', true);
 }
 
+/**
+ * Create a gallery from post attachements. Overrides WordPress default shortcode post gallery code.
+ * 
+ * @param $unused not used, required by filter hook
+ * @param array $attr List of attributes that are populated by post gallery shortcode
+ * @return string Markup to display a gallery
+ * 
+**/
 function cfct_post_gallery($unused, $attr) {
 	global $post;
 

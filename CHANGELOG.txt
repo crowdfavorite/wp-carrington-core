@@ -1,5 +1,12 @@
 # Carrington Core Framework Changelog
 
+## 3.0.2
+- Updated some variable names
+- Support for custom taxonomies within the general context
+- Implemented checked and selected functions for options
+- E_NOTICE clean
+- Added PHP doc blocks
+
 ## 3.0.1
 
 - Added nonces to settings page

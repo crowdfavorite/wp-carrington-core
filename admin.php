@@ -19,6 +19,10 @@ if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 
 // - add admin page for config settings
 
+/**
+ * Add a menu option under the admin themes menu
+ * 
+**/
 function cfct_admin_menu() {
 	add_submenu_page(
 		'themes.php',
@@ -31,16 +35,24 @@ function cfct_admin_menu() {
 }
 add_action('admin_menu', 'cfct_admin_menu');
 
+/**
+ * Request handler for admin POSTs and GETs
+ * 
+**/
 function cfct_admin_request_handler() {
 	if (isset($_POST['cf_action'])) {
 		switch ($_POST['cf_action']) {
 			case 'cfct_update_settings':
 				call_user_func($_POST['cf_action']);
-				wp_redirect(trailingslashit(get_bloginfo('wpurl')).'wp-admin/themes.php?page=carrington-settings&updated=true');
+				wp_redirect(admin_url('/themes.php?page=carrington-settings&updated=true'));
 		}
 	}
 }
 
+/**
+ * Update Carrington Framework settings
+ * 
+**/
 function cfct_update_settings() {
 	if (!current_user_can('manage_options')) {
 		return;
@@ -56,6 +68,10 @@ function cfct_update_settings() {
 	do_action('cfct_update_settings');
 }
 
+/**
+ * Display a settings for for Carrington Framework
+ * 
+**/
 function cfct_settings_form() {
 	if (isset($_GET['updated'])) {
 		print('
@@ -94,28 +110,25 @@ function cfct_settings_form() {
 	do_action('cfct_settings_form_after');
 }
 
+/**
+ * Display option for home columns
+ * 
+**/
 function cfct_options_home_column($key) {
 	$categories = get_categories('hide_empty=0');
 	$cat_options = '';
+	$home_col_cat = get_option('cfct_home_col_'.$key.'_cat');
 	foreach ($categories as $category) {
-		if ($category->term_id == get_option('cfct_home_col_'.$key.'_cat')) {
-			$selected = 'selected="selected"';
-		}
-		else {
-			$selected = '';
-		}
-		$cat_options .= "\n\t<option value='$category->term_id' $selected>$category->name</option>";
+		$cat_options .= "\n\t".'<option value="'.$category->term_id.'" '.selected($category->term_id, $home_col_cat, false ).'>'.$category->name.'</option>';
 	}
-	$show_options = '';
+	
+	$col_content_array = array('latest' => __('Latest Post Preview', 'carrington'), 'list' => __('List of Recent Post Titles', 'carrington'));
+	$show_options = '';	
 	$show_option = cfct_get_option('cfct_home_column_'.$key.'_content');
-	if ($show_option == 'latest') {
-		$latest_selected = 'selected="selected"';
-		$list_selected = '';
+	foreach ($col_content_array as $content_key => $content_value) {
+		$content_options .= "\n\t".'<option value="'.$content_key.'" '.selected($content_key, $show_option, false ).'>'.$content_value.'</option>';
 	}
-	else {
-		$latest_selected = '';
-		$list_selected = 'selected="selected"';
-	}
+	
 	$html = '
 				<tr valign="top">
 					<th scope="row"><b>'.sprintf(__('Home Column %s', 'carrington'), $key).'</b></td>
@@ -127,10 +140,7 @@ function cfct_options_home_column($key) {
 							</p>
 							<p>
 								<label for="cfct_home_column_'.$key.'_content">'.__('Show:', 'carrington').'</label>
-								<select name="cfct_home_column_'.$key.'_content" id="cfct_home_column_'.$key.'_content" class="home_column_select">
-									<option value="latest" '.$latest_selected.'>'.__('Latest Post Preview', 'carrington').'</option>
-									<option value="list" '.$list_selected.'>'.__('List of Recent Post Titles', 'carrington').'</option>
-								</select>
+								<select name="cfct_home_column_'.$key.'_content" id="cfct_home_column_'.$key.'_content" class="home_column_select">'.$content_options.'</select>
 							</p>
 							<p id="cfct_latest_limit_'.$key.'_option" class="hidden">
 								<label for="cfct_latest_limit_'.$key.'">'.__('Length of preview, in characters (250 recommended):', 'carrington').'</label>
@@ -147,6 +157,10 @@ function cfct_options_home_column($key) {
 	return $html;
 }
 
+/**
+ * Display misc options form
+ * 
+**/
 function cfct_options_misc() {
 	$options = array(
 		'yes' => __('Yes', 'carrington'),
@@ -154,17 +168,11 @@ function cfct_options_misc() {
 	);
 	$credit_options = '';
 	foreach ($options as $k => $v) {
-		if ($k == get_option('cfct_credit')) {
-			$credit_selected = 'selected="selected"';
-		}
-		else {
-			$credit_selected = '';
-		}
-		$credit_options .= "\n\t<option value='$k' $credit_selected>$v</option>";
+		$credit_options .= "\n\t".'<option value="'.$k.'" '.selected($k, get_option('cfct_credit'), false).'>'.$v.'</option>';
 	}
 	$html = '
 				<tr valign="top">
-					<th scope="row">'.sprintf(__('Misc.', 'carrington'), $key).'</td>
+					<th scope="row">'.__('Misc.', 'carrington').'</td>
 					<td>
 						<fieldset>
 							<p>
@@ -188,6 +196,12 @@ function cfct_options_misc() {
 	return $html;
 }
 
+/**
+ * Display a form for image header customization
+ * 
+ * @return string Markup displaying the form
+ * 
+**/
 function cfct_header_image_form() {
 	global $wpdb;
 
@@ -199,33 +213,28 @@ function cfct_header_image_form() {
 		ORDER BY post_date_gmt DESC
 		LIMIT 50
 	");
-	$upload_url = trailingslashit(get_bloginfo('wpurl')).'wp-admin/media-new.php';
-	$checked_attr = ' checked="checked"';
+	$upload_url = admin_url('media-new.php');
+	$header_image = get_option('cfct_header_image');
+	if (empty($header_image)) {
+		$header_image = 0;
+	}
+	
 	$output = '
 <ul style="width: '.((count($images) + 1) * 152).'px">
 	<li style="background: #666;">
 		<label for="cfct_header_image_0">
-			<input type="radio" name="cfct_header_image" value="0" id="cfct_header_image_0" '.$default_checked.'/>'.__('No Image', 'carrington-core').'
+			<input type="radio" name="cfct_header_image" value="0" id="cfct_header_image_0" '.checked($header_image, 0, false).'/>'.__('No Image', 'carrington-core').'
 		</label>
 	</li>
 	';
 	if (count($images)) {
-		$header_image = get_option('cfct_header_image');
-		if (empty($header_image)) {
-			$header_image = 0;
-			$default_checked = $checked_attr;
-		}
-		else {
-			$default_checked = '';
-		}
 		foreach ($images as $image) {
 			$id = 'cfct_header_image_'.$image->ID;
 			$thumbnail = wp_get_attachment_image_src($image->ID);
-			$header_image == $image->ID ? $checked = $checked_attr : $checked = '';
 			$output .= '
 	<li style="background-image: url('.$thumbnail[0].')">
 		<label for="'.$id.'">
-			<input type="radio" name="cfct_header_image" value="'.$image->ID.'" id="'.$id.'"'.$checked.' />'.wp_specialchars($image->post_title).'
+			<input type="radio" name="cfct_header_image" value="'.$image->ID.'" id="'.$id.'"'.checked($header_image, $image->ID, false).' />'.esc_html($image->post_title).'
 		</label>
 	</li>';
 		}
@@ -240,9 +249,14 @@ if (is_admin()) {
 //	wp_enqueue_style('jquery-colorpicker', get_bloginfo('template_directory').'/carrington-core/css/colorpicker.css');
 }
 
+/**
+ * Load in styles and javascript
+ * 
+**/
+// move to enqueue_style
 function cfct_admin_head() {
 // see enqueued style above, we'll activate that in the future
-	if ($_GET['page'] == 'carrington-settings') {
+	if (!empty($_GET['page']) && $_GET['page'] == 'carrington-settings') {
 		echo '
 <link rel="stylesheet" type="text/css" media="screen" href="'.get_bloginfo('template_directory').'/carrington-core/css/colorpicker.css" />
 		';
@@ -252,6 +266,10 @@ function cfct_admin_head() {
 }
 add_action('admin_head', 'cfct_admin_head');
 
+/**
+ * Admin CSS
+ * 
+**/
 function cfct_admin_css() {
 ?>
 <style type="text/css">
@@ -293,6 +311,10 @@ div.cfct_header_image_carousel li label input {
 <?php
 }
 
+/**
+ * Admin JS
+ * 
+**/
 function cfct_admin_js() {
 ?>
 <script type="text/javascript">

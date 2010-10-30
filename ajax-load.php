@@ -17,6 +17,12 @@
 
 if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 
+/**
+ * Add markup to a post for AJAX display of post content
+ * 
+ * @return The markup for a close link
+ * 
+**/
 function cfct_ajax_post_content($post_id) {
 	global $post, $posts, $wp_query, $wp;
 	$post = get_post($post_id);
@@ -43,6 +49,10 @@ function cfct_ajax_post_content($post_id) {
 	echo apply_filters('cfct_ajax_post_content_close', '<div class="close" id="post_close_'.$post_id.'"><a href="#">'.__('Close', 'carrington').'</a></div>', $post_id);
 }
 
+/**
+ * Function used in AJAX to display comments for a given post
+ * 
+**/
 function cfct_ajax_post_comments($post_id) {
 	global $post, $posts, $wp_query, $wp;
 	$wp_query->is_single = true;
@@ -57,6 +67,10 @@ function cfct_ajax_post_comments($post_id) {
 	comments_template();
 }
 
+/**
+ * Request handler for AJAX (see js/carrington.js)
+ * 
+**/
 function cfct_ajax_load() {
 	if (isset($_GET['cfct_action'])) {
 		switch ($_GET['cfct_action']) {
@@ -66,7 +80,7 @@ function cfct_ajax_load() {
 					$post_id = intval($_GET['id']);
 				}
 				else if (isset($_GET['url'])) {
-					$post_id = url_to_post_id($_GET['url']);
+					$post_id = url_to_postid($_GET['url']);
 				}
 				if ($post_id) {
 					call_user_func('cfct_ajax_'.$_GET['cfct_action'], $post_id);
@@ -76,6 +90,13 @@ function cfct_ajax_load() {
 	}
 }
 
+/**
+ * Add attribute to comments link for AJAX loading of comments
+ * 
+ * @param string $attrs String of preexisting attributes
+ * @return string $attrs Atrributes for the comments link
+ * 
+**/
 function cfct_ajax_comment_link($attrs) {
 	global $post;
 	if (strpos($attrs, 'rev="') !== false) {
@@ -91,25 +112,45 @@ function cfct_ajax_comment_link($attrs) {
 }
 add_filter('comments_popup_link_attributes', 'cfct_ajax_comment_link');
 
+/**
+ * Returns the number of posts to display on an archive page
+ * 
+ * @return int The number of posts to display on an archive page
+**/
 function cfct_posts_per_archive_page_setting() {
 	$count = get_option('cfct_posts_per_archive_page');
 	intval($count) > 0 ? $count = $count : $count = 25;
 	return $count;
 }
 
-// add a self-removing filter to handle category pages
+/**
+ * Add a self-removing filter to handle category pages
+ * 
+**/ 
 function cfct_add_posts_per_archive_page() {
 	add_filter('pre_get_posts', 'cfct_posts_per_archive_page');
 	add_filter('pre_get_posts', 'cfct_posts_per_category_page');
 }
 add_filter('parse_request', 'cfct_add_posts_per_archive_page');
 
+/**
+ * Set the posts per archive page number
+ * 
+ * @return array Filtered array with a set posts per archive page value
+ * 
+**/
 function cfct_posts_per_archive_page($query) {
 	remove_filter('pre_get_posts', 'cfct_posts_per_archive_page');
 	$query->set('posts_per_archive_page', cfct_posts_per_archive_page_setting());
 	return $query;
 }
 
+/**
+ * Set the posts per category page number
+ * 
+ * @return array Filtered array with a set posts per category page value
+ * 
+**/
 function cfct_posts_per_category_page($query) {
 	remove_filter('pre_get_posts', 'cfct_posts_per_category_page');
 	if (is_category()) {

@@ -17,6 +17,7 @@
 
 /**
  * Outputs hidden fields for comment form with unique IDs, based on post ID, making it safe for AJAX pull.
+ *
  */
 function cfct_comment_id_fields() {
 	global $id;
@@ -28,7 +29,8 @@ function cfct_comment_id_fields() {
 
 /**
  * Filter the comment reply link to add a unique unique ID, based on post ID, making it safe for AJAX pull.
- */
+ * 
+ **/
 function cfct_get_cancel_comment_reply_link($reply_link, $link, $text) {
 	global $post;
 	
@@ -145,7 +147,7 @@ if (!function_exists('sticky_class')) {
  * @param string|array $class One or more classes to add to the class list
  * @param int $comment_id An optional comment ID
  * @param int $post_id An optional post ID
- * @param bool $echo Whether comment_class should echo or return
+ * @param bool Whether comment_class should echo or return
  */
 if (!function_exists('comment_class')) {
 	function comment_class( $class = '', $comment_id = null, $post_id = null, $echo = true ) {

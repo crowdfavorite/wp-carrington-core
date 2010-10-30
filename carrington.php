@@ -17,8 +17,8 @@
 
 if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 
-//	ini_set('display_errors', '1');
-//	ini_set('error_reporting', E_ALL);
+	ini_set('display_errors', '1');
+	ini_set('error_reporting', E_ALL);
 
 define('CFCT_CORE_VERSION', '3.0.1');
 
@@ -42,6 +42,10 @@ include_once(CFCT_PATH.'carrington-core/compatibility.php');
 
 cfct_load_plugins();
 
+/**
+ * Loads AJAX request handler
+ * 
+**/ 
 function cfct_init() {
 	cfct_admin_request_handler();
 	if (cfct_get_option('cfct_ajax_load') == 'yes') {
@@ -50,11 +54,21 @@ function cfct_init() {
 }
 add_action('init', 'cfct_init');
 
+/**
+ * Loads footer code from Carrington Options
+ * 
+**/
 function cfct_wp_footer() {
 	echo get_option('cfct_wp_footer');
 }
 add_action('wp_footer', 'cfct_wp_footer');
 
+/**
+ * Loads about text from Carrington options for display in the sidebar
+ * 
+ * @return string Markup for the about text
+ * 
+**/
 function cfct_about_text() {
 	$about_text = get_option('cfct_about_text');
 	if (!empty($about_text)) {
@@ -73,8 +87,10 @@ function cfct_about_text() {
 			$about_text = get_the_excerpt().sprintf(__('<a class="more" href="%s">more &rarr;</a>', 'carrington'), get_permalink());
 		}
 		$wp_query->query_vars['page'] = $page;
-		$post = $orig_post;
-		setup_postdata($post);
+		if (!empty($orig_post)) {
+			$post = $orig_post;
+			setup_postdata($post);
+		}
 	}
 	if (function_exists('st_add_widget')) {
 		add_filter('the_excerpt', 'st_add_widget');
@@ -82,6 +98,12 @@ function cfct_about_text() {
 	return $about_text;
 }
 
+/**
+ * Gets custom colors to be used with a themes
+ * 
+ * @return string Custom color
+ * 
+**/
 function cfct_get_custom_colors($type = 'option') {
 	global $cfct_color_options;
 	$colors = array();
