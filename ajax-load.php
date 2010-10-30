@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of the Carrington Theme Framework for WordPress
+// This file is part of the Carrington Core Framework for WordPress
 // http://carringtontheme.com
 //
 // Copyright (c) 2008-2010 Crowd Favorite, Ltd. All rights reserved.
