@@ -519,6 +519,7 @@ function cfct_choose_single_template($files = array(), $filter = '*', $dir = '')
 	$exec_order = array(
 		'author',
 		'meta',
+		'format',
 		'category',
 		'taxonomy',
 		'type',
@@ -616,6 +617,29 @@ function cfct_choose_single_template_meta($dir, $files, $filter) {
 						return $file;
 					}
 				}
+			}
+		}
+	}
+	return false;
+}
+
+/**
+ * Chooses which template to display for the single context based on post format
+ * 
+ * @param string $dir Directory to use for selecting the template file
+ * @param array $files A list of files to search through to find the correct template
+ * @param string $filter Used in filtering the filename
+ * @return mixed Path to the file, false if no file exists
+ * 
+**/
+function cfct_choose_single_template_format($dir, $files, $filter) {
+	global $post;
+	$format_files = cfct_format_templates($dir, $files);	
+	if (count($format_files)) {
+		$post_format = get_post_format($post->ID);
+		foreach ($format_files as $file) {
+			if (cfct_format_filename_to_format($file) == $post_format) {
+				return cfct_filename_filter($file, $filter);
 			}
 		}
 	}
@@ -1071,6 +1095,22 @@ function cfct_tax_templates($dir, $files = null) {
 }
 
 /**
+ * Get a list of files that match the post format structure
+ * 
+ * @param string $dir Directory to search through for files if none are given
+ * @param array $files A list of files to search through
+ * @return array List of files that match the post format template structure
+ * 
+**/
+function cfct_format_templates($dir, $files = null) {
+	if (is_null($files)) {
+		$files = cfct_files(CFCT_PATH.$dir);
+	}
+	$matches = cfct_filter_files($files, 'format-');
+	return apply_filters('cfct_format_templates', $matches);
+}
+
+/**
  * Get a list of files that match the author template structure
  * 
  * @param string $dir Directory to search through for files if none are given
@@ -1268,6 +1308,17 @@ function cfct_role_filename_to_name($file) {
 }
 
 /**
+ * Get the post format from a filename
+ * 
+ * @param string $file Filename 
+ * @return string Post format
+ *  
+**/
+function cfct_format_filename_to_format($file) {
+	return str_replace(array('single-format-', 'format-', '.php'), '', $file);
+}
+
+/**
  * Get the taxonomy name from a filename
  * 
  * @param string $file Filename 
@@ -1344,6 +1395,17 @@ function cfct_leading_dir($path) {
 		$val['file'] = $path;
 	}
 	return $val;
+}
+
+/**
+ * Prevent code from breaking in WP versions < 3.1
+ * 
+ * 
+**/
+if (!function_exists('get_post_format')) {
+	function get_post_format($post_id) {
+		return false;
+	}
 }
 
 ?>

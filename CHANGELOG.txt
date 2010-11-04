@@ -6,6 +6,7 @@
 - Implemented checked and selected functions for options
 - E_NOTICE clean
 - Added PHP doc blocks
+- Support for post formats in the single context
 
 ## 3.0.1
 
