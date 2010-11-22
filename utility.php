@@ -323,6 +323,7 @@ function cfct_choose_general_template($dir) {
 		'category',
 		'taxonomy',
 		'tag',
+		'type',
 		'single',
 		'default'
 	);
@@ -424,6 +425,26 @@ function cfct_choose_general_template_tag($dir, $files) {
 		if (in_array('tag-'.$tag.'.php', $files)) {
 			$keys = array($tag);
 			return cfct_filename($dir, 'tag', $keys);
+		}
+ 	}
+	return false;
+}
+
+/**
+ * Gets the proper filename (path) to use for displaying a page based on custom post type
+ * 
+ * @param string $dir Directory to use for selecting the template file
+ * @param array $files A list of files to loop through
+ * @return mixed Path to the file, false if no file exists
+ * 
+**/
+function cfct_choose_general_template_type($dir, $files) {
+	$files = cfct_type_templates($dir, $files);
+	if (count($files)) {
+		$type = get_query_var('post_type');
+		$file = 'type-'.$type.'.php';
+		if (in_array($file, $files)) {
+			return $file;
 		}
  	}
 	return false;
