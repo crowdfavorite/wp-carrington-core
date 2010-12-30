@@ -124,14 +124,16 @@ function cfct_posts_per_archive_page_setting() {
 }
 
 /**
- * Add a self-removing filter to handle category pages
+ * Add a self-removing filter to handle category pages (except in admin)
  * 
 **/ 
 function cfct_add_posts_per_archive_page() {
 	add_filter('pre_get_posts', 'cfct_posts_per_archive_page');
 	add_filter('pre_get_posts', 'cfct_posts_per_category_page');
 }
-add_filter('parse_request', 'cfct_add_posts_per_archive_page');
+if (!is_admin()) {
+	add_filter('parse_request', 'cfct_add_posts_per_archive_page');
+}
 
 /**
  * Set the posts per archive page number
