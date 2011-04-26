@@ -36,6 +36,23 @@ function cfct_admin_menu() {
 add_action('admin_menu', 'cfct_admin_menu');
 
 /**
+ * Add a menu option under the admin admin bar
+ * 
+**/
+function cfct_admin_bar() {
+	global $wp_admin_bar;
+	if (current_user_can('manage_options')) {
+		$wp_admin_bar->add_menu(array(
+			'id' => 'theme-settings',
+			'title' => __('Theme Settings', 'carrington'),
+			'href' => admin_url('themes.php?page=cfct_settings_form'),
+			'parent' => 'appearance'
+		));
+	}
+}
+add_action('wp_before_admin_bar_render', 'cfct_admin_bar');
+
+/**
  * Request handler for admin POSTs and GETs
  * 
 **/
