@@ -1061,7 +1061,7 @@ function cfct_filter_files($files = array(), $prefix = '') {
 	$matches = array();
 	if (count($files)) {
 		foreach ($files as $file) {
-			if (strpos($file, $prefix) !== false) {
+			if (strpos($file, $prefix) === 0) {
 				$matches[] = $file;
 			}
 		}
