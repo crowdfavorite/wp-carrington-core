@@ -79,7 +79,7 @@ function cfct_update_settings() {
 	global $cfct_options;
 	foreach ($cfct_options as $option) {
 		if (isset($_POST[$option])) {
-			update_option($option, stripslashes($_POST[$option]));
+			update_option($option, stripslashes_deep($_POST[$option]));
 		}
 	}
 	do_action('cfct_update_settings');
