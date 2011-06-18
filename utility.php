@@ -288,10 +288,11 @@ function cfct_template($dir, $keys = array()) {
  * 
  * @param string $dir Directory the file will be in
  * @param string $file Filename
- * @param $data not used
+ * @param array $data pass in data to be extracted for use by the template
  * 
 **/
-function cfct_template_file($dir, $file, $data = null) {
+function cfct_template_file($dir, $file, $data = array()) {
+	extract($data);
 	$path = '';
 	if (!empty($file)) {
 		$file = basename($file, '.php');
