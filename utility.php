@@ -311,6 +311,20 @@ function cfct_template_file($dir, $file, $data = array()) {
 }
 
 /**
+ * Include a specific file based on directory and filename and return the output
+ * 
+ * @param string $dir Directory the file will be in
+ * @param string $file Filename
+ * @param array $data pass in data to be extracted for use by the template
+ * 
+**/
+function cfct_template_content($dir, $file, $data = array()) {
+	ob_start();
+	cfct_template_file($dir, $file, $data);
+	return ob_get_clean();
+}
+
+/**
  * Gets the proper filename (path) to use in displaying a template
  * 
  * @param string $dir Directory to use/search in
