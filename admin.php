@@ -106,7 +106,7 @@ function cfct_settings_form() {
 	print('
 		<table class="form-table">
 			<tbody>'
-			.cfct_options_form()
+			.cfct_options_fields()
 			.cfct_options_misc() // left for legacy reasons, for now
 			.'</tbody>
 		</table>
@@ -141,15 +141,15 @@ function cfct_options_fields() {
 	$options = array(
 		'about' => array(
 			'label' => '<label for="cfct_about_text">'.__('About text (shown in sidebar)', 'carrington').'</label>',
-			'field' => '<textarea name="cfct_about_text" id="cfct_about_text" cols="40" rows="8">'.esc_textarea(cfct_get_option('cfct_about_text')).'</textarea>'
+			'field' => '<textarea name="cfct_about_text" id="cfct_about_text" cols="60" rows="5">'.esc_textarea(cfct_get_option('cfct_about_text')).'</textarea>'
 		),
 		'header' => array(
 			'label' => '<label for="cfct_wp_head">'.__('Header code (analytics, etc.)', 'carrington').'</label>',
-			'field' => '<textarea name="cfct_wp_head" id="cfct_wp_head" cols="40" rows="5">'.esc_textarea(cfct_get_option('cfct_wp_head')).'</textarea>'
+			'field' => '<textarea name="cfct_wp_head" id="cfct_wp_head" cols="60" rows="3">'.esc_textarea(cfct_get_option('cfct_wp_head')).'</textarea>'
 		),
 		'footer' => array(
 			'label' => '<label for="cfct_wp_footer">'.__('Footer code (analytics, etc.)', 'carrington').'</label>',
-			'field' => '<textarea name="cfct_wp_footer" id="cfct_wp_footer" cols="40" rows="5">'.esc_textarea(cfct_get_option('cfct_wp_footer')).'</textarea>'
+			'field' => '<textarea name="cfct_wp_footer" id="cfct_wp_footer" cols="60" rows="3">'.esc_textarea(cfct_get_option('cfct_wp_footer')).'</textarea>'
 		),
 		'credit' => array(
 			'label' => '<label for="cfct_credit">'.__('Give credit in footer', 'carrington').'</label>',
