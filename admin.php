@@ -106,10 +106,8 @@ function cfct_settings_form() {
 	print('
 		<table class="form-table">
 			<tbody>'
-//			.cfct_options_home_column('1')
-//			.cfct_options_home_column('2')
-//			.cfct_options_home_column('3')
-			.cfct_options_misc()
+			.cfct_options_form()
+			.cfct_options_misc() // left for legacy reasons, for now
 			.'</tbody>
 		</table>
 	');
@@ -119,7 +117,7 @@ function cfct_settings_form() {
 		<p class="submit" style="padding-left: 230px;">
 			'.wp_nonce_field('cfct_admin_settings', '_wpnonce', true, false).'
 			<input type="hidden" name="cf_action" value="cfct_update_settings" />
-			<input type="submit" name="submit_button" class="button-primary" value="'.__('Save Changes', 'carrington').'" />
+			<input type="submit" name="submit_button" class="button-primary" value="'.__('Save', 'carrington').'" />
 		</p>
 	</form>
 </div>
@@ -128,89 +126,53 @@ function cfct_settings_form() {
 }
 
 /**
- * Display option for home columns
+ * Display options fields
  * 
 **/
-function cfct_options_home_column($key) {
-	$categories = get_categories('hide_empty=0');
-	$cat_options = '';
-	$home_col_cat = get_option('cfct_home_col_'.$key.'_cat');
-	foreach ($categories as $category) {
-		$cat_options .= "\n\t".'<option value="'.$category->term_id.'" '.selected($category->term_id, $home_col_cat, false ).'>'.$category->name.'</option>';
-	}
-	
-	$col_content_array = array('latest' => __('Latest Post Preview', 'carrington'), 'list' => __('List of Recent Post Titles', 'carrington'));
-	$show_options = '';	
-	$show_option = cfct_get_option('cfct_home_column_'.$key.'_content');
-	foreach ($col_content_array as $content_key => $content_value) {
-		$content_options .= "\n\t".'<option value="'.$content_key.'" '.selected($content_key, $show_option, false ).'>'.$content_value.'</option>';
-	}
-	
-	$html = '
-				<tr valign="top">
-					<th scope="row"><b>'.sprintf(__('Home Column %s', 'carrington'), $key).'</b></td>
-					<td>
-						<fieldset>
-							<p>
-								<label for="cfct_home_column_'.$key.'_cat">'.__('Category:', 'carrington').'</label>
-								<select name="cfct_home_column_'.$key.'_cat" id="cfct_home_column_'.$key.'_cat">'.$cat_options.'</select>
-							</p>
-							<p>
-								<label for="cfct_home_column_'.$key.'_content">'.__('Show:', 'carrington').'</label>
-								<select name="cfct_home_column_'.$key.'_content" id="cfct_home_column_'.$key.'_content" class="home_column_select">'.$content_options.'</select>
-							</p>
-							<p id="cfct_latest_limit_'.$key.'_option" class="hidden">
-								<label for="cfct_latest_limit_'.$key.'">'.__('Length of preview, in characters (250 recommended):', 'carrington').'</label>
-								<input type="text" name="cfct_latest_limit_'.$key.'" id="cfct_latest_limit_'.$key.'" value="'.cfct_get_option('cfct_latest_limit_'.$key).'" />
-							</p>
-							<p id="cfct_list_limit_'.$key.'_option" class="hidden">
-								<label for="cfct_list_limit_'.$key.'">'.__('Number of titles to show in list (5 recommended):', 'carrington').'</label>
-								<input type="text" name="cfct_list_limit_'.$key.'" id="cfct_list_limit_'.$key.'" value="'.cfct_get_option('cfct_list_limit_'.$key).'" />
-							</p>
-						</fieldset>
-					</td>
-				</tr>
-	';
-	return $html;
-}
-
-/**
- * Display misc options form
- * 
-**/
-function cfct_options_misc() {
-	$options = array(
+function cfct_options_fields() {
+	$yn_options = array(
 		'yes' => __('Yes', 'carrington'),
 		'no' => __('No', 'carrington')
 	);
 	$credit_options = '';
-	foreach ($options as $k => $v) {
-		$credit_options .= "\n\t".'<option value="'.$k.'" '.selected($k, get_option('cfct_credit'), false).'>'.$v.'</option>';
+	foreach ($yn_options as $k => $v) {
+		$credit_options .= "\n\t".'<option value="'.$k.'" '.selected($k, cfct_get_option('cfct_credit'), false).'>'.$v.'</option>';
 	}
-	$html = '
+	$options = array(
+		'about' => array(
+			'label' => '<label for="cfct_about_text">'.__('About text (shown in sidebar)', 'carrington').'</label>',
+			'field' => '<textarea name="cfct_about_text" id="cfct_about_text" cols="40" rows="8">'.esc_textarea(cfct_get_option('cfct_about_text')).'</textarea>'
+		),
+		'header' => array(
+			'label' => '<label for="cfct_wp_head">'.__('Header code (analytics, etc.)', 'carrington').'</label>',
+			'field' => '<textarea name="cfct_wp_head" id="cfct_wp_head" cols="40" rows="5">'.esc_textarea(cfct_get_option('cfct_wp_head')).'</textarea>'
+		),
+		'footer' => array(
+			'label' => '<label for="cfct_wp_footer">'.__('Footer code (analytics, etc.)', 'carrington').'</label>',
+			'field' => '<textarea name="cfct_wp_footer" id="cfct_wp_footer" cols="40" rows="5">'.esc_textarea(cfct_get_option('cfct_wp_footer')).'</textarea>'
+		),
+		'credit' => array(
+			'label' => '<label for="cfct_credit">'.__('Give credit in footer', 'carrington').'</label>',
+			'field' => '<select name="cfct_credit" id="cfct_credit">'.$credit_options.'</select>'
+		),
+	);
+	$options = apply_filters('cfct_options_misc_fields', $options); 
+	$html = '';
+	if (count($options)) {
+		foreach ($options as $option) {
+			$html .= '
 				<tr valign="top">
-					<th scope="row">'.__('Misc.', 'carrington').'</td>
-					<td>
-						<fieldset>
-							<p>
-								<label for="cfct_about_text">'.__('About text (shown in sidebar):', 'carrington').'</label>
-								<br />
-								<textarea name="cfct_about_text" id="cfct_about_text" cols="40" rows="8">'.htmlspecialchars(get_option('cfct_about_text')).'</textarea>
-							</p>
-							<p>
-								<label for="cfct_wp_footer">'.__('Footer code (for analytics, etc.):', 'carrington').'</label>
-								<br />
-								<textarea name="cfct_wp_footer" id="cfct_wp_footer" cols="40" rows="5">'.htmlspecialchars(get_option('cfct_wp_footer')).'</textarea>
-							</p>
-							<p>
-								<label for="cfct_credit">'.__('Give <a href="http://crowdfavorite.com">Crowd Favorite</a> credit in footer:', 'carrington').'</label>
-								<select name="cfct_credit" id="cfct_credit">'.$credit_options.'</select>
-							</p>
-						</fieldset>
-					</td>
+					<th scope="row">'.__($option['label'], 'carrington').'</td>
+					<td>'.$option['field'].'</td>
 				</tr>
-	';
+			';
+		}
+	}
 	return $html;
+}
+
+function cfct_options_misc() {
+	_deprecated_function(__FUNCTION__, '3.2', 'cfct_options_fields()' );
 }
 
 /**

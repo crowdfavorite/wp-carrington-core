@@ -55,6 +55,15 @@ function cfct_init() {
 add_action('init', 'cfct_init');
 
 /**
+ * Loads header code from Carrington Options
+ * 
+**/
+function cfct_wp_head() {
+	echo get_option('cfct_wp_head');
+}
+add_action('wp_head', 'cfct_wp_head');
+
+/**
  * Loads footer code from Carrington Options
  * 
 **/
