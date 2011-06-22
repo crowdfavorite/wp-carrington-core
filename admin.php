@@ -41,11 +41,11 @@ add_action('admin_menu', 'cfct_admin_menu');
 **/
 function cfct_admin_bar() {
 	global $wp_admin_bar;
-	if (current_user_can('manage_options')) {
+	if (current_user_can('edit_theme_options')) {
 		$wp_admin_bar->add_menu(array(
 			'id' => 'theme-settings',
-			'title' => __('Theme Settings', 'carrington'),
-			'href' => admin_url('themes.php?page=cfct_settings_form'),
+			'title' => apply_filters('cfct_admin_settings_menu', __('Theme Settings', 'carrington')),
+			'href' => admin_url('themes.php?page=carrington-settings'),
 			'parent' => 'appearance'
 		));
 	}
@@ -71,7 +71,7 @@ function cfct_admin_request_handler() {
  * 
 **/
 function cfct_update_settings() {
-	if (!current_user_can('manage_options')) {
+	if (!current_user_can('edit_theme_options')) {
 		return;
 	}
 	check_admin_referer('cfct_admin_settings');
