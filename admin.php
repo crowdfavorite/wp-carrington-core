@@ -138,7 +138,7 @@ function cfct_options_fields() {
 	foreach ($yn_options as $k => $v) {
 		$credit_options .= "\n\t".'<option value="'.$k.'" '.selected($k, cfct_get_option('cfct_credit'), false).'>'.$v.'</option>';
 	}
-	$options = array(
+	$fields = array(
 		'about' => array(
 			'label' => '<label for="cfct_about_text">'.__('About text (shown in sidebar)', 'carrington').'</label>',
 			'field' => '<textarea name="cfct_about_text" id="cfct_about_text" cols="60" rows="5">'.esc_textarea(cfct_get_option('cfct_about_text')).'</textarea>'
@@ -156,14 +156,14 @@ function cfct_options_fields() {
 			'field' => '<select name="cfct_credit" id="cfct_credit">'.$credit_options.'</select>'
 		),
 	);
-	$options = apply_filters('cfct_options_misc_fields', $options); 
+	$fields = apply_filters('cfct_options_fields', $fields); 
 	$html = '';
-	if (count($options)) {
-		foreach ($options as $option) {
+	if (count($fields)) {
+		foreach ($fields as $field) {
 			$html .= '
 				<tr valign="top">
-					<th scope="row">'.__($option['label'], 'carrington').'</td>
-					<td>'.$option['field'].'</td>
+					<th scope="row">'.__($field['label'], 'carrington').'</td>
+					<td>'.$field['field'].'</td>
 				</tr>
 			';
 		}
