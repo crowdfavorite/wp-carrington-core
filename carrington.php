@@ -31,6 +31,7 @@ load_theme_textdomain('carrington');
 
 $cfct_options[] = 'cfct_about_text';
 $cfct_options[] = 'cfct_credit';
+$cfct_options[] = 'cfct_wp_head';
 $cfct_options[] = 'cfct_wp_footer';
 
 include_once(CFCT_PATH.'carrington-core/admin.php');
