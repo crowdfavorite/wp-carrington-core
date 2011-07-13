@@ -53,7 +53,7 @@ function cfct_init() {
 		cfct_ajax_load();
 	}
 }
-add_action('init', 'cfct_init');
+//add_action('init', 'cfct_init');
 
 /**
  * Loads header code from Carrington Options

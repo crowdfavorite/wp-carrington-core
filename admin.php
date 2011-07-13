@@ -19,6 +19,10 @@ if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 
 // - add admin page for config settings
 
+function cfct_option_css() {
+	
+}
+
 /**
  * Add a menu option under the admin themes menu
  * 
@@ -53,36 +57,257 @@ function cfct_admin_bar() {
 add_action('wp_before_admin_bar_render', 'cfct_admin_bar');
 
 /**
- * Request handler for admin POSTs and GETs
- * 
+ * Deprecated in favor of WP Core Settings API
 **/
 function cfct_admin_request_handler() {
-	if (isset($_POST['cf_action'])) {
-		switch ($_POST['cf_action']) {
-			case 'cfct_update_settings':
-				call_user_func($_POST['cf_action']);
-				wp_redirect(admin_url('/themes.php?page=carrington-settings&updated=true'));
-		}
-	}
+	_deprecated_function(__FUNCTION__, '3.2');
 }
 
 /**
- * Update Carrington Framework settings
- * 
+ * Deprecated in favor of WP Core Settings API
 **/
 function cfct_update_settings() {
-	if (!current_user_can('edit_theme_options')) {
-		return;
-	}
-	check_admin_referer('cfct_admin_settings');
-	
-	global $cfct_options;
-	foreach ($cfct_options as $option) {
-		if (isset($_POST[$option])) {
-			update_option($option, stripslashes_deep($_POST[$option]));
+	_deprecated_function(__FUNCTION__, '3.2');
+}
+
+/**
+ * Prefix options names
+ */ 
+function cfct_option_name($name) {
+	$prefix = apply_filters('cfct_option_prefix', 'cfct');
+	return $prefix.'_'.$name;
+}
+
+//stripslashes_deep($_POST[$option]
+function cfct_register_options() {
+	global $cfct_hidden_fields;
+	$yn_options = array(
+		'yes' => __('Yes', 'carrington'),
+		'no' => __('No', 'carrington')
+	);
+	$cfct_options = array(
+		'cfct' => array(
+			'label' => '',
+			//This is a callback, use cfct_options_blank to display nothing
+			'description' => 'cfct_options_blank',
+			'fields' => array(
+				'about' => array(
+					'type' => 'textarea',
+					'label' => __('About text (shown in sidebar)', 'carrington'),
+					'cols' => 60,
+					'rows' => 5,
+					'name' => 'cfct_about_text',
+				),
+				'header' => array(
+					'type' => 'textarea',
+					'label' => __('Header code (analytics, etc.)', 'carrington'),
+					'name' => 'cfct_wp_header',
+				),
+				'footer' => array(
+					'type' => 'textarea',
+					'label' => __('Footer code (analytics, etc.)', 'carrington'),
+					'name' => 'cfct_wp_footer',
+				),
+				'copyright' => array(
+					'type' => 'text',
+					'label' => __('Copyright / legal footer text', 'carrington'),
+					'name' => 'cfct_copyright',
+					'help' => '<br /><span class="cfct-help">'.__('(add %Y to output the current year)', 'carrington').'</span>',
+					'class' => 'cfct-text-long',
+				),
+				'login' => array(
+					'type' => 'radio',
+					'label' => __('Show log in/out links in footer', 'carrington'),
+					'name' => 'cfct_login_link_enabled',
+					'options' => $yn_options,
+				),
+				'credit' => array(
+					'type' => 'radio',
+					'label' => __('Give credit in footer', 'carrington'),
+					'name' => 'cfct_credit',
+					'options' => $yn_options,
+				),
+				/**
+				'radio' => array(
+					'type' => 'radio',
+					'label' => __('Radio Buttons', 'carrington'),
+					'name' => 'radio_test',
+					'options' => array(
+						'value_one' => 'Radio Bar',
+						'value_two' => 'Radio Bar 2',
+					),
+				),
+				'checkbox' => array(
+					'type' => 'checkbox',
+					'label' => __('Checkboxes', 'carrington'),
+					'name' => 'checkbox_test',
+					'options' => array(
+						'value_one' => 'Check Bar',
+						'value_two' => 'Check Bar 2',
+					),
+				),
+				*/
+			),
+		),
+	);
+	$cfct_options = apply_filters('cfct_options', $cfct_options);
+
+	foreach ($cfct_options as $section_name => $section) {
+		if (empty($section['description'])) {
+			$section['description'] = 'cfct_options_blank';
+		}
+		add_settings_section($section_name, $section['label'], $section['description'], 'cfct');
+		if (!is_array($section['fields'])) {
+			error_log(print_r($section,1));
+			error_log('dead');
+		}
+		foreach ($section['fields'] as $key => $option) {
+		
+			// Support for serialized options
+			// First we want to match on the name of the option. (everything up to the first []). Only matchs on alpha-numeric, dashes and underscores
+			if (preg_match('/^([a-zA-Z0-9-_]+)\[[a-zA-Z0-9-_]+\]/', $option['name'], $basename_match)) {
+				$basename = $basename_match[1];
+				register_setting('cfct', $basename, 'cfct_sanitize_options');
+				$serialize_option = cfct_get_option($basename);
+
+				// match on any subsequent [] with at least one character to determine the value of the option. Only matchs on alpha-numeric, dashes and underscores.
+				if(preg_match_all('/\[([a-zA-Z0-9-_]+)\]/', $option['name'], $key_matches)) {
+					$value = $serialize_option;
+					foreach ($key_matches[1] as $key) {
+						if (is_array($value) && array_key_exists($key, $value)) {
+							$value = $value[$key];
+						}
+					}
+					$option['value'] = $value;
+				}
+			}
+			else {
+				register_setting('cfct', $option['name'], 'cfct_sanitize_options');
+				$option['value'] = cfct_get_option($option['name']);
+			}
+						
+			$option['label_for'] = $section_name.'_'.$key;
+			if ($option['type'] != 'hidden') {
+				add_settings_field($key, $option['label'], 'cfct_options_input', 'cfct', $section_name, $option);
+			}
+			else {
+				$cfct_hidden_fields[] = $option;
+			}
 		}
 	}
-	do_action('cfct_update_settings');
+
+}
+add_action('admin_init', 'cfct_register_options', 10);
+
+/**
+ * Display hidden fields registered in `cfct_register_options()`. WP Forces padding when using `do_settings_sections`, so it cannot be truly hidden using that method.
+ */ 
+function cfct_hidden_fields() {
+	global $cfct_hidden_fields;
+	if (is_array($cfct_hidden_fields)) {
+		foreach ($cfct_hidden_fields as $field_options) {
+			echo cfct_options_input($field_options);
+		}
+	}
+}
+add_action('cfct_settings_form', 'cfct_hidden_fields', 10);
+
+/**
+ * Empty callback, callback required by WP core function add_settings_section
+ */
+function cfct_options_blank() {
+	
+}
+
+/**
+ * Prints an input field based on arguments passed. 
+ * @param array $args Array of arguments used to generate the markup.
+ * 					  'type' => Type of input
+ * 					  'value' => Value of input
+ * 					  'name' => Name of input sent in post
+ * 					  'label_for' => ID attached to the input. Also used when generating the label in `add_settings_field`
+ * 					  'class' => CSS classes for the input
+ * 					  'cols' => Textarea specific
+ * 					  'rows' => Textarea specific
+ * 					  'options' => Radio button, Checkbox, Select specific. Used to define options
+ * 					  'help' => Help text for the option.
+ * @return void
+ */
+function cfct_options_input($args) {
+	$type = $args['type'];
+	$value = $args['value'];
+	$name = $args['name'];
+	$id = empty($args['label_for']) ? $args['name'] : $args['label_for'];
+	$class = empty($args['class']) ? '' : ' class="'.esc_attr($args['class']).'"';
+	
+	switch ($type) {
+		case 'text':
+			$html .= '<input id="'.esc_attr($id).'" name="'.esc_attr($name).'" type="text" value="'.esc_attr($value).'"'.$class.' />';
+			break;
+		case 'textarea':
+			empty($args['cols']) ? $cols = 60 : $cols = (int) $args['cols'];
+			empty($args['rows']) ? $rows = 5 : $rows = (int) $args['rows'];
+			$html .= '<textarea id="'.esc_attr($id).'" name="'.esc_attr($name).'" cols="'.$cols.'" rows="'.$rows.'"'.$class.'>'.esc_textarea($value).'</textarea>';
+			break;
+		case 'select':
+			$html .= '<select id="'.esc_attr($id).'" name="'.esc_attr($name).'"'.$class.'>';
+			$options = $args['options'];
+			foreach ($options as $opt_value => $opt_label) {
+				$html .= '<option value="'.esc_attr($opt_value).'"'.selected($opt_value, $value, false).'>'.esc_html($opt_label).'</option>';
+			}
+			$html .= '</select>';
+			break;
+		case 'radio':
+			$options = $args['options'];
+			if (is_array($options)) {
+				$html .= '<ul>';
+				foreach ($options as $opt_value => $opt_label) {
+					$html .= '
+					<li>
+						<label for="'.esc_attr($name.'-'.$opt_value).'">
+							<input type="radio" name="'.esc_attr($name).'" value="'.esc_attr($opt_value).'" id="'.esc_attr($name.'-'.$opt_value).'"'.checked($opt_value, $value, false).' />
+							'.esc_html($opt_label).'
+						</label>
+					</li>';
+				}
+				$html .= '</ul>';
+			}
+			break;
+		case 'checkbox':
+			$options = $args['options'];
+			if (is_array($options)) {
+				$html .= '<ul>';
+				foreach ($options as $opt_value => $opt_label) {
+					$html .= '
+					<li>
+						<label for="'.esc_attr($name.'-'.$opt_value).'">
+							<input type="checkbox" name="'.esc_attr($name.'['.$opt_value.']').'" value="'.esc_attr($opt_value).'" id="'.esc_attr($name.'-'.$opt_value).'"'.checked($opt_value, $value[$opt['id']], false).' />
+							'.esc_html($opt_label).'
+						</label>
+					</li>';
+				}
+				$html .= '</ul>';
+			}
+			break;
+		case 'hidden':
+			$html .= '<input id="'.esc_attr($id).'" type="hidden" name="'.esc_attr($name).'" value="'.esc_attr($value).'" class="'.esc_attr($class).'" />';
+			break;
+		default:
+			$html .= apply_filters('cfct_option_'.$type, $html, $args);
+			break;
+	}
+	if (!empty($args['help'])) {
+		$html .= $args['help'];
+	}
+	
+	print($html);
+}
+/**
+ * Sanitizes options
+ * @todo Better handling coming in WP 3.3, targetable option names. For now, add a filter to 'sanitize_option_{$option_name}' for additional processing
+ */ 
+function cfct_sanitize_options($new_value) {
+ 	return stripslashes_deep($new_value);
 }
 
 /**
@@ -90,33 +315,19 @@ function cfct_update_settings() {
  * 
 **/
 function cfct_settings_form() {
-	if (isset($_GET['updated'])) {
-		print('
-<div id="message" class="updated fade">
-	<p>'.__('Settings updated.', 'carrington').'</p>
-</div>
-		');
-	}
+	settings_errors();
 	print('
 <div class="wrap">
-	<h2>'.apply_filters('cfct_admin_settings_form_title', __('Carrington Theme Settings', 'carrington')).'</h2>
-	<form action="'.admin_url('/').'" method="post">
+	'.get_screen_icon().'<h2>'.apply_filters('cfct_admin_settings_form_title', __('Carrington Theme Settings', 'carrington')).'</h2>
+	<form action="'.admin_url('options.php').'" method="post">
 	');
 	do_action('cfct_settings_form_top');
-	print('
-		<table class="form-table">
-			<tbody>'
-			.cfct_options_fields()
-			.cfct_options_misc() // left for legacy reasons, for now
-			.'</tbody>
-		</table>
-	');
+	do_settings_sections('cfct');
 	do_action('cfct_settings_form_bottom');
 	do_action('cfct_settings_form');
+	settings_fields('cfct');
 	print('
 		<p class="submit" style="padding-left: 230px;">
-			'.wp_nonce_field('cfct_admin_settings', '_wpnonce', true, false).'
-			<input type="hidden" name="cf_action" value="cfct_update_settings" />
 			<input type="submit" name="submit_button" class="button-primary" value="'.__('Save', 'carrington').'" />
 		</p>
 	</form>
@@ -126,53 +337,10 @@ function cfct_settings_form() {
 }
 
 /**
- * Display options fields
- * 
+ * Deprecated in favor of WP Core Settings API
 **/
-function cfct_options_fields() {
-	$yn_options = array(
-		'yes' => __('Yes', 'carrington'),
-		'no' => __('No', 'carrington')
-	);
-	$credit_options = '';
-	foreach ($yn_options as $k => $v) {
-		$credit_options .= "\n\t".'<option value="'.$k.'" '.selected($k, cfct_get_option('cfct_credit'), false).'>'.$v.'</option>';
-	}
-	$fields = array(
-		'about' => array(
-			'label' => '<label for="cfct_about_text">'.__('About text (shown in sidebar)', 'carrington').'</label>',
-			'field' => '<textarea name="cfct_about_text" id="cfct_about_text" cols="60" rows="5">'.esc_textarea(cfct_get_option('cfct_about_text')).'</textarea>'
-		),
-		'header' => array(
-			'label' => '<label for="cfct_wp_head">'.__('Header code (analytics, etc.)', 'carrington').'</label>',
-			'field' => '<textarea name="cfct_wp_head" id="cfct_wp_head" cols="60" rows="3">'.esc_textarea(cfct_get_option('cfct_wp_head')).'</textarea>'
-		),
-		'footer' => array(
-			'label' => '<label for="cfct_wp_footer">'.__('Footer code (analytics, etc.)', 'carrington').'</label>',
-			'field' => '<textarea name="cfct_wp_footer" id="cfct_wp_footer" cols="60" rows="3">'.esc_textarea(cfct_get_option('cfct_wp_footer')).'</textarea>'
-		),
-		'credit' => array(
-			'label' => '<label for="cfct_credit">'.__('Give credit in footer', 'carrington').'</label>',
-			'field' => '<select name="cfct_credit" id="cfct_credit">'.$credit_options.'</select>'
-		),
-	);
-	$fields = apply_filters('cfct_options_fields', $fields); 
-	$html = '';
-	if (count($fields)) {
-		foreach ($fields as $field) {
-			$html .= '
-				<tr valign="top">
-					<th scope="row">'.__($field['label'], 'carrington').'</td>
-					<td>'.$field['field'].'</td>
-				</tr>
-			';
-		}
-	}
-	return $html;
-}
-
 function cfct_options_misc() {
-	_deprecated_function(__FUNCTION__, '3.2', 'cfct_options_fields()' );
+	_deprecated_function(__FUNCTION__, '3.2');
 }
 
 /**
@@ -286,6 +454,15 @@ div.cfct_header_image_carousel li label {
 div.cfct_header_image_carousel li label input {
 	margin: 0 5px;
 }
+
+.cfct-text-long {
+	width: 383px;
+}
+
+.cfct-help {
+	color: #666666;
+}
+
 </style>
 <?php
 }
