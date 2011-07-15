@@ -61,16 +61,14 @@ function cfct_banner($str = '') {
 **/
 function cfct_get_option($name) {
 	$defaults = array(
-		'cfct_login_link_enabled' => 'yes',
-		'cfct_copyright' => sprintf(__('Copyright &copy; %s &nbsp;&middot;&nbsp; %s', 'favepersonal'), date('Y'), get_bloginfo('name')),
-		'cfct_credit' => 'yes',
-		'cfct_lightbox' => 'yes',
-		'cfct_header_image' => 0,
+		cfct_option_name('login_link_enabled') => 'yes',
+		cfct_option_name('copyright') => sprintf(__('Copyright &copy; %s &nbsp;&middot;&nbsp; %s', 'favepersonal'), date('Y'), get_bloginfo('name')),
+		cfct_option_name('credit') => 'yes',
+		cfct_option_name('lightbox') => 'yes',
+		cfct_option_name('header_image') => 0,
 	);
 	$defaults = apply_filters('cfct_option_defaults', $defaults);
-	
-	$cfct_options = get_option('cfct_options');
-		
+			
 	$value = get_option($name);
 	if ($value === false && isset($defaults[$name])) {
 		$value = $defaults[$name];
@@ -1515,7 +1513,7 @@ if (!function_exists('get_post_format')) {
  * @return string Generated login/logout Markup
  */ 
 function cfct_get_loginout($redirect = '', $before = '', $after = '') {
-	if (cfct_get_option('cfct_login_link_enabled') != 'no') {
+	if (cfct_get_option(cfct_option_name('login_link_enabled')) != 'no') {
 		return $before . wp_loginout($redirect, false) . $after;
 	}
 } 

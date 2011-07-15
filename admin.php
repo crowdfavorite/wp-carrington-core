@@ -75,7 +75,13 @@ function cfct_update_settings() {
  */ 
 function cfct_option_name($name) {
 	$prefix = apply_filters('cfct_option_prefix', 'cfct', $name);
-	return $prefix.'_'.$name;
+	// If its already prefixed, we don't need to do it again.
+	if (strpos($prefix.'_', $name) !== 0) {
+		return $prefix.'_'.$name;
+	}
+	else {
+		return $name;
+	}
 }
 
 /**
@@ -161,11 +167,14 @@ function cfct_register_options() {
 		add_settings_section($section_name, $section['label'], $section['description'], 'cfct');
 
 		foreach ($section['fields'] as $key => $option) {
-		
+			
+			// Prefix the option name
+			$option['name'] = cfct_option_name($option['name']);
+
 			// Support for serialized options
 			// First we want to match on the name of the option. (everything up to the first []). Only matchs on alpha-numeric, dashes and underscores
 			if (preg_match('/^([a-zA-Z0-9-_]+)\[[a-zA-Z0-9-_]+\]/', $option['name'], $basename_match)) {
-				$basename = cfct_option_name($basename_match[1]);
+				$basename = $basename_match[1];
 				register_setting('cfct', $basename, 'cfct_sanitize_options');
 				$serialize_option = cfct_get_option($basename);
 
@@ -181,9 +190,8 @@ function cfct_register_options() {
 				}
 			}
 			else {
-				$name = cfct_option_name($option['name']);
-				register_setting('cfct', $name, 'cfct_sanitize_options');
-				$option['value'] = cfct_get_option($name);
+				register_setting('cfct', $option['name'], 'cfct_sanitize_options');
+				$option['value'] = cfct_get_option($option['name']);
 			}
 						
 			$option['label_for'] = $section_name.'_'.$key;
