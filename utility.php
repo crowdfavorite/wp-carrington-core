@@ -1517,7 +1517,7 @@ if (!function_exists('get_post_format')) {
  * @return string Generated login/logout Markup
  */ 
 function cfct_get_loginout($redirect = '', $before = '', $after = '') {
-	if (cfct_get_option(cfct_option_name('login_link_enabled')) != 'no') {
+	if (cfct_get_option('login_link_enabled') != 'no') {
 		return $before . wp_loginout($redirect, false) . $after;
 	}
 } 

@@ -71,10 +71,17 @@ function cfct_update_settings() {
 }
 
 /**
+ * Returns the options prefix
+ */ 
+function cfct_get_option_prefix() {
+	return apply_filters('cfct_option_prefix', 'cfct');
+}
+
+/**
  * Prefix options names
  */ 
 function cfct_option_name($name) {
-	$prefix = apply_filters('cfct_option_prefix', 'cfct', $name);
+	$prefix = cfct_get_option_prefix();
 	// If its already prefixed, we don't need to do it again.
 	if (strpos($prefix.'_', $name) !== 0) {
 		return $prefix.'_'.$name;
@@ -369,7 +376,7 @@ function cfct_header_image_form() {
 		LIMIT 50
 	");
 	$upload_url = admin_url('media-new.php');
-	$header_image = get_option('cfct_header_image');
+	$header_image = cfct_get_option('header_image');
 	if (empty($header_image)) {
 		$header_image = 0;
 	}
@@ -378,18 +385,18 @@ function cfct_header_image_form() {
 <ul style="width: '.((count($images) + 1) * 152).'px">
 	<li style="background: #666;">
 		<label for="cfct_header_image_0">
-			<input type="radio" name="cfct_header_image" value="0" id="cfct_header_image_0" '.checked($header_image, 0, false).'/>'.__('No Image', 'carrington-core').'
+			<input type="radio" name="'.esc_attr(cfct_option_name('header_image')).'" value="0" id="'.esc_attr(cfct_option_name('header_image_0')).'" '.checked($header_image, 0, false).'/>'.__('No Image', 'carrington-core').'
 		</label>
 	</li>
 	';
 	if (count($images)) {
 		foreach ($images as $image) {
-			$id = 'cfct_header_image_'.$image->ID;
+			$id = cfct_option_name('header_image_'.$image->ID);
 			$thumbnail = wp_get_attachment_image_src($image->ID);
 			$output .= '
 	<li style="background-image: url('.$thumbnail[0].')">
 		<label for="'.$id.'">
-			<input type="radio" name="cfct_header_image" value="'.$image->ID.'" id="'.$id.'"'.checked($header_image, $image->ID, false).' />'.esc_html($image->post_title).'
+			<input type="radio" name="'.esc_attr(cfct_option_name('header_image')).'" value="'.$image->ID.'" id="'.$id.'"'.checked($header_image, $image->ID, false).' />'.esc_html($image->post_title).'
 		</label>
 	</li>';
 		}
