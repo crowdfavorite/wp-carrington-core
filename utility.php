@@ -295,18 +295,22 @@ function cfct_template($dir, $keys = array()) {
  * 
 **/
 function cfct_template_file($dir, $file, $data = array()) {
-	extract($data);
 	$path = '';
 	if (!empty($file)) {
 		$file = basename($file, '.php');
-		// child theme support
-		$path = STYLESHEETPATH.'/'.$dir.'/'.$file.'.php';
-		if (!file_exists($path)) {
-			$path = CFCT_PATH.$dir.'/'.$file.'.php';
+		/* Check for file in the child theme first
+		var name is deliberately funny. Avoids inadvertantly
+		overwriting path variable with extract() below. */
+		$_cfct_filepath = STYLESHEETPATH.'/'.$dir.'/'.$file.'.php';
+		if (!file_exists($_cfct_filepath)) {
+			$_cfct_filepath = CFCT_PATH.$dir.'/'.$file.'.php';
 		}
 	}
-	if (file_exists($path)) {
-		include($path);
+	if (file_exists($_cfct_filepath)) {
+		/* Extract $data as late as possible, so we don't accidentally overwrite
+		local function vars */
+		extract($data);
+		include($_cfct_filepath);
 	}
 	else {
 		cfct_die('Error loading '.$file.' '.__LINE__);
