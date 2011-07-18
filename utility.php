@@ -1522,4 +1522,47 @@ function cfct_get_loginout($redirect = '', $before = '', $after = '') {
 	}
 } 
 
+/**
+ * Recursively merges two arrays down overwriting values if keys match.
+ * 
+ * @param array $array_1 Array to merge into
+ * @param array $array_2 Array in which values are merged from
+ * 
+ * @return array Merged array
+ */ 
+function cfct_array_merge_recursive($array_1, $array_2) {
+	$merged_array = $array_1;
+	foreach ($array_2 as $key => $value) {
+		if (is_array($merged_array[$key]) && isset($merged_array[$key]) && is_array($value)) {
+			$merged_array[$key] = cfct_array_merge_recursive($merged_array[$key], $value);
+		}
+		else {
+			$merged_array[$key] = $value;
+		}
+	}
+	
+	return $merged_array;
+}
+
+/**
+ * Recursively merges two arrays down overwriting values if keys match.
+ * 
+ * @param array $array_1 Array to merge into
+ * @param array $array_2 Array in which values are merged from
+ * 
+ * @return array Merged array
+ */ 
+function cfct_array_merge_recursive($array_1, $array_2) {
+	foreach ($array_2 as $key => $value) {
+		if (is_array($array_1[$key]) && isset($array_1[$key]) && is_array($value)) {
+			$array_1[$key] = cfct_array_merge_recursive($array_1[$key], $value);
+		}
+		else {
+			$array_1[$key] = $value;
+		}
+	}
+	
+	return $array_1;
+}
+
 ?>
