@@ -190,7 +190,7 @@ function cfct_register_options() {
 					$value = $serialize_option;
 					foreach ($key_matches[1] as $key_match) {
 						if (is_array($value) && array_key_exists($key_match, $value)) {
-							$value = $value[$key];
+							$value = $value[$key_match];
 						}
 					}
 					$option['value'] = $value;
