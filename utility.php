@@ -67,11 +67,23 @@ function cfct_get_option($name) {
 		cfct_option_name('lightbox') => 'yes',
 		cfct_option_name('header_image') => 0,
 	);
+	$name = cfct_option_name($name);
+	
 	$defaults = apply_filters('cfct_option_defaults', $defaults);
-			
 	$value = get_option($name);
-	if ($value === false && isset($defaults[$name])) {
-		$value = $defaults[$name];
+	
+	
+	// We want to check for defaults registered using the prefixed and unprefixed versions of the option name.
+	if ($value === false) {
+		$prefix = cfct_get_option_prefix();
+		$basname = substr($name, strlen($prefix) + 1, -1);
+		
+		if (isset($defaults[$name])) {
+			$value = $defaults[$name];
+		}
+		else if (isset($defaults[$basename])) {
+			$value = $defaults[$basename];
+		}
 	}
 	return $value;
 }
@@ -1541,6 +1553,27 @@ function cfct_array_merge_recursive($array_1, $array_2) {
 	}
 	
 	return $array_1;
+}
+
+/**
+ * Returns the options prefix
+ */ 
+function cfct_get_option_prefix() {
+	return apply_filters('cfct_option_prefix', 'cfct');
+}
+
+/**
+ * Prefix options names
+ */ 
+function cfct_option_name($name) {
+	$prefix = cfct_get_option_prefix();
+	// If its already prefixed, we don't need to do it again.
+	if (strpos($name, $prefix.'_') !== 0) {
+		return $prefix.'_'.$name;
+	}
+	else {
+		return $name;
+	}
 }
 
 ?>

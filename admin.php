@@ -71,27 +71,6 @@ function cfct_update_settings() {
 }
 
 /**
- * Returns the options prefix
- */ 
-function cfct_get_option_prefix() {
-	return apply_filters('cfct_option_prefix', 'cfct');
-}
-
-/**
- * Prefix options names
- */ 
-function cfct_option_name($name) {
-	$prefix = cfct_get_option_prefix();
-	// If its already prefixed, we don't need to do it again.
-	if (strpos($prefix.'_', $name) !== 0) {
-		return $prefix.'_'.$name;
-	}
-	else {
-		return $name;
-	}
-}
-
-/**
  * Register Theme Settings screen options using WP Settings API
  */ 
 function cfct_register_options() {
