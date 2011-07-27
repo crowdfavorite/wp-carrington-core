@@ -62,7 +62,7 @@ function cfct_banner($str = '') {
 function cfct_get_option($name) {
 	$defaults = array(
 		cfct_option_name('login_link_enabled') => 'yes',
-		cfct_option_name('copyright') => sprintf(__('Copyright &copy; %s &nbsp;&middot;&nbsp; %s', 'favepersonal'), date('Y'), get_bloginfo('name')),
+		cfct_option_name('copyright') => sprintf(__('Copyright &copy; %s &nbsp;&middot;&nbsp; %s', 'carrington'), date('Y'), get_bloginfo('name')),
 		cfct_option_name('credit') => 'yes',
 		cfct_option_name('lightbox') => 'yes',
 		cfct_option_name('header_image') => 0,

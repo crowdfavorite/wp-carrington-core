@@ -224,7 +224,7 @@ function cfct_options_blank() {
  * 					  'cols' => Textarea specific
  * 					  'rows' => Textarea specific
  * 					  'options' => Radio button, Checkbox, Select specific. Used to define options
- * 					  'help' => Help text for the option.
+ * 					  'help' => Help markup for the option.
  * @return void
  */
 function cfct_options_input($args) {
@@ -454,7 +454,8 @@ div.cfct_header_image_carousel li label input {
 }
 
 .cfct-help {
-	color: #666666;
+	color: #777777;
+	font-size: 11px;
 }
 
 </style>
