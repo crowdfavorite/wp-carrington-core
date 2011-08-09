@@ -81,7 +81,7 @@ function cfct_get_option($name) {
 		if (isset($defaults[$name])) {
 			$value = $defaults[$name];
 		}
-		else if (isset($defaults[$basename])) {
+		else if (isset($basename) && isset($defaults[$basename])) {
 			$value = $defaults[$basename];
 		}
 	}
@@ -1545,7 +1545,7 @@ function cfct_get_loginout($redirect = '', $before = '', $after = '') {
  */ 
 function cfct_array_merge_recursive($array_1, $array_2) {
 	foreach ($array_2 as $key => $value) {
-		if (is_array($array_1[$key]) && isset($array_1[$key]) && is_array($value)) {
+		if (isset($array_1[$key]) && is_array($array_1[$key]) && is_array($value)) {
 			$array_1[$key] = cfct_array_merge_recursive($array_1[$key], $value);
 		}
 		else {
