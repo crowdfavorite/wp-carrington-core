@@ -233,6 +233,7 @@ function cfct_options_input($args) {
 	$name = $args['name'];
 	$id = empty($args['label_for']) ? $args['name'] : $args['label_for'];
 	$class = empty($args['class']) ? '' : ' class="'.esc_attr($args['class']).'"';
+	$html = '';
 	
 	switch ($type) {
 		case 'text':
