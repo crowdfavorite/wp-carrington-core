@@ -761,6 +761,7 @@ function cfct_choose_single_template_role($dir, $files, $filter) {
 **/
 function cfct_choose_single_template_taxonomy($dir, $files, $filter) {
 	global $post;
+
 	$tax_files = cfct_tax_templates($dir, $files, $filter);
 	if (count($tax_files)) {
 		foreach ($tax_files as $file) {
@@ -1454,8 +1455,9 @@ function cfct_tax_filename_to_slug($file) {
 	$suffixes = apply_filters('cfct_tax_filename_suffixes', array('.php'));
 	$slug = str_replace(array_merge($prefixes, $suffixes), '', $file);
 	$slug = explode('-', $slug);
-	if (!empty($slug[1])) {
-		return $slug[1];
+	unset($slug[0]);
+	if (count($slug)) {
+		return implode('-', $slug);
 	}
 	return '';
 }
