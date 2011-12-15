@@ -85,6 +85,9 @@ function cfct_get_option($name) {
 			$value = $defaults[$basename];
 		}
 	}
+	if ($name == cfct_option_name('copyright')) {
+		$value = str_replace('%Y', date('Y'), $value);
+	}
 	return $value;
 }
 
