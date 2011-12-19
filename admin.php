@@ -28,8 +28,7 @@ function cfct_option_css() {
  * 
 **/
 function cfct_admin_menu() {
-	add_submenu_page(
-		'themes.php',
+	        add_theme_page(
 		apply_filters('cfct_admin_settings_title', __('Carrington Theme Settings', 'carrington')),
 		apply_filters('cfct_admin_settings_menu', __('Theme Settings', 'carrington')),
 		'edit_theme_options',
@@ -393,7 +392,7 @@ function cfct_header_image_form() {
  */
 function cfct_admin_enqueue() {
 	if (!empty($_GET['page']) && $_GET['page'] == 'carrington-settings') {
-		$core_url = get_bloginfo('template_directory').'/carrington-core/';
+		$core_url = get_template_directory_uri().'/carrington-core/';
 		
 		wp_enqueue_script(
 			'jquery-colorpicker',
