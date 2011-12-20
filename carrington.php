@@ -1,7 +1,7 @@
 <?php
 
 // This file is part of the Carrington Core Platform for WordPress
-// http://carringtontheme.com
+// http://crowdfavorite.com/wordpress/carrington-core/
 //
 // Copyright (c) 2008-2011 Crowd Favorite, Ltd. All rights reserved.
 // http://crowdfavorite.com
@@ -130,4 +130,3 @@ if (!defined('CFCT_DEBUG')) {
 	define('CFCT_DEBUG', false);
 }
 
-?>
