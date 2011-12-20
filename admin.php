@@ -164,7 +164,7 @@ function cfct_register_options() {
 				$serialize_option = cfct_get_option($basename);
 
 				// match on any subsequent [] with at least one character to determine the value of the option. Only matchs on alpha-numeric, dashes and underscores.
-				if(preg_match_all('/\[([a-zA-Z0-9-_]+)\]/', $option['name'], $key_matches)) {
+				if (preg_match_all('/\[([a-zA-Z0-9-_]+)\]/', $option['name'], $key_matches)) {
 					$value = $serialize_option;
 					foreach ($key_matches[1] as $key_match) {
 						if (is_array($value) && array_key_exists($key_match, $value)) {
