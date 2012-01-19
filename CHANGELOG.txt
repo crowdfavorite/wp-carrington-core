@@ -1,5 +1,7 @@
 # Carrington Core Changelog
 
+- Remove archive/category posts per page default override (can be re-enabled by theme).
+
 ## 3.3
 
 - Implemented support for feed-{post context} templates in content/ and excerpt/ dirs
