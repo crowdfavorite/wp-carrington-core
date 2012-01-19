@@ -134,9 +134,10 @@ function cfct_add_posts_per_archive_page() {
 	add_filter('pre_get_posts', 'cfct_posts_per_archive_page');
 	add_filter('pre_get_posts', 'cfct_posts_per_category_page');
 }
-if (!is_admin()) {
-	add_filter('parse_request', 'cfct_add_posts_per_archive_page');
-}
+// disabled by default - enable in your theme if you want this functionality
+// if (!is_admin()) {
+// 	add_filter('parse_request', 'cfct_add_posts_per_archive_page');
+// }
 
 /**
  * Set the posts per archive page number
