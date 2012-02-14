@@ -1,5 +1,11 @@
 # Carrington Core Changelog
 
+- Remove archive/category posts per page default override (can be re-enabled by theme).
+
+## 3.3.1
+
+- Update header code option name to match that used in wp_head filter
+
 ## 3.3
 
 - Implemented support for feed-{post context} templates in content/ and excerpt/ dirs

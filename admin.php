@@ -94,7 +94,7 @@ function cfct_register_options() {
 				'header' => array(
 					'type' => 'textarea',
 					'label' => __('Header code (analytics, etc.)', 'carrington'),
-					'name' => 'wp_header',
+					'name' => 'wp_head',
 				),
 				'footer' => array(
 					'type' => 'textarea',
