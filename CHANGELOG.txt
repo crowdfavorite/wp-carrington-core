@@ -1,5 +1,7 @@
 # Carrington Core Changelog
 
+- Remove Thickbox code (if your theme needs this, please include it in the theme).
+- Remove color picker code (if your theme needs this, please include it in the theme).
 - Remove archive/category posts per page default override (can be re-enabled by theme).
 
 ## 3.3.1
