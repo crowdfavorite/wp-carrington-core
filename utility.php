@@ -311,7 +311,7 @@ function cfct_template($dir, $keys = array()) {
 **/
 function cfct_template_file($dir, $file, $data = array()) {
 	// bring in expected globals so that templates don't need to bring them in
-	global $id, $post, $wp_query, $wpdb, $blog_id, $pagenow, $current_user, $p, $post_parent, $pagename, $page_id, $posts;
+	global $posts, $post, $wp_did_header, $wp_did_template_redirect, $wp_query, $wp_rewrite, $wpdb, $wp_version, $wp, $id, $comment, $user_ID;
 	$path = '';
 	if (!empty($file)) {
 		$file = basename($file, '.php');
