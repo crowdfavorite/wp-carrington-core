@@ -1,6 +1,7 @@
 # Carrington Core Changelog
 
 - Remove archive/category posts per page default override (can be re-enabled by theme).
+- Bring in expected globals in templates. Can be disabled via filter (`cfct_template_file_globals`) if desired.
 
 ## 3.3.1
 
