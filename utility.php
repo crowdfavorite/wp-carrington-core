@@ -310,6 +310,8 @@ function cfct_template($dir, $keys = array()) {
  * 
 **/
 function cfct_template_file($dir, $file, $data = array()) {
+	// bring in expected globals so that templates don't need to bring them in
+	global $id, $post, $wp_query, $wpdb, $blog_id, $pagenow, $current_user, $p, $post_parent, $pagename, $page_id, $posts;
 	$path = '';
 	if (!empty($file)) {
 		$file = basename($file, '.php');
