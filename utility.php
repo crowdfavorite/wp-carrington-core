@@ -310,6 +310,14 @@ function cfct_template($dir, $keys = array()) {
  * 
 **/
 function cfct_template_file($dir, $file, $data = array()) {
+	// bring in expected globals so that templates don't need to bring them in
+	// added in version 3.4 - can be overridden via filter
+	$global_vars = apply_filters('cfct_template_file_globals', array('posts', 'post', 'wp_did_header', 'wp_did_template_redirect', 'wp_query', 'wp_rewrite', 'wpdb', 'wp_version', 'wp', 'id', 'comment', 'user_ID'));
+	if (is_array($global_vars)) {
+		foreach ($global_vars as $global_var) {
+			global $$global_var;
+		}
+	}
 	$path = '';
 	if (!empty($file)) {
 		$file = basename($file, '.php');
