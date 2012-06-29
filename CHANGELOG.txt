@@ -1,6 +1,11 @@
 # Carrington Core Changelog
 
+## 3.4
+
+- Remove Thickbox code (if your theme needs this, please include it in the theme).
+- Remove color picker code (if your theme needs this, please include it in the theme).
 - Remove archive/category posts per page default override (can be re-enabled by theme).
+- Bring in expected globals in templates. Can be disabled via filter (`cfct_template_file_globals`) if desired.
 
 ## 3.3.1
 

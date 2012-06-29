@@ -3,7 +3,7 @@
 // This file is part of the Carrington Core Platform for WordPress
 // http://crowdfavorite.com/wordpress/carrington-core/
 //
-// Copyright (c) 2008-2011 Crowd Favorite, Ltd. All rights reserved.
+// Copyright (c) 2008-2012 Crowd Favorite, Ltd. All rights reserved.
 // http://crowdfavorite.com
 //
 // Released under the GPL license
@@ -20,7 +20,7 @@ if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 // 	ini_set('display_errors', '1');
 // 	ini_set('error_reporting', E_ALL);
 
-define('CFCT_CORE_VERSION', '3.3.1');
+define('CFCT_CORE_VERSION', '3.4');
 
 // Path to Carrington Core parent directory (usually the theme).
 if (!defined('CFCT_PATH')) {
