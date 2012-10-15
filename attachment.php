@@ -63,11 +63,27 @@ function cfct_post_gallery($unused, $attr) {
 		'icontag'    => 'dt',
 		'captiontag' => 'dd',
 		'columns'    => 3,
-		'size'       => 'thumbnail'
+		'size'       => 'thumbnail',
+		'include'    => '',
+		'exclude'    => '',
 	), $attr));
 
 	$id = intval($id);
-	$attachments = get_children( array('post_parent' => $id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
+	$children_args = array(
+		'post_parent' => $id,
+		'post_status' => 'inherit',
+		'post_type' => 'attachment',
+		'post_mime_type' => 'image',
+		'order' => $order,
+		'orderby' => $orderby,
+	);
+	if (!empty($include)) {
+		$children_args['include'] = $include;
+	}
+	else if (!empty($exclude)) {
+		$children_args['exclude'] = $exclude;
+	}
+	$attachments = get_children($children_args);
 
 	if ( empty($attachments) )
 		return '';
