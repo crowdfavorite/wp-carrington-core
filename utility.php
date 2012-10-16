@@ -329,6 +329,9 @@ function cfct_template_file($dir, $file, $data = array()) {
 			$_cfct_filepath = CFCT_PATH.$dir.'/'.$file.'.php';
 		}
 	}
+	
+	$_cfct_filepath = apply_filters('cfct_template_include', $_cfct_filepath, $dir, $file, $data);
+	
 	if (file_exists($_cfct_filepath)) {
 		/* Extract $data as late as possible, so we don't accidentally overwrite
 		local function vars */
