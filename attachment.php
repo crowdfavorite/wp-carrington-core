@@ -38,7 +38,7 @@ function cfct_get_adjacent_image_link($prev = true) {
 }
 
 /**
- * Create a gallery from post attachements. Overrides WordPress default shortcode post gallery code.
+ * Create a gallery from post attachments. Overrides WordPress default shortcode post gallery code.
  * 
  * @param $unused not used, required by filter hook
  * @param array $attr List of attributes that are populated by post gallery shortcode
@@ -63,11 +63,27 @@ function cfct_post_gallery($unused, $attr) {
 		'icontag'    => 'dt',
 		'captiontag' => 'dd',
 		'columns'    => 3,
-		'size'       => 'thumbnail'
+		'size'       => 'thumbnail',
+		'include'    => '',
+		'exclude'    => '',
 	), $attr));
 
 	$id = intval($id);
-	$attachments = get_children( array('post_parent' => $id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $order, 'orderby' => $orderby) );
+	$children_args = array(
+		'post_parent' => $id,
+		'post_status' => 'inherit',
+		'post_type' => 'attachment',
+		'post_mime_type' => 'image',
+		'order' => $order,
+		'orderby' => $orderby,
+	);
+	if (!empty($include)) {
+		$children_args['include'] = $include;
+	}
+	else if (!empty($exclude)) {
+		$children_args['exclude'] = $exclude;
+	}
+	$attachments = get_children($children_args);
 
 	if ( empty($attachments) )
 		return '';
