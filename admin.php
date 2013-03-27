@@ -278,7 +278,7 @@ function cfct_options_input($args) {
 					$html .= '
 					<li>
 						<label for="'.esc_attr($name.'-'.$opt_value).'">
-							<input type="checkbox" name="'.esc_attr($name.'['.$opt_value.']').'" value="'.esc_attr($opt_value).'" id="'.esc_attr($name.'-'.$opt_value).'"'.checked($opt_value, $value[$opt['id']], false).' />
+							<input type="checkbox" name="'.esc_attr($name.'['.$opt_value.']').'" value="'.esc_attr($opt_value).'" id="'.esc_attr($name.'-'.$opt_value).'"'.checked($opt_value, $value[$opt_value], false).' />
 							'.esc_html($opt_label).'
 						</label>
 					</li>';
