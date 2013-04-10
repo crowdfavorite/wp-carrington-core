@@ -1383,7 +1383,7 @@ function cfct_cat_id_to_slug($id) {
  * 
 **/
 function cfct_username_to_id($username) {
-	$user = get_user_by('ID', $username);
+	$user = get_user_by('login', $username);
 	return (isset($user->ID) ? $user->ID : 0);
 }
 
