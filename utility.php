@@ -132,8 +132,9 @@ function cfct_default_file($dir) {
 **/
 
 function cfct_context() {
-	$context = 'home';
-	if (is_home()) {
+	$context = 'archive';
+
+	if (is_home() && !is_paged()) {
 		$context = 'home';
 	}
 	else if (is_page()) {
