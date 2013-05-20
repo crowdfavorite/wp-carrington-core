@@ -145,14 +145,20 @@ function cfct_register_options() {
 	);
 	$cfct_options = apply_filters('cfct_options', $cfct_options);
 
+	$assets_added = false;
 	foreach ($cfct_options as $section_name => $section) {
 		if (empty($section['description'])) {
 			$section['description'] = 'cfct_options_blank';
 		}
 		add_settings_section($section_name, $section['label'], $section['description'], 'cfct');
-
+		
 		foreach ($section['fields'] as $key => $option) {
-			
+
+			if ($option['type'] == 'image_select' && !$assets_added) {
+				add_action('load-appearance_page_carrington-settings', 'cfct_image_select_assets');
+				$assets_added = true;
+			}
+
 			// Prefix the option name
 			$option['name'] = cfct_option_name($option['name']);
 
@@ -289,6 +295,34 @@ function cfct_options_input($args) {
 		case 'hidden':
 			$html .= '<input id="'.esc_attr($id).'" type="hidden" name="'.esc_attr($name).'" value="'.esc_attr($value).'" class="'.esc_attr($class).'" />';
 			break;
+		case 'image_select':
+			// Default is multiple
+			$select_type = isset($args['select_type']) ? $args['select_type'] : 'multiple';
+			$button_text = __('Add New Image', 'carrington');
+			$html .= '<ul class="'.esc_attr('cfct-images js-cfct-images-'.$select_type.' js-cfct-images-'.$name).'">';
+			switch ($select_type) {
+				case 'single':
+					if (!empty($value)) {
+						$button_text = __('Update Image', 'carrington');
+						$html .= cfct_image_markup($value, 'single', $name);
+					}
+					break;
+				case 'multiple':
+				default:
+					if (!empty($value)) {
+						foreach ($value as $image_id) {
+							$html .= cfct_image_markup($image_id, 'multiple', $name);
+						}
+					}
+					break;
+			}
+			$html .= '</ul>
+		
+			<div>
+				<div class="clear"></div>
+		  		<input type="button" class="'.esc_attr('button js-cfct-select-image-'.$select_type).'" data-name="'.esc_attr($name).'" value="'.esc_attr($button_text).'" />
+		 	</div>';
+			break;
 		default:
 			$html .= apply_filters('cfct_option_'.$type, $html, $args);
 			break;
@@ -299,6 +333,53 @@ function cfct_options_input($args) {
 	
 	print($html);
 }
+
+// AJAX Request handler, returns image markup
+function cfct_add_image_ajax() {
+	if ($_POST['attachment_id']) {
+		$attachment_id = $_POST['attachment_id'];
+		$type = $_POST['type'];
+		$name = $_POST['name'];
+		echo cfct_image_markup($attachment_id, $type, $name);
+	}
+	die();
+}
+add_action('wp_ajax_cfct_add_image_ajax', 'cfct_add_image_ajax');
+
+// Image output in theme options
+function cfct_image_markup($image_id, $type, $key) {
+	$html = '';
+	$image = wp_get_attachment_image($image_id, 'thumbnail');
+	if ($image) {
+		if ($type == 'single') {
+			$html = '
+		<li>
+			<input type="hidden" name="'.esc_attr($key).'" value="'.esc_attr($image_id).'" />'
+			.$image.
+			'<a class="js-cfct-delete-image check" href="#" title="'.__('Deselect', 'directv-dealer').'">&#10006;</a>
+		</li>';
+		}
+		else if ($type == 'multiple') {
+			$html = '
+		<li>
+			<input type="hidden" name="'.esc_attr($key.'[]').'" value="'.esc_attr($image_id).'" />'
+			.$image.
+			'<a class="js-cfct-delete-image check" href="#" title="'.__('Deselect', 'directv-dealer').'">&#10006;</a>
+		</li>';
+		}
+	}
+	return $html;
+}
+
+function cfct_image_select_assets() {
+	$base_url = get_template_directory_uri().'/carrington-core/assets/';
+	wp_enqueue_media();
+	wp_enqueue_script('jquery-ui-sortable');
+	wp_enqueue_script('cfct-js', $base_url.'script.js', array('jquery', 'jquery-ui-sortable'), CFCT_URL_VERSION);
+
+	wp_enqueue_style('cfct-css', $base_url.'style.css', array(), CFCT_URL_VERSION, 'screen');
+}
+
 /**
  * Sanitizes options
  * @todo Better handling coming in WP 3.3, targetable option names. For now, add a filter to 'sanitize_option_{$option_name}' for additional processing
