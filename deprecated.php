@@ -38,7 +38,3 @@ function cfct_options_misc() {
 	_deprecated_function(__FUNCTION__, '3.2');
 }
 
-
-
-
- ?>
