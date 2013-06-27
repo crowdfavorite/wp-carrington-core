@@ -17,30 +17,28 @@
 
 if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
 
-// 	ini_set('display_errors', '1');
-// 	ini_set('error_reporting', E_ALL);
-
-define('CFCT_CORE_VERSION', '3.4');
-
-// Path to Carrington Core parent directory (usually the theme).
-if (!defined('CFCT_PATH')) {
-	define('CFCT_PATH', trailingslashit(TEMPLATEPATH));
+/**
+ * Deprecated in favor of WP Core Settings API
+**/
+function cfct_admin_request_handler() {
+	_deprecated_function(__FUNCTION__, '3.2');
 }
-
-load_theme_textdomain('carrington');
-
-include_once(CFCT_PATH.'carrington-core/templates.php');
-include_once(CFCT_PATH.'carrington-core/utility.php');
-include_once(CFCT_PATH.'carrington-core/deprecated.php');
-
-cfct_load_plugins();
 
 /**
- * Loads AJAX request handler
- * 
-**/ 
-function cfct_init() {
-	if (cfct_get_option('ajax_load') == 'yes') {
-		cfct_ajax_load();
-	}
+ * Deprecated in favor of WP Core Settings API
+**/
+function cfct_update_settings() {
+	_deprecated_function(__FUNCTION__, '3.2');
 }
+
+/**
+ * Deprecated in favor of WP Core Settings API
+**/
+function cfct_options_misc() {
+	_deprecated_function(__FUNCTION__, '3.2');
+}
+
+
+
+
+ ?>

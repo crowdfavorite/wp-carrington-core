@@ -53,46 +53,6 @@ function cfct_banner($str = '') {
 }
 
 /**
- * Get a Carrington Framework option, load the default otherwise
- *
- * @param string $name Name of the option to retrieve
- * @return mixed Value of the option
- * 
-**/
-function cfct_get_option($name) {
-	$defaults = array(
-		cfct_option_name('login_link_enabled') => 'yes',
-		cfct_option_name('copyright') => sprintf(__('Copyright &copy; %s &nbsp;&middot;&nbsp; %s', 'carrington'), date('Y'), get_bloginfo('name')),
-		cfct_option_name('credit') => 'yes',
-		cfct_option_name('lightbox') => 'yes',
-		cfct_option_name('header_image') => 0,
-	);
-	$name = cfct_option_name($name);
-	
-	$defaults = apply_filters('cfct_option_defaults', $defaults);
-	$value = get_option($name);
-	
-	
-	// We want to check for defaults registered using the prefixed and unprefixed versions of the option name.
-	if ($value === false) {
-		$prefix = cfct_get_option_prefix();
-		$basname = substr($name, strlen($prefix) + 1, -1);
-		
-		if (isset($defaults[$name])) {
-			$value = $defaults[$name];
-		}
-		else if (isset($basename) && isset($defaults[$basename])) {
-			$value = $defaults[$basename];
-		}
-	}
-	if ($name == cfct_option_name('copyright')) {
-		$value = str_replace('%Y', date('Y'), $value);
-	}
-
-	return apply_filters('cfct_get_option_value', $value, $name);
-}
-
-/**
  * Load theme plugins
  * 
 **/
@@ -1526,21 +1486,6 @@ function cfct_post_id_to_slug($id) {
 }
 
 /**
- * Custom formatting for strings
- * 
- * @param string $str A string to be formatted
- * @return string Formatted string
- *  
-**/
-function cfct_basic_content_formatting($str) {
-	$str = wptexturize($str);
-	$str = convert_smilies($str);
-	$str = convert_chars($str);
-	$str = wpautop($str);
-	return $str;
-}
-
-/**
  * Get an array with the path to the director of the file as well as the filename
  * 
  * @param string $path A path to a file
@@ -1573,60 +1518,3 @@ if (!function_exists('get_post_format')) {
 		return false;
 	}
 }
-
-/**
- * Generate markup for login/logout links
- * 
- * @param string $redirect URL to redirect after the login or logout
- * @param string $before Markup to display before
- * @param string $after Markup to display after
- * @return string Generated login/logout Markup
- */ 
-function cfct_get_loginout($redirect = '', $before = '', $after = '') {
-	if (cfct_get_option('login_link_enabled') != 'no') {
-		return $before . wp_loginout($redirect, false) . $after;
-	}
-} 
-
-/**
- * Recursively merges two arrays down overwriting values if keys match.
- * 
- * @param array $array_1 Array to merge into
- * @param array $array_2 Array in which values are merged from
- * 
- * @return array Merged array
- */ 
-function cfct_array_merge_recursive($array_1, $array_2) {
-	foreach ($array_2 as $key => $value) {
-		if (isset($array_1[$key]) && is_array($array_1[$key]) && is_array($value)) {
-			$array_1[$key] = cfct_array_merge_recursive($array_1[$key], $value);
-		}
-		else {
-			$array_1[$key] = $value;
-		}
-	}
-	
-	return $array_1;
-}
-
-/**
- * Returns the options prefix
- */ 
-function cfct_get_option_prefix() {
-	return apply_filters('cfct_option_prefix', 'cfct');
-}
-
-/**
- * Prefix options names
- */ 
-function cfct_option_name($name) {
-	$prefix = cfct_get_option_prefix();
-	// If its already prefixed, we don't need to do it again.
-	if (strpos($name, $prefix.'_') !== 0) {
-		return $prefix.'_'.$name;
-	}
-	else {
-		return $name;
-	}
-}
-

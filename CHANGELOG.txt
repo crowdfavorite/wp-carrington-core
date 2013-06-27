@@ -4,6 +4,8 @@
 
 - Add support for "sticky" posts (sticky.php, single-sticky.php, feed-sticky.php) in the post context
 - Set default context to archive instead of home
+- Moved all non template selection methods to (Carrington Extras)[https://github.com/crowdfavorite/wp-carrington-core-extras]
+- Moved deprecated functions into deprecated.php
 
 ## 3.4
 

@@ -2,7 +2,7 @@
 
 ### Overview
 
-This directory contains Carrington's custom features and functionality.
+Carrington Core provides a file naming and hierarchy convention for loading specific files based on context.
 
 
 ### Supported Override Filenames
