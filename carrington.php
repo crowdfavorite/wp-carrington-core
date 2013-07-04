@@ -35,12 +35,5 @@ include_once(CFCT_PATH.'carrington-core/deprecated.php');
 
 cfct_load_plugins();
 
-/**
- * Loads AJAX request handler
- * 
-**/ 
 function cfct_init() {
-	if (cfct_get_option('ajax_load') == 'yes') {
-		cfct_ajax_load();
-	}
 }
