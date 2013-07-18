@@ -489,6 +489,11 @@ function cfct_choose_general_template_type($dir, $files) {
 	$files = cfct_type_templates($dir, $files);
 	if (count($files)) {
 		$type = get_query_var('post_type');
+		// post type not always set in query var - let's make a guess
+		if (empty($type)) {
+			$post = get_post(); // requires WP 3.6
+			$type = $post->post_type;
+		}
 		$file = 'type-'.$type.'.php';
 		if (in_array($file, $files)) {
 			return $file;
