@@ -704,12 +704,10 @@ function cfct_choose_single_template_meta($dir, $files, $filter) {
 				}
 			}
 // check key matches only
-			if (!$filename) {
-				foreach ($meta as $k => $v) {
-					$file = cfct_filename_filter('meta-'.$k.'.php', $filter);
-					if (in_array($file, $meta_files)) {
-						return $file;
-					}
+			foreach ($meta as $k => $v) {
+				$file = cfct_filename_filter('meta-'.$k.'.php', $filter);
+				if (in_array($file, $meta_files)) {
+					return $file;
 				}
 			}
 		}
