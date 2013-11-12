@@ -2,10 +2,11 @@
 
 ## 3.7
 
-- Add support for "sticky" posts (sticky.php, single-sticky.php, feed-sticky.php) in the post context
-- Set default context to archive instead of home
-- Properly load type-* templates in General context
-- Requires WordPress 3.6 (for get_post() returning global $post)
+- (feature) Add support for "sticky" posts (sticky.php, single-sticky.php, feed-sticky.php) in the post context
+- (change) Set default context to archive instead of home
+- (change) Requires WordPress 3.6 (for get_post() returning global $post)
+- (fix) Properly load type-* templates in General context
+- (fix) Output %Y as expected in admin settings for copyright field
 
 ## 3.4
 
