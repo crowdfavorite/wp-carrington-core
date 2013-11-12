@@ -59,7 +59,7 @@ function cfct_banner($str = '') {
  * @return mixed Value of the option
  * 
 **/
-function cfct_get_option($name) {
+function cfct_get_option($name, $admin = true) {
 	$defaults = array(
 		cfct_option_name('login_link_enabled') => 'yes',
 		cfct_option_name('copyright') => sprintf(__('Copyright &copy; %s &nbsp;&middot;&nbsp; %s', 'carrington'), date('Y'), get_bloginfo('name')),
@@ -85,7 +85,7 @@ function cfct_get_option($name) {
 			$value = $defaults[$basename];
 		}
 	}
-	if ($name == cfct_option_name('copyright')) {
+	if (!$admin && $name == cfct_option_name('copyright')) {
 		$value = str_replace('%Y', date('Y'), $value);
 	}
 
