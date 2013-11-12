@@ -28,7 +28,7 @@ function cfct_option_css() {
  * 
 **/
 function cfct_admin_menu() {
-	        add_theme_page(
+	add_theme_page(
 		apply_filters('cfct_admin_settings_title', __('Carrington Theme Settings', 'carrington')),
 		apply_filters('cfct_admin_settings_menu', __('Theme Settings', 'carrington')),
 		'edit_theme_options',

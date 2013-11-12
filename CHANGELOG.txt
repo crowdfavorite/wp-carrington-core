@@ -1,6 +1,6 @@
 # Carrington Core Changelog
 
-## Dev
+## 3.7
 
 - Add support for "sticky" posts (sticky.php, single-sticky.php, feed-sticky.php) in the post context
 - Set default context to archive instead of home
