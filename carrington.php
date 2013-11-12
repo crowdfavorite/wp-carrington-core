@@ -1,9 +1,9 @@
 <?php
 
 // This file is part of the Carrington Core Platform for WordPress
-// http://crowdfavorite.com/wordpress/carrington-core/
+// http://crowdfavorite.com/carrington-core/
 //
-// Copyright (c) 2008-2012 Crowd Favorite, Ltd. All rights reserved.
+// Copyright (c) 2008-2013 Crowd Favorite, Ltd. All rights reserved.
 // http://crowdfavorite.com
 //
 // Released under the GPL license
