@@ -1,5 +1,12 @@
 # Carrington Core Changelog
 
+## 3.7
+
+- Add support for "sticky" posts (sticky.php, single-sticky.php, feed-sticky.php) in the post context
+- Set default context to archive instead of home
+- Properly load type-* templates in General context
+- Requires WordPress 3.6 (for get_post() returning global $post)
+
 ## 3.4
 
 - Remove Thickbox code (if your theme needs this, please include it in the theme).

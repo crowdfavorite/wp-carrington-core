@@ -1,9 +1,9 @@
 <?php
 
 // This file is part of the Carrington Core Platform for WordPress
-// http://crowdfavorite.com/wordpress/carrington-core/
+// http://crowdfavorite.com/carrington-core/
 //
-// Copyright (c) 2008-2012 Crowd Favorite, Ltd. All rights reserved.
+// Copyright (c) 2008-2013 Crowd Favorite, Ltd. All rights reserved.
 // http://crowdfavorite.com
 //
 // Released under the GPL license
@@ -28,7 +28,7 @@ function cfct_option_css() {
  * 
 **/
 function cfct_admin_menu() {
-	        add_theme_page(
+	add_theme_page(
 		apply_filters('cfct_admin_settings_title', __('Carrington Theme Settings', 'carrington')),
 		apply_filters('cfct_admin_settings_menu', __('Theme Settings', 'carrington')),
 		'edit_theme_options',
@@ -278,7 +278,7 @@ function cfct_options_input($args) {
 					$html .= '
 					<li>
 						<label for="'.esc_attr($name.'-'.$opt_value).'">
-							<input type="checkbox" name="'.esc_attr($name.'['.$opt_value.']').'" value="'.esc_attr($opt_value).'" id="'.esc_attr($name.'-'.$opt_value).'"'.checked($opt_value, $value[$opt['id']], false).' />
+							<input type="checkbox" name="'.esc_attr($name.'['.$opt_value.']').'" value="'.esc_attr($opt_value).'" id="'.esc_attr($name.'-'.$opt_value).'"'.checked($opt_value, $value[$opt_value], false).' />
 							'.esc_html($opt_label).'
 						</label>
 					</li>';

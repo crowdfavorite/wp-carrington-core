@@ -1,9 +1,9 @@
 <?php
 
 // This file is part of the Carrington Core Platform for WordPress
-// http://crowdfavorite.com/wordpress/carrington-core/
+// http://crowdfavorite.com/carrington-core/
 //
-// Copyright (c) 2008-2012 Crowd Favorite, Ltd. All rights reserved.
+// Copyright (c) 2008-2013 Crowd Favorite, Ltd. All rights reserved.
 // http://crowdfavorite.com
 //
 // Released under the GPL license
@@ -88,7 +88,8 @@ function cfct_get_option($name) {
 	if ($name == cfct_option_name('copyright')) {
 		$value = str_replace('%Y', date('Y'), $value);
 	}
-	return $value;
+
+	return apply_filters('cfct_get_option_value', $value, $name);
 }
 
 /**
@@ -131,8 +132,9 @@ function cfct_default_file($dir) {
 **/
 
 function cfct_context() {
-	$context = 'home';
-	if (is_home()) {
+	$context = 'archive';
+
+	if (is_home() && !is_paged()) {
 		$context = 'home';
 	}
 	else if (is_page()) {
@@ -487,6 +489,11 @@ function cfct_choose_general_template_type($dir, $files) {
 	$files = cfct_type_templates($dir, $files);
 	if (count($files)) {
 		$type = get_query_var('post_type');
+		// post type not always set in query var - let's make a guess
+		if (empty($type)) {
+			$post = get_post(); // requires WP 3.6
+			$type = $post->post_type;
+		}
 		$file = 'type-'.$type.'.php';
 		if (in_array($file, $files)) {
 			return $file;
@@ -583,6 +590,7 @@ function cfct_choose_general_template_default($dir, $files) {
 function cfct_choose_single_template($files = array(), $filter = '*', $dir = '') {
 // must be called within the_loop - cfct_choose_general_template_single() approximates a loop for this reason.
 	$exec_order = array(
+		'sticky',
 		'author',
 		'meta',
 		'format',
@@ -625,6 +633,26 @@ function cfct_choose_single_template_type($dir, $files, $filter) {
 		global $post;
 		$file = cfct_filename_filter('type-'.$post->post_type.'.php', $filter);
 		if (in_array($file, $type_files)) {
+			return $file;
+		}
+	}
+	return false;
+}
+
+/**
+ * Chooses which template to display for the single context based on "sticky" status
+ * 
+ * @param string $dir Directory to use for selecting the template file
+ * @param array $files A list of files to search through to find the correct template
+ * @param string $filter Used in filtering the filename
+ * @return mixed Path to the file, false if no file exists
+ * 
+**/
+function cfct_choose_single_template_sticky($dir, $files, $filter) {
+	$sticky_files = cfct_sticky_templates($dir, $files, $filter);
+	if (count($sticky_files) && is_sticky()) {
+		$file = cfct_filename_filter('sticky.php', $filter);
+		if (in_array($file, $sticky_files)) {
 			return $file;
 		}
 	}
@@ -676,12 +704,10 @@ function cfct_choose_single_template_meta($dir, $files, $filter) {
 				}
 			}
 // check key matches only
-			if (!$filename) {
-				foreach ($meta as $k => $v) {
-					$file = cfct_filename_filter('meta-'.$k.'.php', $filter);
-					if (in_array($file, $meta_files)) {
-						return $file;
-					}
+			foreach ($meta as $k => $v) {
+				$file = cfct_filename_filter('meta-'.$k.'.php', $filter);
+				if (in_array($file, $meta_files)) {
+					return $file;
 				}
 			}
 		}
@@ -1215,6 +1241,23 @@ function cfct_author_templates($dir, $files = null, $filter = '*') {
 	$prefix = str_replace('*', '', $filter).'author-';
 	$matches = cfct_filter_files($files, $prefix);
 	return apply_filters('cfct_author_templates', $matches);
+}
+
+/**
+ * Is there a sticky template?
+ * 
+ * @param string $dir Directory to search through for files if none are given
+ * @param array $files A list of files to search through
+ * @return array list of files that match the author template structure
+ * 
+**/
+function cfct_sticky_templates($dir, $files = null, $filter = '*') {
+	if (is_null($files)) {
+		$files = cfct_files(CFCT_PATH.$dir);
+	}
+	$prefix = str_replace('*', '', $filter).'sticky';
+	$matches = cfct_filter_files($files, $prefix);
+	return apply_filters('cfct_sticky_templates', $matches);
 }
 
 /**
