@@ -1415,7 +1415,7 @@ function cfct_cat_filename_to_slug($file) {
 **/
 function cfct_cat_id_to_slug($id) {
 	$cat = &get_category($id);
-	return $cat->slug;
+	return isset($cat->slug) ? $cat->slug : '';
 }
 
 /**
