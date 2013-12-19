@@ -98,7 +98,7 @@ function cfct_get_option($name, $admin = true) {
 **/
 function cfct_load_plugins() {
 	$files = cfct_files(CFCT_PATH.'plugins');
-	if (count($files)) {
+	if (!empty($files) && is_array($files)) {
 		foreach ($files as $file) {
 			if (file_exists(CFCT_PATH.'plugins/'.$file)) {
 				include_once(CFCT_PATH.'plugins/'.$file);
@@ -183,7 +183,7 @@ function cfct_context() {
 function cfct_filename($dir, $type = 'default', $keys = array()) {
 	switch ($type) {
 		case 'author':
-			if (count($keys)) {
+			if (!empty($keys) && is_array($keys)) {
 				$file = 'author-'.$keys[0];
 			}
 			else {
@@ -191,7 +191,7 @@ function cfct_filename($dir, $type = 'default', $keys = array()) {
 			}
 			break;
 		case 'category':
-			if (count($keys)) {
+			if (!empty($keys) && is_array($keys)) {
 				$file = 'cat-'.$keys[0];
 			}
 			else {
@@ -199,7 +199,7 @@ function cfct_filename($dir, $type = 'default', $keys = array()) {
 			}
 			break;
 		case 'tag':
-			if (count($keys)) {
+			if (!empty($keys) && is_array($keys)) {
 				$file = 'tag-'.$keys[0];
 			}
 			else {
@@ -207,7 +207,7 @@ function cfct_filename($dir, $type = 'default', $keys = array()) {
 			}
 			break;
 		case 'meta':
-			if (count($keys)) {
+			if (!empty($keys) && is_array($keys)) {
 				foreach ($keys as $k => $v) {
 					if (!empty($v)) {
 						$file = 'meta-'.$k.'-'.$v;
@@ -220,17 +220,17 @@ function cfct_filename($dir, $type = 'default', $keys = array()) {
 			}
 			break;
 		case 'user':
-			if (count($keys)) {
+			if (!empty($keys) && is_array($keys)) {
 				$file = 'user-'.$keys[0];
 			}
 			break;
 		case 'role':
-			if (count($keys)) {
+			if (!empty($keys) && is_array($keys)) {
 				$file = 'role-'.$keys[0];
 			}
 			break;
 		case 'parent':
-			if (count($keys)) {
+			if (!empty($keys) && is_array($keys)) {
 				$file = 'parent-'.$keys[0];
 			}
 			break;
@@ -400,7 +400,7 @@ function cfct_choose_general_template($dir) {
 **/
 function cfct_choose_general_template_author($dir, $files) {
 	$files = cfct_author_templates($dir, $files);
-	if (count($files)) {
+	if (!empty($files) && is_array($files)) {
 		$username = get_query_var('author_name');
 		if (empty($username)) {
 			$user = new WP_User(get_query_var('author'));
@@ -425,7 +425,7 @@ function cfct_choose_general_template_author($dir, $files) {
 **/
 function cfct_choose_general_template_category($dir, $files) {
 	$files = cfct_cat_templates($dir, $files);
-	if (count($files)) {
+	if (!empty($files) && is_array($files)) {
 		global $cat;
 		$slug = cfct_cat_id_to_slug($cat);
 		if (in_array('cat-'.$slug.'.php', $files)) {
@@ -446,7 +446,7 @@ function cfct_choose_general_template_category($dir, $files) {
 **/
 function cfct_choose_general_template_taxonomy($dir, $files) {
 	$files = cfct_tax_templates($dir, $files);
-	if (count($files)) {
+	if (!empty($files) && is_array($files)) {
 		$tax = get_query_var('taxonomy');
 		$term = get_term_by('slug', get_query_var('term'), get_query_var('taxonomy'));
 		if (!empty($term) && in_array('tax-'.$tax.'-'.$term->slug.'.php', $files)) {
@@ -467,7 +467,7 @@ function cfct_choose_general_template_taxonomy($dir, $files) {
 **/
 function cfct_choose_general_template_tag($dir, $files) {
 	$files = cfct_tag_templates($dir, $files);
-	if (count($files)) {
+	if (!empty($files) && is_array($files)) {
 		$tag = get_query_var('tag');
 		if (in_array('tag-'.$tag.'.php', $files)) {
 			$keys = array($tag);
@@ -487,7 +487,7 @@ function cfct_choose_general_template_tag($dir, $files) {
 **/
 function cfct_choose_general_template_type($dir, $files) {
 	$files = cfct_type_templates($dir, $files);
-	if (count($files)) {
+	if (!empty($files) && is_array($files)) {
 		$type = get_query_var('post_type');
 		// post type not always set in query var - let's make a guess
 		if (empty($type)) {
@@ -512,11 +512,11 @@ function cfct_choose_general_template_type($dir, $files) {
 **/
 function cfct_choose_general_template_role($dir, $files) {
 	$files = cfct_role_templates($dir, $files);
-	if (count($files)) {
+	if (!empty($files) && is_array($files)) {
 		$username = get_query_var('author_name');
 		$user = new WP_User(cfct_username_to_id($username));
 		if (!empty($user->user_login)) {
-			if (count($user->roles)) {
+			if (!empty($user->roles) && is_array($user->roles)) {
 				foreach ($user->roles as $role) {
 					$role_file = 'role-'.$role.'.php';
 					if (in_array($role_file, $files)) {
@@ -540,7 +540,7 @@ function cfct_choose_general_template_role($dir, $files) {
 function cfct_choose_general_template_single($dir, $files) {
 	if (cfct_context() == 'single') {
 		$files = cfct_single_templates($dir, $files);
-		if (count($files)) {
+		if (!empty($files) && is_array($files)) {
 // check to see if we're in the loop.
 			global $post;
 			$orig_post = $post;
@@ -629,7 +629,7 @@ function cfct_choose_single_template($files = array(), $filter = '*', $dir = '')
 **/
 function cfct_choose_single_template_type($dir, $files, $filter) {
 	$type_files = cfct_type_templates($dir, $files, $filter);
-	if (count($type_files)) {
+	if (!empty($type_files) && is_array($type_files)) {
 		global $post;
 		$file = cfct_filename_filter('type-'.$post->post_type.'.php', $filter);
 		if (in_array($file, $type_files)) {
@@ -650,7 +650,7 @@ function cfct_choose_single_template_type($dir, $files, $filter) {
 **/
 function cfct_choose_single_template_sticky($dir, $files, $filter) {
 	$sticky_files = cfct_sticky_templates($dir, $files, $filter);
-	if (count($sticky_files) && is_sticky()) {
+	if (!empty($sticky_files) && is_array($sticky_files) && is_sticky()) {
 		$file = cfct_filename_filter('sticky.php', $filter);
 		if (in_array($file, $sticky_files)) {
 			return $file;
@@ -670,7 +670,7 @@ function cfct_choose_single_template_sticky($dir, $files, $filter) {
 **/
 function cfct_choose_single_template_author($dir, $files, $filter) {
 	$author_files = cfct_author_templates($dir, $files, $filter);
-	if (count($author_files)) {
+	if (!empty($author_files) && is_array($author_files)) {
 		$author = get_the_author_meta('login');
 		$file = cfct_filename_filter('author-'.$author.'.php', $filter);
 		if (in_array($file, $author_files)) {
@@ -692,9 +692,9 @@ function cfct_choose_single_template_author($dir, $files, $filter) {
 function cfct_choose_single_template_meta($dir, $files, $filter) {
 	global $post;
 	$meta_files = cfct_meta_templates('', $files, $filter);
-	if (count($meta_files)) {
+	if (!empty($meta_files) && is_array($meta_files)) {
 		$meta = get_post_custom($post->ID);
-		if (count($meta)) {
+		if (!empty($meta) && is_array($meta)) {
 // check key, value matches first
 			foreach ($meta as $k => $v) {
 				$val = $v[0];
@@ -727,7 +727,7 @@ function cfct_choose_single_template_meta($dir, $files, $filter) {
 function cfct_choose_single_template_format($dir, $files, $filter) {
 	global $post;
 	$format_files = cfct_format_templates($dir, $files, $filter);
-	if (count($format_files)) {
+	if (!empty($format_files) && is_array($format_files)) {
 		$post_format = get_post_format($post->ID);
 		foreach ($format_files as $file) {
 			if (cfct_format_filename_to_format($file) == $post_format) {
@@ -749,7 +749,7 @@ function cfct_choose_single_template_format($dir, $files, $filter) {
 **/
 function cfct_choose_single_template_category($dir, $files, $filter) {
 	$cat_files = cfct_cat_templates($dir, $files, $filter);
-	if (count($cat_files)) {
+	if (!empty($cat_files) && is_array($cat_files)) {
 		foreach ($cat_files as $file) {
 			$cat_id = cfct_cat_filename_to_id($file);
 			if (in_category($cat_id)) {
@@ -771,9 +771,9 @@ function cfct_choose_single_template_category($dir, $files, $filter) {
 **/
 function cfct_choose_single_template_role($dir, $files, $filter) {
 	$role_files = cfct_role_templates($dir, $files, $filter);
-	if (count($role_files)) {
+	if (!empty($role_files) && is_array($role_files)) {
 		$user = new WP_User(get_the_author_meta('ID'));
-		if (count($user->roles)) {
+		if (!empty($user->roles) && is_array($user->roles)) {
 			foreach ($role_files as $file) {
 				$file = cfct_filename_filter($file, $filter);
 				foreach ($user->roles as $role) {
@@ -800,13 +800,13 @@ function cfct_choose_single_template_taxonomy($dir, $files, $filter) {
 	global $post;
 
 	$tax_files = cfct_tax_templates($dir, $files, $filter);
-	if (count($tax_files)) {
+	if (!empty($tax_files) && is_array($tax_files)) {
 		foreach ($tax_files as $file) {
 			$file = cfct_filename_filter($file, $filter);
 			$tax = cfct_tax_filename_to_tax_name($file);
 			$file_slug = cfct_tax_filename_to_slug($file);
 			$terms = wp_get_post_terms($post->ID, $tax);
-			if (is_array($terms) && count($terms)) {
+			if (!empty($terms) && is_array($terms)) {
 				foreach ($terms as $term) {
 					if ($term->taxonomy == $tax && $term->slug == $file_slug) {
 						return $file;
@@ -831,9 +831,9 @@ function cfct_choose_single_template_taxonomy($dir, $files, $filter) {
 function cfct_choose_single_template_tag($dir, $files, $filter) {
 	global $post;
 	$tag_files = cfct_tag_templates($dir, $files, $filter);
-	if (count($tag_files)) {
+	if (!empty($tag_files) && is_array($tag_files)) {
 		$tags = get_the_tags($post->ID);
-		if (is_array($tags) && count($tags)) {
+		if (is_array($tags) && !empty($tags)) {
 			foreach ($tag_files as $file) {
 				$file = cfct_filename_filter($file, $filter);
 				foreach ($tags as $tag) {
@@ -859,7 +859,7 @@ function cfct_choose_single_template_tag($dir, $files, $filter) {
 function cfct_choose_single_template_parent($dir, $files, $filter) {
 	global $post;
 	$parent_files = cfct_parent_templates($dir, $files, $filter);
-	if (count($parent_files) && $post->post_parent > 0) {
+	if (!empty($parent_files) && is_array($parent_files) && $post->post_parent > 0) {
 		$parent = cfct_post_id_to_slug($post->post_parent);
 		$file = cfct_filename_filter('parent-'.$parent.'.php', $filter);
 		if (in_array($file, $parent_files)) {
@@ -899,7 +899,7 @@ function cfct_choose_content_template($type = 'content') {
 function cfct_choose_content_template_feed($type = 'content') {
 	$files = cfct_files(CFCT_PATH.$type);
 	$files = cfct_filter_files($files, 'feed-');
-	if (count($files)) {
+	if (!empty($files) && is_array($files)) {
 		$filename = cfct_choose_single_template($files, 'feed-*');
 		return $filename;
 	}
@@ -968,9 +968,9 @@ function cfct_choose_comment_template_ping($files) {
 function cfct_choose_comment_template_meta($files) {
 	global $comment;
 	$meta_files = cfct_meta_templates('', $files);
-	if (count($meta_files)) {
+	if (!empty($meta_files) && is_array($meta_files)) {
 		$meta = get_metadata('comment', $comment->comment_ID);
-		if (count($meta)) {
+		if (!empty($meta) && is_array($meta)) {
 // check key, value matches first
 			foreach ($meta as $k => $v) {
 				$val = $v[0];
@@ -1018,7 +1018,7 @@ function cfct_choose_comment_template_author($files) {
 function cfct_choose_comment_template_user($files) {
 	global $comment;
 	$files = cfct_comment_templates('user', $files);
-	if (count($files) && !empty($comment->user_id)) {
+	if (!empty($files) && is_array($files) && !empty($comment->user_id)) {
 		$user = new WP_User($comment->user_id);
 		if (!empty($user->user_login)) {
 			$user_file = 'user-'.$user->user_login.'.php';
@@ -1040,10 +1040,10 @@ function cfct_choose_comment_template_user($files) {
 function cfct_choose_comment_template_role($files) {
 	global $comment;
 	$files = cfct_comment_templates('role', $files);
-	if (count($files) && !empty($comment->user_id)) {
+	if (!empty($files) && is_array($files) && !empty($comment->user_id)) {
 		$user = new WP_User($comment->user_id);
 		if (!empty($user->user_login)) {
-			if (count($user->roles)) {
+			if (!empty($user->roles) && is_array($user->roles)) {
 				foreach ($user->roles as $role) {
 					$role_file = 'role-'.$role.'.php';
 					if (in_array($role_file, $files)) {
@@ -1131,7 +1131,7 @@ function cfct_files($path) {
 **/
 function cfct_filter_files($files = array(), $prefix = '') {
 	$matches = array();
-	if (count($files)) {
+	if (!empty($files) && is_array($files)) {
 		foreach ($files as $file) {
 			if (strpos($file, $prefix) === 0) {
 				$matches[] = $file;
@@ -1510,7 +1510,7 @@ function cfct_tax_filename_to_slug($file) {
 	$slug = str_replace(array_merge($prefixes, $suffixes), '', $file);
 	$slug = explode('-', $slug);
 	unset($slug[0]);
-	if (count($slug)) {
+	if (!empty($slug) && is_array($slug)) {
 		return implode('-', $slug);
 	}
 	return '';

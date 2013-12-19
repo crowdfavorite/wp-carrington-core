@@ -1,5 +1,9 @@
 # Carrington Core Changelog
 
+# Develop
+
+- (fix) Check for array type in any conditional expecting an array
+
 ## 3.7
 
 - (feature) Add support for "sticky" posts (sticky.php, single-sticky.php, feed-sticky.php) in the post context
