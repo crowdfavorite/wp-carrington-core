@@ -3,6 +3,7 @@
 # Develop
 
 - (fix) Check for array type in any conditional expecting an array
+- (fix) *-default are now supported in the single context such as content/feed-default.php
 
 ## 3.7
 

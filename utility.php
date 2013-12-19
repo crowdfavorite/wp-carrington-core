@@ -870,6 +870,26 @@ function cfct_choose_single_template_parent($dir, $files, $filter) {
 }
 
 /**
+ * Chooses which template to display for the single context based on its default status
+ *
+ * @param string $dir Directory to use for selecting the template file
+ * @param array $files A list of files to search through to find the correct template
+ * @param string $filter Used in filtering the filename
+ * @return mixed Path to the file, false if no file exists
+ *
+**/
+function cfct_choose_single_template_default($dir, $files, $filter) {
+	$default_files = cfct_default_templates($dir, $files, $filter);
+	if (!empty($default_files) && is_array($default_files)) {
+		$file = cfct_filename_filter('default.php', $filter);
+		if (in_array($file, $default_files)) {
+			return $file;
+		}
+	}
+	return false;
+}
+
+/**
  * Chooses which template to display for the content context
  *
  * @param string $content Used in filtering and default if no template file can be found
@@ -1309,6 +1329,23 @@ function cfct_parent_templates($dir, $files = null, $filter = '*') {
 	$prefix = str_replace('*', '', $filter).'parent-';
 	$matches = cfct_filter_files($files, $prefix);
 	return apply_filters('cfct_parent_templates', $matches);
+}
+
+/**
+ * Get a list of files that match the default type
+ *
+ * @param string $dir Directory to search through for files if none are given
+ * @param array $files A list of files to search through
+ * @return array List of files that match the post parent template structure
+ *
+**/
+function cfct_default_templates($dir, $files = null, $filter = '*') {
+	if (is_null($files)) {
+		$files = cfct_files(CFCT_PATH.$dir);
+	}
+	$prefix = str_replace('*', '', $filter).'default';
+	$matches = cfct_filter_files($files, $prefix);
+	return apply_filters('cfct_default_templates', $matches);
 }
 
 /**
