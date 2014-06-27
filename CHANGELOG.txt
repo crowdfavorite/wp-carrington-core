@@ -1,5 +1,8 @@
 # Carrington Core Changelog
 
+## 3.7.1
+- (change) tax-taxonomy is now selected when processing the taxonomy general context. Prior this was only selected if the process hit the 'default' general context- (fix) The type-* general context is only chosen on archives
+
 ## 3.7
 
 - (feature) Add support for "sticky" posts (sticky.php, single-sticky.php, feed-sticky.php) in the post context

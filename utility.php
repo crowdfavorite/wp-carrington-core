@@ -12,7 +12,7 @@
 // **********************************************************************
 // This program is distributed in the hope that it will be useful, but
 // WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // **********************************************************************
 
 if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
@@ -21,7 +21,7 @@ if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
  * Die with custom error page if it exists
  *
  * @param string $str String to die with if no file found
- * 
+ *
 **/
 function cfct_die($str = '') {
 	if (!empty($str)) {
@@ -39,7 +39,7 @@ function cfct_die($str = '') {
  * Display custom banners for alerts
  *
  * @param string $str String to display if no banner file found
- * 
+ *
 **/
 function cfct_banner($str = '') {
 	if (!empty($str)) {
@@ -57,7 +57,7 @@ function cfct_banner($str = '') {
  *
  * @param string $name Name of the option to retrieve
  * @return mixed Value of the option
- * 
+ *
 **/
 function cfct_get_option($name, $admin = true) {
 	$defaults = array(
@@ -68,16 +68,16 @@ function cfct_get_option($name, $admin = true) {
 		cfct_option_name('header_image') => 0,
 	);
 	$name = cfct_option_name($name);
-	
+
 	$defaults = apply_filters('cfct_option_defaults', $defaults);
 	$value = get_option($name);
-	
-	
+
+
 	// We want to check for defaults registered using the prefixed and unprefixed versions of the option name.
 	if ($value === false) {
 		$prefix = cfct_get_option_prefix();
 		$basname = substr($name, strlen($prefix) + 1, -1);
-		
+
 		if (isset($defaults[$name])) {
 			$value = $defaults[$name];
 		}
@@ -94,7 +94,7 @@ function cfct_get_option($name, $admin = true) {
 
 /**
  * Load theme plugins
- * 
+ *
 **/
 function cfct_load_plugins() {
 	$files = cfct_files(CFCT_PATH.'plugins');
@@ -116,7 +116,7 @@ function cfct_load_plugins() {
  *
  * @param string $dir Directory to get the default file for
  * @return string Filename pertaining to the default file
- * 
+ *
 **/
 function cfct_default_file($dir) {
 	$fancy = $dir.'-default.php';
@@ -128,7 +128,7 @@ function cfct_default_file($dir) {
  * Return the context of the current page
  *
  * @return string The context of the current page
- * 
+ *
 **/
 
 function cfct_context() {
@@ -287,10 +287,10 @@ function cfct_filename($dir, $type = 'default', $keys = array()) {
 
 /**
  * Include a specific file based on context, directory and keys
- * 
- * @param string $dir 
+ *
+ * @param string $dir
  * @param array $keys Keys used to help build the filename
- * 
+ *
 **/
 function cfct_template($dir, $keys = array()) {
 	$context = cfct_context();
@@ -305,11 +305,11 @@ function cfct_template($dir, $keys = array()) {
 
 /**
  * Include a specific file based on directory and filename
- * 
+ *
  * @param string $dir Directory the file will be in
  * @param string $file Filename
  * @param array $data pass in data to be extracted for use by the template
- * 
+ *
 **/
 function cfct_template_file($dir, $file, $data = array()) {
 	// bring in expected globals so that templates don't need to bring them in
@@ -344,11 +344,11 @@ function cfct_template_file($dir, $file, $data = array()) {
 
 /**
  * Include a specific file based on directory and filename and return the output
- * 
+ *
  * @param string $dir Directory the file will be in
  * @param string $file Filename
  * @param array $data pass in data to be extracted for use by the template
- * 
+ *
 **/
 function cfct_template_content($dir, $file, $data = array()) {
 	ob_start();
@@ -358,10 +358,10 @@ function cfct_template_content($dir, $file, $data = array()) {
 
 /**
  * Gets the proper filename (path) to use in displaying a template
- * 
+ *
  * @param string $dir Directory to use/search in
  * @return string Path to the file
- * 
+ *
 **/
 function cfct_choose_general_template($dir) {
 	$exec_order = array(
@@ -392,11 +392,11 @@ function cfct_choose_general_template($dir) {
 
 /**
  * Gets the proper filename (path) to use for displaying a page based on an author's name
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to loop through
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_general_template_author($dir, $files) {
 	$files = cfct_author_templates($dir, $files);
@@ -417,14 +417,14 @@ function cfct_choose_general_template_author($dir, $files) {
 
 /**
  * Gets the proper filename (path) to use for displaying a page based on a category's slug
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to loop through
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_general_template_category($dir, $files) {
-	$files = cfct_cat_templates($dir, $files);	
+	$files = cfct_cat_templates($dir, $files);
 	if (count($files)) {
 		global $cat;
 		$slug = cfct_cat_id_to_slug($cat);
@@ -438,11 +438,11 @@ function cfct_choose_general_template_category($dir, $files) {
 
 /**
  * Gets the proper filename (path) to use for displaying a page based on a custom taxonomy and a slug within that taxonomy
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to loop through
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_general_template_taxonomy($dir, $files) {
 	$files = cfct_tax_templates($dir, $files);
@@ -453,17 +453,21 @@ function cfct_choose_general_template_taxonomy($dir, $files) {
 			$keys = array($tax, $term->slug);
 			return cfct_filename($dir, 'taxonomy', $keys);
 		}
+		else if (in_array('tax-'.$tax.'.php', $files)) {
+			$keys = array($tax);
+			return cfct_filename($dir, 'taxonomy', $tax);
+		}
 	}
 	return false;
 }
 
 /**
  * Gets the proper filename (path) to use for displaying a page based on a tag slug
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to loop through
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_general_template_tag($dir, $files) {
 	$files = cfct_tag_templates($dir, $files);
@@ -479,21 +483,17 @@ function cfct_choose_general_template_tag($dir, $files) {
 
 /**
  * Gets the proper filename (path) to use for displaying a page based on custom post type
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to loop through
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_general_template_type($dir, $files) {
 	$files = cfct_type_templates($dir, $files);
-	if (count($files)) {
+	// is_archive() check here, post_type gets set in single views with custom post types
+	if (is_archive() && count($files)) {
 		$type = get_query_var('post_type');
-		// post type not always set in query var - let's make a guess
-		if (empty($type)) {
-			$post = get_post(); // requires WP 3.6
-			$type = $post->post_type;
-		}
 		$file = 'type-'.$type.'.php';
 		if (in_array($file, $files)) {
 			return $file;
@@ -504,11 +504,11 @@ function cfct_choose_general_template_type($dir, $files) {
 
 /**
  * Gets the proper filename (path) to use for displaying a page based on a user's role
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to loop through
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_general_template_role($dir, $files) {
 	$files = cfct_role_templates($dir, $files);
@@ -531,11 +531,11 @@ function cfct_choose_general_template_role($dir, $files) {
 
 /**
  * Gets the proper filename (path) to use for displaying a page based on whether or not it is a single page and its general context
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to loop through
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_general_template_single($dir, $files) {
 	if (cfct_context() == 'single') {
@@ -563,11 +563,11 @@ function cfct_choose_general_template_single($dir, $files) {
 
 /**
  * Gets the proper filename (path) to use for displaying a default page based on context
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to loop through
  * @return mixed path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_general_template_default($dir, $files) {
 	$context = cfct_context();
@@ -580,12 +580,12 @@ function cfct_choose_general_template_default($dir, $files) {
 
 /**
  * Chooses which template to display for the single context
- * 
+ *
  * @param array $files A list of files to search through to find the correct template
  * @param string $filter Used in filtering the filename
  * @param string $dir The directory to search for matching files in
  * @return mixed path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_single_template($files = array(), $filter = '*', $dir = '') {
 // must be called within the_loop - cfct_choose_general_template_single() approximates a loop for this reason.
@@ -620,12 +620,12 @@ function cfct_choose_single_template($files = array(), $filter = '*', $dir = '')
 
  /**
  * Chooses which template to display for the single context based on custom post type
- * 
+ *
  * @param string $dir Directory to search through for files
  * @param array $files A list of files to search through to find the correct template
  * @param string $filter Used in filtering the filename
  * @return mixed path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_single_template_type($dir, $files, $filter) {
 	$type_files = cfct_type_templates($dir, $files, $filter);
@@ -641,12 +641,12 @@ function cfct_choose_single_template_type($dir, $files, $filter) {
 
 /**
  * Chooses which template to display for the single context based on "sticky" status
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to search through to find the correct template
  * @param string $filter Used in filtering the filename
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_single_template_sticky($dir, $files, $filter) {
 	$sticky_files = cfct_sticky_templates($dir, $files, $filter);
@@ -661,12 +661,12 @@ function cfct_choose_single_template_sticky($dir, $files, $filter) {
 
 /**
  * Chooses which template to display for the single context based on author login
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to search through to find the correct template
  * @param string $filter Used in filtering the filename
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_single_template_author($dir, $files, $filter) {
 	$author_files = cfct_author_templates($dir, $files, $filter);
@@ -682,12 +682,12 @@ function cfct_choose_single_template_author($dir, $files, $filter) {
 
 /**
  * Chooses which template to display for the single context based on meta information
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to search through to find the correct template
  * @param string $filter Used in filtering the filename
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_single_template_meta($dir, $files, $filter) {
 	global $post;
@@ -717,16 +717,16 @@ function cfct_choose_single_template_meta($dir, $files, $filter) {
 
 /**
  * Chooses which template to display for the single context based on post format
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to search through to find the correct template
  * @param string $filter Used in filtering the filename
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_single_template_format($dir, $files, $filter) {
 	global $post;
-	$format_files = cfct_format_templates($dir, $files, $filter);	
+	$format_files = cfct_format_templates($dir, $files, $filter);
 	if (count($format_files)) {
 		$post_format = get_post_format($post->ID);
 		foreach ($format_files as $file) {
@@ -740,12 +740,12 @@ function cfct_choose_single_template_format($dir, $files, $filter) {
 
 /**
  * Chooses which template to display for the single context based on category slug
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to search through to find the correct template
  * @param string $filter Used in filtering the filename
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_single_template_category($dir, $files, $filter) {
 	$cat_files = cfct_cat_templates($dir, $files, $filter);
@@ -762,12 +762,12 @@ function cfct_choose_single_template_category($dir, $files, $filter) {
 
 /**
  * Chooses which template to display for the single context based on user role
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to search through to find the correct template
  * @param string $filter Used in filtering the filename
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_single_template_role($dir, $files, $filter) {
 	$role_files = cfct_role_templates($dir, $files, $filter);
@@ -789,12 +789,12 @@ function cfct_choose_single_template_role($dir, $files, $filter) {
 
 /**
  * Chooses which template to display for the single context based on taxonomy name and slug within that taxonomy
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to search through to find the correct template
  * @param string $filter used in filtering the filename
  * @return mixed path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_single_template_taxonomy($dir, $files, $filter) {
 	global $post;
@@ -821,12 +821,12 @@ function cfct_choose_single_template_taxonomy($dir, $files, $filter) {
 /**
  * Chooses which template to display for the single context based
  * on post_tag
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to search through to find the correct template
  * @param string $filter Used in filtering the filename
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_single_template_tag($dir, $files, $filter) {
 	global $post;
@@ -849,12 +849,12 @@ function cfct_choose_single_template_tag($dir, $files, $filter) {
 
 /**
  * Chooses which template to display for the single context based on a post's parent
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to search through to find the correct template
  * @param string $filter Used in filtering the filename
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_single_template_parent($dir, $files, $filter) {
 	global $post;
@@ -871,10 +871,10 @@ function cfct_choose_single_template_parent($dir, $files, $filter) {
 
 /**
  * Chooses which template to display for the content context
- * 
+ *
  * @param string $content Used in filtering and default if no template file can be found
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_content_template($type = 'content') {
 	$files = cfct_files(CFCT_PATH.$type);
@@ -890,11 +890,11 @@ function cfct_choose_content_template($type = 'content') {
 
 /**
  * Handle content template selection for feed requests. Leverages single context with a feed- prefix.
- * 
+ *
  * @param string $dir Directory to use for selecting the template file
  * @param array $files A list of files to loop through
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_content_template_feed($type = 'content') {
 	$files = cfct_files(CFCT_PATH.$type);
@@ -909,9 +909,9 @@ function cfct_choose_content_template_feed($type = 'content') {
 
 /**
  * Chooses which template to display for the comment context
- * 
+ *
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_comment_template() {
 	$exec_order = array(
@@ -940,10 +940,10 @@ function cfct_choose_comment_template() {
 
 /**
  * Chooses which template to display for the comment context based on whether or not the comment is a ping or trackback
- * 
+ *
  * @param array $files A list of files to search through to find the correct template
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_comment_template_ping($files) {
 	global $comment;
@@ -960,10 +960,10 @@ function cfct_choose_comment_template_ping($files) {
 
 /**
  * Chooses which template to display for the comment context based on meta data
- * 
+ *
  * @param array $files A list of files to search through to find the correct template
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_comment_template_meta($files) {
 	global $comment;
@@ -995,10 +995,10 @@ function cfct_choose_comment_template_meta($files) {
 
 /**
  * Chooses which template to display for the comment context based on the post author
- * 
+ *
  * @param array $files A list of files to search through to find the correct template
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_comment_template_author($files) {
 	global $post, $comment;
@@ -1010,10 +1010,10 @@ function cfct_choose_comment_template_author($files) {
 
 /**
  * Chooses which template to display for the comment context based on the comment author
- * 
+ *
  * @param array $files A list of files to search through to find the correct template
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_comment_template_user($files) {
 	global $comment;
@@ -1032,10 +1032,10 @@ function cfct_choose_comment_template_user($files) {
 
 /**
  * Chooses which template to display for the comment context based on comment author's role
- * 
+ *
  * @param array $files A list of files to search through to find the correct template
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_comment_template_role($files) {
 	global $comment;
@@ -1058,10 +1058,10 @@ function cfct_choose_comment_template_role($files) {
 
 /**
  * Chooses the default template to be used in the comment context
- * 
+ *
  * @param array $files A list of files to search through to find the correct template
  * @return mixed Path to the file, false if no file exists
- * 
+ *
 **/
 function cfct_choose_comment_template_default($files) {
 	return cfct_default_file('comment');
@@ -1069,11 +1069,11 @@ function cfct_choose_comment_template_default($files) {
 
 /**
  * Adds to a filename based on a filter string
- * 
+ *
  * @param string $filename Filename to filter
  * @param string $filter What to add
  * @return string The filtered filename
- * 
+ *
 **/
 function cfct_filename_filter($filename, $filter) {
 	// check for filter already appended
@@ -1085,10 +1085,10 @@ function cfct_filename_filter($filename, $filter) {
 
 /**
  * Get a list of php files within a given path as well as files in corresponding child themes
- * 
+ *
  * @param sting $path Path to the directory to search
  * @return array Files within the path directory
- * 
+ *
 **/
 function cfct_files($path) {
 	$files = apply_filters('cfct_files_'.$path, false);
@@ -1123,11 +1123,11 @@ function cfct_files($path) {
 
 /**
  * Filters a list of files based on a prefix
- * 
+ *
  * @param array $files A list of files to be filtered
  * @param string $prefix A string to search for and filter with in the filenames
  * @return array A list of files that contain the prefix
- * 
+ *
 **/
 function cfct_filter_files($files = array(), $prefix = '') {
 	$matches = array();
@@ -1143,11 +1143,11 @@ function cfct_filter_files($files = array(), $prefix = '') {
 
 /**
  * Get a list of files that match the meta template structure
- * 
+ *
  * @param string $dir Directory to search through for files if none are given
  * @param array $files A list of files to search through
  * @return array List of files that match the meta template structure
- * 
+ *
 **/
 function cfct_meta_templates($dir, $files = null, $filter = '*') {
 	if (is_null($files)) {
@@ -1160,11 +1160,11 @@ function cfct_meta_templates($dir, $files = null, $filter = '*') {
 
 /**
  * Get a list of files that match the category template structure
- * 
+ *
  * @param string $dir Directory to search through for files if none are given
  * @param array $files A list of files to search through
  * @return array List of files that match the category template structure
- * 
+ *
 **/
 function cfct_cat_templates($dir, $files = null, $filter = '*') {
 	if (is_null($files)) {
@@ -1177,11 +1177,11 @@ function cfct_cat_templates($dir, $files = null, $filter = '*') {
 
 /**
  * Get a list of files that match the tag template structure
- * 
+ *
  * @param string $dir Directory to search through for files if none are given
  * @param array $files A list of files to search through
  * @return array List of files that match the tag template structure
- * 
+ *
 **/
 function cfct_tag_templates($dir, $files = null, $filter = '*') {
 	if (is_null($files)) {
@@ -1194,11 +1194,11 @@ function cfct_tag_templates($dir, $files = null, $filter = '*') {
 
 /**
  * Get a list of files that match the custom taxonomy template structure
- * 
+ *
  * @param string $dir Directory to search through for files if none are given
  * @param array $files A list of files to search through
  * @return array List of files that match the custom taxonomy template structure
- * 
+ *
 **/
 function cfct_tax_templates($dir, $files = null, $filter = '*') {
 	if (is_null($files)) {
@@ -1211,11 +1211,11 @@ function cfct_tax_templates($dir, $files = null, $filter = '*') {
 
 /**
  * Get a list of files that match the post format structure
- * 
+ *
  * @param string $dir Directory to search through for files if none are given
  * @param array $files A list of files to search through
  * @return array List of files that match the post format template structure
- * 
+ *
 **/
 function cfct_format_templates($dir, $files = null, $filter = '*') {
 	if (is_null($files)) {
@@ -1228,11 +1228,11 @@ function cfct_format_templates($dir, $files = null, $filter = '*') {
 
 /**
  * Get a list of files that match the author template structure
- * 
+ *
  * @param string $dir Directory to search through for files if none are given
  * @param array $files A list of files to search through
  * @return array list of files that match the author template structure
- * 
+ *
 **/
 function cfct_author_templates($dir, $files = null, $filter = '*') {
 	if (is_null($files)) {
@@ -1245,11 +1245,11 @@ function cfct_author_templates($dir, $files = null, $filter = '*') {
 
 /**
  * Is there a sticky template?
- * 
+ *
  * @param string $dir Directory to search through for files if none are given
  * @param array $files A list of files to search through
  * @return array list of files that match the author template structure
- * 
+ *
 **/
 function cfct_sticky_templates($dir, $files = null, $filter = '*') {
 	if (is_null($files)) {
@@ -1262,11 +1262,11 @@ function cfct_sticky_templates($dir, $files = null, $filter = '*') {
 
 /**
  * Get a list of files that match the custom post type template structure
- * 
+ *
  * @param string $dir Directory to search through for files if none are given
  * @param array $files A list of files to search through
  * @return array List of files that match the custom post type template structure
- * 
+ *
 **/
 function cfct_type_templates($dir, $files = null, $filter = '*') {
 	if (is_null($files)) {
@@ -1279,11 +1279,11 @@ function cfct_type_templates($dir, $files = null, $filter = '*') {
 
 /**
  * Get a list of files that match the user role template structure
- * 
+ *
  * @param string $dir Directory to search through for files if none are given
  * @param array $files A list of files to search through
  * @return array List of files that match the user role template structure
- * 
+ *
 **/
 function cfct_role_templates($dir, $files = null, $filter = '*') {
 	if (is_null($files)) {
@@ -1296,11 +1296,11 @@ function cfct_role_templates($dir, $files = null, $filter = '*') {
 
 /**
  * Get a list of files that match the post parent template structure
- * 
+ *
  * @param string $dir Directory to search through for files if none are given
  * @param array $files A list of files to search through
  * @return array List of files that match the post parent template structure
- * 
+ *
 **/
 function cfct_parent_templates($dir, $files = null, $filter = '*') {
 	if (is_null($files)) {
@@ -1313,11 +1313,11 @@ function cfct_parent_templates($dir, $files = null, $filter = '*') {
 
 /**
  * Get a list of files that match the single template structure
- * 
+ *
  * @param string $dir Directory to search through for files if none are given
  * @param array $files A list of files to search through
  * @return array List of files that match the single template structure
- * 
+ *
 **/
 function cfct_single_templates($dir, $files = null) {
 	if (is_null($files)) {
@@ -1328,12 +1328,12 @@ function cfct_single_templates($dir, $files = null) {
 }
 
 /**
- * Get a list of files from list that should be used in feed consideration 
- * 
+ * Get a list of files from list that should be used in feed consideration
+ *
  * @param string $dir Directory to search through for files if none are given
  * @param array $files A list of files to search through
  * @return array List of files that match the single template structure
- * 
+ *
 **/
 function cfct_feed_templates($dir, $files = null) {
 	if (is_null($files)) {
@@ -1345,11 +1345,11 @@ function cfct_feed_templates($dir, $files = null) {
 
 /**
  * Get a list of files that match the comment template structure for a given type
- * 
+ *
  * @param string $type The type of template to search for
  * @param array $files A list of files to search through
  * @return array List of files that match the comment template structure for a given type
- * 
+ *
 **/
 function cfct_comment_templates($type, $files = false) {
 	if (!$files) {
@@ -1369,10 +1369,10 @@ function cfct_comment_templates($type, $files = false) {
 
 /**
  * Get the id of a category from the category slug of a filename
- * 
- * @param string $file Filename 
+ *
+ * @param string $file Filename
  * @return int Category id matching the category slug of the filename
- * 
+ *
 **/
 function cfct_cat_filename_to_id($file) {
 	$cat = cfct_cat_filename_to_slug($file);
@@ -1382,10 +1382,10 @@ function cfct_cat_filename_to_id($file) {
 
 /**
  * Get the name of a category from the category slug of a filename
- * 
- * @param string $file Filename 
+ *
+ * @param string $file Filename
  * @return string Category name matching the category slug of the filename
- * 
+ *
 **/
 function cfct_cat_filename_to_name($file) {
 	$cat = cfct_cat_filename_to_slug($file);
@@ -1395,10 +1395,10 @@ function cfct_cat_filename_to_name($file) {
 
 /**
  * Get the slug of a category from a filename
- * 
- * @param string $file Filename 
+ *
+ * @param string $file Filename
  * @return string Category slug
- * 
+ *
 **/
 function cfct_cat_filename_to_slug($file) {
 	$prefixes = apply_filters('cfct_cat_filename_prefixes', array('feed-cat-', 'single-cat-', 'cat-'));
@@ -1408,10 +1408,10 @@ function cfct_cat_filename_to_slug($file) {
 
 /**
  * Get the slug of a category from its id
- * 
- * @param int $id Category id 
+ *
+ * @param int $id Category id
  * @return string Category slug
- * 
+ *
 **/
 function cfct_cat_id_to_slug($id) {
 	$cat = &get_category($id);
@@ -1420,10 +1420,10 @@ function cfct_cat_id_to_slug($id) {
 
 /**
  * Get the id of a user from their username
- * 
+ *
  * @param string $username A user's username
  * @return int The id of the user
- * 
+ *
 **/
 function cfct_username_to_id($username) {
 	$user = get_user_by('ID', $username);
@@ -1432,10 +1432,10 @@ function cfct_username_to_id($username) {
 
 /**
  * Get the slug of a tag from a filename
- * 
- * @param string $file Filename 
+ *
+ * @param string $file Filename
  * @return string Tag slug
- *  
+ *
 **/
 function cfct_tag_filename_to_name($file) {
 	$prefixes = apply_filters('cfct_tag_filename_prefixes', array('feed-tag-', 'single-tag-', 'tag-'));
@@ -1445,10 +1445,10 @@ function cfct_tag_filename_to_name($file) {
 
 /**
  * Get the author from a filename
- * 
- * @param string $file Filename 
+ *
+ * @param string $file Filename
  * @return string Author
- *  
+ *
 **/
 function cfct_author_filename_to_name($file) {
 	$prefixes = apply_filters('cfct_author_filename_prefixes', array('feed-author-', 'single-author-', 'author-'));
@@ -1458,10 +1458,10 @@ function cfct_author_filename_to_name($file) {
 
 /**
  * Get the role from a filename
- * 
- * @param string $file Filename 
+ *
+ * @param string $file Filename
  * @return string Role
- *  
+ *
 **/
 function cfct_role_filename_to_name($file) {
 	$prefixes = apply_filters('cfct_role_filename_prefixes', array('feed-role-', 'single-role-', 'role-'));
@@ -1471,10 +1471,10 @@ function cfct_role_filename_to_name($file) {
 
 /**
  * Get the post format from a filename
- * 
- * @param string $file Filename 
+ *
+ * @param string $file Filename
  * @return string Post format
- *  
+ *
 **/
 function cfct_format_filename_to_format($file) {
 	$prefixes = apply_filters('cfct_format_filename_prefixes', array('feed-format-', 'single-format-', 'format-'));
@@ -1484,10 +1484,10 @@ function cfct_format_filename_to_format($file) {
 
 /**
  * Get the taxonomy name from a filename
- * 
- * @param string $file Filename 
+ *
+ * @param string $file Filename
  * @return string Taxonomy name
- *  
+ *
 **/
 function cfct_tax_filename_to_tax_name($file) {
 	$prefixes = apply_filters('cfct_tax_filename_prefixes', array('feed-tax-', 'single-tax-', 'tax-'));
@@ -1499,10 +1499,10 @@ function cfct_tax_filename_to_tax_name($file) {
 
 /**
  * Get the slug of a taxonomy from a filename
- * 
- * @param string $file Filename 
+ *
+ * @param string $file Filename
  * @return string Taxonomy slug
- *  
+ *
 **/
 function cfct_tax_filename_to_slug($file) {
 	$prefixes = apply_filters('cfct_tax_filename_prefixes', array('feed-tax-', 'single-tax-', 'tax-'));
@@ -1518,10 +1518,10 @@ function cfct_tax_filename_to_slug($file) {
 
 /**
  * Get the post name from its id
- * 
+ *
  * @param int $id A post id
  * @return string Post name
- *  
+ *
 **/
 function cfct_post_id_to_slug($id) {
 	$post = get_post($id);
@@ -1530,10 +1530,10 @@ function cfct_post_id_to_slug($id) {
 
 /**
  * Custom formatting for strings
- * 
+ *
  * @param string $str A string to be formatted
  * @return string Formatted string
- *  
+ *
 **/
 function cfct_basic_content_formatting($str) {
 	$str = wptexturize($str);
@@ -1545,10 +1545,10 @@ function cfct_basic_content_formatting($str) {
 
 /**
  * Get an array with the path to the director of the file as well as the filename
- * 
+ *
  * @param string $path A path to a file
  * @return array Contains the directory the file is in as well as the filename
- *  
+ *
 **/
 function cfct_leading_dir($path) {
 	$val = array(
@@ -1568,8 +1568,8 @@ function cfct_leading_dir($path) {
 
 /**
  * Prevent code from breaking in WP versions < 3.1
- * 
- * 
+ *
+ *
 **/
 if (!function_exists('get_post_format')) {
 	function get_post_format($post_id) {
@@ -1579,26 +1579,26 @@ if (!function_exists('get_post_format')) {
 
 /**
  * Generate markup for login/logout links
- * 
+ *
  * @param string $redirect URL to redirect after the login or logout
  * @param string $before Markup to display before
  * @param string $after Markup to display after
  * @return string Generated login/logout Markup
- */ 
+ */
 function cfct_get_loginout($redirect = '', $before = '', $after = '') {
 	if (cfct_get_option('login_link_enabled') != 'no') {
 		return $before . wp_loginout($redirect, false) . $after;
 	}
-} 
+}
 
 /**
  * Recursively merges two arrays down overwriting values if keys match.
- * 
+ *
  * @param array $array_1 Array to merge into
  * @param array $array_2 Array in which values are merged from
- * 
+ *
  * @return array Merged array
- */ 
+ */
 function cfct_array_merge_recursive($array_1, $array_2) {
 	foreach ($array_2 as $key => $value) {
 		if (isset($array_1[$key]) && is_array($array_1[$key]) && is_array($value)) {
@@ -1608,20 +1608,20 @@ function cfct_array_merge_recursive($array_1, $array_2) {
 			$array_1[$key] = $value;
 		}
 	}
-	
+
 	return $array_1;
 }
 
 /**
  * Returns the options prefix
- */ 
+ */
 function cfct_get_option_prefix() {
 	return apply_filters('cfct_option_prefix', 'cfct');
 }
 
 /**
  * Prefix options names
- */ 
+ */
 function cfct_option_name($name) {
 	$prefix = cfct_get_option_prefix();
 	// If its already prefixed, we don't need to do it again.
