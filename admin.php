@@ -120,6 +120,37 @@ function cfct_register_options() {
 					'name' => 'credit',
 					'options' => $yn_options,
 				),
+				'global_google_analytics_ua_code' => array(
+					'type' => 'text',
+					'label' => __('Global Google Analytics UA Code', 'carrington'),
+					'name' => 'global_google_analytics_ua_code',
+					'help' => '<br /><span class="cfct-help">'.__('Global Google Analytics UA Code (UA-XXXXXXX-1)', 'carrington').'</span>',
+					'class' => 'cfct-text-long',
+				),
+				'packages_hero_content' => array(
+					'type' => 'textarea',
+					'label' => __('Packages Hero Content', 'carrington'),
+					'cols' => 60,
+					'rows' => 10,
+					'name' => 'packages_hero_content',
+					'help' => '<br /><span class="cfct-help">' . __( 'Output on the packages page on the dealer microsites. Token options include: <br />', 'directv-dealer' ) . '</span>',
+				),
+				'programming_hero_content' => array(
+					'type' => 'textarea',
+					'label' => __('Programming Hero Content', 'carrington'),
+					'cols' => 60,
+					'rows' => 10,
+					'name' => 'programming_hero_content',
+					'help' => '<br /><span class="cfct-help">' . __( 'Output on the programming page on the dealer microsites. Token options include: <br />', 'directv-dealer' ) . '</span>',
+				),
+				'equipment_hero_content' => array(
+					'type' => 'textarea',
+					'label' => __('Equipment Hero Content', 'carrington'),
+					'cols' => 60,
+					'rows' => 10,
+					'name' => 'equipment_hero_content',
+					'help' => '<br /><span class="cfct-help">' . __( 'Output on the equipment page on the dealer microsites. Token options include: <br />', 'directv-dealer' ) . '</span>',
+				),
 				/**
 				'radio' => array(
 					'type' => 'radio',
@@ -545,6 +576,8 @@ div.cfct_header_image_carousel li label input {
 .cfct-help {
 	color: #777777;
 	font-size: 11px;
+	max-width:525px;
+	display:block;
 }
 
 </style>
