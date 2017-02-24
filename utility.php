@@ -513,8 +513,19 @@ function cfct_choose_general_template_type($dir, $files) {
 function cfct_choose_general_template_role($dir, $files) {
 	$files = cfct_role_templates($dir, $files);
 	if (count($files)) {
+		$userid = get_query_var('author');
 		$username = get_query_var('author_name');
-		$user = new WP_User(cfct_username_to_id($username));
+
+		if (isset($userid)) {
+			$user = new WP_User($userid);	
+		}
+		elseif (isset($username)) {
+			$user = new WP_User(cfct_username_to_id($username));
+		}
+		else {
+			return false;
+		}
+
 		if (!empty($user->user_login)) {
 			if (count($user->roles)) {
 				foreach ($user->roles as $role) {
@@ -1426,7 +1437,7 @@ function cfct_cat_id_to_slug($id) {
  * 
 **/
 function cfct_username_to_id($username) {
-	$user = get_user_by('ID', $username);
+	$user = get_user_by('slug', $username);
 	return (isset($user->ID) ? $user->ID : 0);
 }
 
